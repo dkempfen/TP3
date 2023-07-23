@@ -56,9 +56,8 @@ if ($pdo) {
                                             echo '<td>' . $row['nombre'] . '</td>';
                                             echo '<td>' . $row['usuario'] . '</td>';
                                             echo '<td>' . $row['nombre_rol'] . '</td>';
-                                            echo '<td>' . $row['estado'] . '</td>';
-                                            // Agregar un botón más pequeño en esta columna
-                                
+                                            echo '<td><a href="./includes/modals/modals.php?id=' . $row['usuario_id'] . '" class="btn btn-sm btn-warning">Editar</button></a>';
+
                                             echo '</tr>';
                                         }
                                     } else {
