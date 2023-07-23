@@ -35,7 +35,6 @@ $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
 
                   </form>
                 </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
               </span>
               <div id="respuesta"></div>
             </div>
@@ -159,21 +158,26 @@ $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
 require_once 'includes/footer.php';
 ?>
 <script>
-  $(function () {
-    $("input[name='file']").on("change", function () {
-      var formData = new FormData($("#formulario")[0]);
-      var ruta = "/instituto/Includes/cambiofoto.php";
-      $.ajax({
-        url: ruta,
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (datos) {
-          $("#respuesta").html(datos);
-        }
-      });
+$(function () {
+  $("input[name='file']").on("change", function () {
+    var formData = new FormData($("#formulario")[0]);
+    var ruta = "/instituto/Includes/cambiofoto.php";
+
+    $.ajax({
+      url: ruta,
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (datos) {
+        $("#respuesta").html(datos);
+        // Redireccionar automáticamente después de 2 segundos (opcional)
+        setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      }
     });
   });
+})
 </script>
 

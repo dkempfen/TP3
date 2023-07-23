@@ -430,3 +430,53 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
     transition: text-indent .3s ease;
     top: auto;
 }
+
+
+/* Estilo para el interruptor */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Estilo para el fondo del interruptor */
+.switch .slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 17px; /* Mitad de la altura para hacerlo redondeado */
+  background-color: #ccc; /* Color de fondo cuando el interruptor está desactivado */
+  cursor: pointer;
+}
+
+/* Estilo para el punto deslizante */
+.switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  border-radius: 50%; /* Hace que el punto sea redondeado */
+  background-color: white; /* Color del punto cuando el interruptor está desactivado */
+  transition: 0.4s; /* Agrega una animación suave al deslizar */
+}
+
+/* Estilo para el interruptor cuando está activado */
+.switch input[type="checkbox"]:checked + .slider {
+  background-color: #2196F3; /* Cambia el color de fondo cuando el interruptor está activado */
+}
+
+/* Estilo para el punto deslizante cuando el interruptor está activado */
+.switch input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(26px); /* Mueve el punto deslizante a la posición "encendido" */
+}
+/* Oculta el input onoffswitch-checkbox */
+.switch input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
