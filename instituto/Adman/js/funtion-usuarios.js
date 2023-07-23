@@ -1,27 +1,24 @@
-$('#tableusuarios').DataTable();
+$('#tableUsuarios').DataTable();
 
 var tableusuarios;
 
 document.addEventListener('DOMContentLoaded', function() {
-  tableusuarios = $('#tableusuarios').DataTable({
+  tableUsuarios = $('#tableUsuarios').DataTable({
     "aProcessing": true,
     "aServerSide": true,
     "language": {
         "url": "//cdn.datatables.net/plug-ins/1.10.20./i18n/Spanish.json"
     },
     "ajax": {
-        "url": "/instituto/Adman/includes/modals/es.php",
-        "url": "/instituto/Adman/includes/modals/profesores/table_profesores.php",
+        "url": "../includes/modals/modals.php",
         "dataSrc": ""
     },
     "columns": [
       { "data": "acciones" },
-      { "data": "profesor_id" },
+      { "data": "usuario_id" },
       { "data": "nombre" },
-      { "data": "direccion" },
-      { "data": "telefono" },
-      { "data": "correo" },
-      { "data": "nivel_est" },
+      { "data": "usuario" },
+      { "data": "nombre_rol" },
       { "data": "estado" }
     ],
     "responsive": true,
@@ -30,12 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     "order": [[0, "asc"]]
   });
 
-  var formUsuario = document.querySelector('#formUsuario');
+  /* var formUsuario = document.querySelector('#formUsuario');
   formUsuario.onsubmit = function (e) {
     //elemnto ejecutafuncion
     e.preventDefault(); //evita que se recargue la pag.
-
-    var idusuario = document.querySelector('#idusuario').value;
     var nombre = document.querySelector('#nombre').value;
     var usuario = document.querySelector('#usuario').value;
     var clave = document.querySelector('#clave').value;
@@ -68,21 +63,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
   
-});
+});*/
 
 function openModal() {
-  document.querySelector('#formUsuario').value = "";
-  document.querySelector('#tituloModal').innerHTML ='Nuevo Uusario';
-  document.querySelector('#action').innerHTML ='Guardar';
-  document.querySelector('#formUsuario').reset(),
+  // Eliminar esta línea, ya que no necesitas establecer el formulario a una cadena vacía.
+  // document.querySelector('#formUsuario').value = "";
 
-
+  document.querySelector('#tituloModal').innerHTML = 'Nuevo Usuario';
+ // document.querySelector('#action').innerHTML = 'Guardar';
+  document.querySelector('#formUsuario').reset();
 
   $('#modalUsuario').modal('show');
 }
-
-function editarUsuario(id){
-  var idusuario = id;
+/*  function editarUsuario(id){
+var idusuario = id;
 
         document.querySelector('#tituloModal').innerHTML ='Actualizar Uusario';
         document.querySelector('#action').innerHTML ='Actualizar';
@@ -91,9 +85,9 @@ function editarUsuario(id){
         request.open('GET',URL,true);
         request.send();
         request.onreadystatechange=function(){
-            if(request.readyState == 4 && request.status == 200){//validad que todo este ok{
+          if(request.readyState == 4 && request.status == 200){//validad que todo este ok{
                 var data = JSON.parse(request.responseText);
-                if(request.status){
+                  if(request.status){
                   document.querySelector('#idusuario').value =data.data.usuario_id;
                   document.querySelector('#nombre').value =data.data.nombre;
                   document.querySelector('#usuario').value =data.data.usuario;
@@ -107,7 +101,8 @@ function editarUsuario(id){
 
                 }
             }
-
-        }
 }
+    }*/
+    
+    
 
