@@ -3,55 +3,60 @@ $('#tableUsuarios').DataTable();
 var tableusuarios;
 
 document.addEventListener('DOMContentLoaded', function() {
-
   var formUsuario = document.querySelector('#formUsuario');
-  formUsuario.onsubmit = function (e) {
-    //elemnto ejecutafuncion
-    e.preventDefault(); //evita que se recargue la pag.
+  formUsuario.onsubmit = function(e) {
+    e.preventDefault(); // Evita que se recargue la página
+
     var nombre = document.querySelector('#nombre').value;
     var usuario = document.querySelector('#usuario').value;
     var clave = document.querySelector('#clave').value;
     var rol = document.querySelector('#listRol').value;
     var estado = document.querySelector('#listEstado').value;
 
-    if (nombre == '' || usuario == '' || clave == '') {
-      swal('Atencion', 'Todos los campos son necesarios', 'error');
+    // Validar campos requeridos
+    if (nombre === '' || usuario === '' || clave === '') {
+      swal('Atención', 'Todos los campos son necesarios', 'error');
       return false;
     }
-    var request = (window.XMLHttpRequest) ? new XMLHttpRequest : new ActiveXObject('Microsoft.XMLHTTP');
-    var url ='/instituto/Adman/models/usuarios/ajax_usuarios.php'
-    var from = new FormData(formUsuario)
-    request.open('POST',URL,true);
-    request.send(form);//envia formularios
-    request.onreadystatechange=function(){
-        if(request.readyState == 4 && request.status == 200){//validad que todo este ok{
-            var data = JSON.parse(request.responseText);
-            if(request.status){
-                $('#modalUsuario').modal('hide');//oculta datos
-                formUsuario.reset();
-                swal('Usuario',data.msg,'success');
-                tableusuarios.ajax.reload();
-            }else{
-                swal('Usuario',data.msg,'error');
 
-            }
+    // Crear un objeto FormData con los datos del formulario
+    var formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('usuario', usuario);
+    formData.append('clave', clave);
+    formData.append('listRol', rol);
+    formData.append('listEstado', estado);
+
+    // Realizar la petición AJAX para insertar el usuario
+    var request = new XMLHttpRequest();
+    var url = '/instituto/Includes/sql.php'; // Reemplaza con la ruta correcta
+    request.open('POST', url, true);
+
+    request.onreadystatechange = function() {
+      if (request.readyState == 4 && request.status == 200) {
+        var data = JSON.parse(request.responseText);
+        if (data.status) {
+          $('#modalUsuario').modal('hide'); // Oculta el modal
+          formUsuario.reset(); // Reinicia el formulario
+          swal('Usuario', data.msg, 'success');
+          // Aquí puedes realizar alguna acción adicional si es necesario
+        } else {
+          swal('Usuario', data.msg, 'error');
         }
+      }
+    };
 
-    }
-}
-  
+    request.send(formData);
+  };
 });
 
 function openModal() {
-  // Eliminar esta línea, ya que no necesitas establecer el formulario a una cadena vacía.
-  // document.querySelector('#formUsuario').value = "";
-
   document.querySelector('#tituloModal').innerHTML = 'Nuevo Usuario';
- // document.querySelector('#action').innerHTML = 'Guardar';
   document.querySelector('#formUsuario').reset();
-
   $('#modalUsuario').modal('show');
 }
+
+
 function editarUsuario(id){
 var idusuario = id;
 

@@ -8,7 +8,7 @@ if ($pdo) {
     $sql = "SELECT * from usuarios u INNER JOIN rol  r on u.rol=r.rol_id";
     $result = $pdo->query($sql);
 
-    ?>
+?>
 
     <main class="app-content">
         <div class="app-title">
