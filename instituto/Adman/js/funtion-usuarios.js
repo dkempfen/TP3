@@ -3,31 +3,8 @@ $('#tableUsuarios').DataTable();
 var tableusuarios;
 
 document.addEventListener('DOMContentLoaded', function() {
-  tableUsuarios = $('#tableUsuarios').DataTable({
-    "aProcessing": true,
-    "aServerSide": true,
-    "language": {
-        "url": "//cdn.datatables.net/plug-ins/1.10.20./i18n/Spanish.json"
-    },
-    "ajax": {
-        "url": "../includes/modals/modals.php",
-        "dataSrc": ""
-    },
-    "columns": [
-      { "data": "acciones" },
-      { "data": "usuario_id" },
-      { "data": "nombre" },
-      { "data": "usuario" },
-      { "data": "nombre_rol" },
-      { "data": "estado" }
-    ],
-    "responsive": true,
-    "bDestroy": true,
-    "iDisplayLength": 10,
-    "order": [[0, "asc"]]
-  });
 
-  /* var formUsuario = document.querySelector('#formUsuario');
+  var formUsuario = document.querySelector('#formUsuario');
   formUsuario.onsubmit = function (e) {
     //elemnto ejecutafuncion
     e.preventDefault(); //evita que se recargue la pag.
@@ -63,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
   
-});*/
+});
 
 function openModal() {
   // Eliminar esta línea, ya que no necesitas establecer el formulario a una cadena vacía.
@@ -75,7 +52,7 @@ function openModal() {
 
   $('#modalUsuario').modal('show');
 }
-/*  function editarUsuario(id){
+function editarUsuario(id){
 var idusuario = id;
 
         document.querySelector('#tituloModal').innerHTML ='Actualizar Uusario';
@@ -102,7 +79,7 @@ var idusuario = id;
                 }
             }
 }
-    }*/
+    }
     
     
 
