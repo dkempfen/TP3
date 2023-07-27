@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/header.php';
-require_once 'includes/modals/modal_profesor.php';
+require_once './modals/modal_profesor.php';
 ?>
 
 <main class="app-content">

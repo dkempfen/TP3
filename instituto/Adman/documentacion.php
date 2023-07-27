@@ -1,6 +1,6 @@
 <?php
 require_once 'includes/header.php';
-require_once 'includes/modals/modal_carrera.php';
+require_once './modals/modal_carrera.php';
 ?>
 
 <main class="app-content">

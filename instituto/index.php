@@ -4,7 +4,7 @@ if (!empty($_SESSION['active'])) {
     header('Location:/instituto/Adman/index.php');
 } else if (!empty($_SESSION['activeP'])) {
     header('Location:/instituto/profesor/index.php');
-}else if (!empty($_SESSION['activea'])) {
+} else if (!empty($_SESSION['activea'])) {
     header('Location:/instituto/Alumno/index.php');
 }
 
@@ -26,7 +26,13 @@ if (!empty($_SESSION['active'])) {
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <title>Ingreso al Sistema</title>
+    <!-- Include jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+</head>
+<title>Ingreso al Sistema</title>
 </head>
 
 <body>
@@ -38,7 +44,7 @@ if (!empty($_SESSION['active'])) {
             </div>
         </div>
         <div class="cont-header">
-            <h1>Bienvenid@s</h1> 
+            <h1>Bienvenid@s</h1>
 
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -56,8 +62,8 @@ if (!empty($_SESSION['active'])) {
                         <div class="view">
                             <div class="fas fa-eye verPassword" onclick="vista()" id="verPassword"></div>
                         </div>
-                        <button class="clave" type="button"  onclick="location.href='/instituto/RecuperoClave.php'">
-                        ¿Olvidaste la clave?</button>
+                        <button class="clave" type="button" onclick="location.href='/instituto/RecuperoClave.php'">
+                            ¿Olvidaste la clave?</button>
                         <!--<input name="btningresar" id="btningresar" type="submit" class="btn" value="Iniciar Sesión">-->
                         <button id="loginUsuario" type="submit" name="btningresar">Iniciar Sesión</button>
                     </form>
