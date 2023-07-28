@@ -3,6 +3,7 @@ session_start();
 
 require_once 'includes/header.php';
 require_once './modals/modals.php';
+require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
 
 if ($pdo) {
@@ -71,9 +72,8 @@ if ($pdo) {
                                             echo '<td>' . $row['usuario_id'] . '</td>';
                                             echo '<td>' . $row['nombre'] . '</td>';
                                             echo '<td>' . $row['usuario'] . '</td>';
-                                            echo '<td>' . $row['nombre_rol'] . '</td>';
-                                            echo '<td><a href="./includes/modals/modals.php?id=' . $row['usuario_id'] . '" class="btn btn-sm btn-warning">Editar</button></a>';
-
+                                            echo '<td>' . $row['nombre_rol'] . '</td>';                                        
+                                            echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['usuario_id'] . ')">Editar</button></td>';
                                             echo '</tr>';
                                         }
                                     } else {

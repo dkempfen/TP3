@@ -44,6 +44,7 @@ if (!empty($_POST)) {
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['fecha_nac'];
                 $_SESSION['carrrea'] = $result['nombre_Carrera'];
+                $_SESSION['usuariosred'] = $result['usuario'];
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -58,6 +59,7 @@ if (!empty($_POST)) {
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['fecha_nac'];
                 $_SESSION['carrrea'] = $result['nombre_Carrera'];
+                $_SESSION['usuariosred'] = $result['usuario'];
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -73,6 +75,7 @@ if (!empty($_POST)) {
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['fecha_nac'];
                 $_SESSION['carrrea'] = $result['nombre_Carrera'];
+                $_SESSION['usuariosred'] = $result['usuario'];
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
