@@ -16,7 +16,8 @@ $DatosUsuarios = DatosUsuarios('usuarios');
 <?php foreach ($DatosUsuarios as $DatosUsuarios) { ?>
 
 
-    <div class="modal fade" id="modaleditarUsuario_<?php echo $DatosUsuarios['usuario_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modaleditarUsuario_<?php echo $DatosUsuarios['usuario_id']; ?>" tabindex="-1" role="dialog"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header headerRegister">
@@ -51,19 +52,22 @@ $DatosUsuarios = DatosUsuarios('usuarios');
                     </div>
                     <div class="form-group">
                         <label for="listRol">Rol</label>
-                        <select class="form-control" name="listRoleditar" id="listRoleditar"
-                            value="<?php echo $DatosUsuarios['rol']; ?>" required>
-                            <option value="1">Administrador</option>
-                            <option value="2">Profesor</option>
-                            <option value="3">Alumno</option>
+                        <select class="form-control" name="listRoleditar" id="listRoleditar" required>
+                            <option value="1" <?php echo $DatosUsuarios['rol'] == 1 ? 'selected' : ''; ?>>Administrador
+                            </option>
+                            <option value="2" <?php echo $DatosUsuarios['rol'] == 2 ? 'selected' : ''; ?>>Profesor
+                            </option>
+                            <option value="3" <?php echo $DatosUsuarios['rol'] == 3 ? 'selected' : ''; ?>>Alumno
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="listEstado">Estado</label>
-                        <select class="form-control" name="listEstadoeditar" id="listEstadoeditar"
-                            vvalue="<?php echo $DatosUsuarios['estado']; ?>" required>
-                            <option value="1">Activo</option>
-                            <option value="2">Inactivo</option>
+                        <select class="form-control" name="listEstadoeditar" id="listEstadoeditar" required>
+                            <option value="1" <?php echo $DatosUsuarios['estado'] == 1 ? 'selected' : ''; ?>>Activo
+                            </option>
+                            <option value="2" <?php echo $DatosUsuarios['estado'] == 0 ? 'selected' : ''; ?>>Inactivo
+                            </option>
                         </select>
                     </div>
                     <div class="modal-footer">
