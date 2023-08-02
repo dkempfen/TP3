@@ -76,16 +76,7 @@ function obtenerEstadoTodosUsuarios()
   echo json_encode($usersState);
 }
 
-  if (isset($_POST['action'])) {
-    $action = $_POST['action'];
-
-    // Check the action and perform the corresponding operation
-    if ($action === 'insert') {
-        insertarNuevoUsuario();
-    } elseif ($action === 'update') {
-        actualizarUsuario();
-    } 
-  }
+ 
     function insertarNuevoUsuario()
     {
       session_start();
@@ -275,4 +266,3 @@ function DatosUsuarios($table)
     return $rows;
 }
 ?>
-
