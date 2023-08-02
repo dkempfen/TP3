@@ -6,6 +6,7 @@ require_once './modals/modals.php';
 require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
 
+
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
     $sql = "SELECT * from usuarios u INNER JOIN rol  r on u.rol=r.rol_id";
@@ -25,6 +26,8 @@ if ($pdo) {
             });
         </script>";
     }
+
+
 ?>
 
 <main class="app-content">
