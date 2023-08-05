@@ -77,7 +77,7 @@ function obtenerEstadoTodosUsuarios()
 }
 
  
-    function insertarNuevoUsuario()
+function insertarNuevoUsuario()
     {
       session_start();
       $nombre = $_POST["nombre"];
@@ -129,109 +129,15 @@ function obtenerEstadoTodosUsuarios()
           'text' => 'Ha ocurrido un error al insertar el usuario.'
         ];
       }
-    }
+}
 
-    if (isset($_POST['nombre']) && isset($_POST['usuario']) && isset($_POST['mail']) && isset($_POST['clave']) && isset($_POST['listRol']) && isset($_POST['listEstado'])) {
+  if (isset($_POST['nombre']) && isset($_POST['usuario']) && isset($_POST['mail']) && isset($_POST['clave']) && isset($_POST['listRol']) && isset($_POST['listEstado'])) {
       insertarNuevoUsuario();
 
       header("Location: /instituto/Adman/lista_usuarios.php");
       exit();
-    }
-    function actualizarUsuario()
-    {
-        session_start();
-        $usuarioeditar_id = $_POST["idusuarioeditar"];
-        $nombreeditar = $_POST["nombreeditar"];
-        $maileditar = $_POST["maileditar"];
-        $claveeditar = $_POST["claveeditar"];
-        $roleditar = $_POST["listRoleditar"];
-        $estadoeditar = $_POST["listEstadoeditar"];
-
-  
-    
-        // Convert "listRoleditar" value to the corresponding role name
-        $rol_modificar = ($roleditar == 1) ? "Administrador" : (($roleditar == 2) ? "Profesor" : "Alumno");
-    
-        global $pdo;
-        // Check if the role exists in the database
-        $sql = "SELECT rol_id FROM rol WHERE nombre_rol = ?";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([$rol_modificar]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-        if (!$result) {
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'El rol seleccionado no existe.'
-            ];
-            return;
-        }
-    
-        $roleditar_id = $result['rol_id'];
-    
-        // Prepare the SQL query for updating
-        $updateQuery = "UPDATE usuarios SET";
-        $params = [];
-    
-        // Build the update query and bind the parameters
-        if (!empty($nombreeditar)) {
-            $updateQuery .= " nombre = ?";
-            $params[] = $nombreeditar;
-        }
-    
-        if (!empty($maileditar)) {
-            $updateQuery .= ", mail = ?";
-            $params[] = $maileditar;
-        }
-        
-        if (!empty($claveeditar)) {
-          $updateQuery .= ", clave = ?";
-          $params[] = $claveeditar;
-      }
-    
-        if (!empty($roleditar_id)) {
-            $updateQuery .= ", rol = ?";
-            $params[] = $roleditar_id;
-        }
-    
-        if (!empty($estadoeditar)) {
-            $updateQuery .= ", estado = ?";
-            $params[] = $estadoeditar;
-        }
-    
-        $updateQuery .= " WHERE usuario_id = ?";
-        $params[] = $usuarioeditar_id;
-    
-        if (empty($params)) {
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'No se proporcionaron datos para actualizar. Debe completar al menos un campo.'
-            ];
-            return;
-        }
-    
-        // Execute the update query
-        $stmt = $pdo->prepare($updateQuery);
-        $stmt->execute($params);
-    
-        if ($stmt->rowCount() > 0) {
-            $_SESSION['message'] = [
-                'type' => 'success',
-                'text' => 'Usuario actualizado exitosamente'
-            ];
-        } else {
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'Ha ocurrido un error al actualizar el usuario.'
-            ];
-        }
-    }
-    if (isset($_POST['nombreeditar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
-      actualizarUsuario();
-
-      header("Location: /instituto/Adman/lista_usuarios.php");
-      exit();
-    }
+  }
+  /////////////////////Actulizar Estado//////////////////////////////
     
 
 if (isset($_POST['usuario_id']) && isset($_POST['estado'])) {
@@ -253,7 +159,7 @@ if (isset($_POST['usuario_id']) && isset($_POST['estado'])) {
 
 
 
-//////////////////////////////
+//////////////////////////////Actulizar User///////////////////////
 function DatosUsuarios($table)
 {
     global $pdo;
@@ -264,5 +170,50 @@ function DatosUsuarios($table)
 
     $rows = $datosUsuarios->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
+}
+function ActulizarUser()
+    {
+if(isset($_POST['btnmodificar']))
+{
+  global $pdo;
+  $idusuarioeditar = $_POST['idusuarioeditar'];
+  $nombreeditar = $_POST['nombreeditar'];
+  $maileditar = $_POST['maileditar'];
+  $claveeditar = $_POST['claveeditar'];
+  $listRoleditar = $_POST['listRoleditar'];
+  $listEstadoeditar = $_POST['listEstadoeditar'];
+
+
+  
+  $sql = "UPDATE usuarios SET nombre = '$nombreeditar', mail = '$maileditar', clave = '$claveeditar', 
+  rol = '$listRoleditar', estado = '$listEstadoeditar' WHERE usuario_id = '$idusuarioeditar'";
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindParam(":nombreeditar", $nombreeditar);
+      $stmt->bindParam(":maileditar", $maileditar);
+      $stmt->bindParam(":claveeditar", $claveeditar);
+      $stmt->bindParam(":listRoleditar", $listRoleditar);
+      $stmt->bindParam(":listEstadoeditar", $listEstadoeditar);
+      $stmt->bindParam(":idusuarioeditar", $idusuarioeditar);
+      $stmt->execute();
+
+      if ($stmt->rowCount() > 0) {
+        $_SESSION['message'] = [
+          'type' => 'success',
+          'text' => 'Usuario Actulizado exitosamente'
+        ];
+      } else {
+        $_SESSION['message'] = [
+          'type' => 'error',
+          'text' => 'Ha ocurrido un error al actulizar el usuario.'
+        ];
+      }
+}
+}
+
+if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
+  ActulizarUser();
+
+  header("Location: /instituto/Adman/lista_usuarios.php");
+  exit();
 }
 ?>

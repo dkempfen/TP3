@@ -1,15 +1,8 @@
 <?php
 require_once '../includes/load.php';
+include_once('../Adman/lista_usuarios.php');
 
 $DatosUsuarios = DatosUsuarios('usuarios');
-/*foreach ($DatosUsuarios as $DatosUsuarios) {
-    echo $DatosUsuarios['nombre'] ;
-    echo $DatosUsuarios['mail'] ;
-    echo $DatosUsuarios['clave'] ;
-    echo $DatosUsuarios['rol'] ;
-    echo $DatosUsuarios['estado'] ;
-}*/
-
 
 
 ?>
@@ -29,8 +22,7 @@ $DatosUsuarios = DatosUsuarios('usuarios');
             <div class="modal-body">
                 <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/sql.php"
                     method="POST">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="idusuarioeditar" id="idusuarioeditar" value="">
+                    <input type="hidden" name="idusuarioeditar" id="idusuarioeditar" value="<?php  echo $DatosUsuarios['usuario_id']?>" required>
                     <div class="form-group">
                         <label for="control-label">Nombre:</label>
 
@@ -72,8 +64,9 @@ $DatosUsuarios = DatosUsuarios('usuarios');
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit">
-                            <span id="btnEditartext">Guardar</span></button>
+                        <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit" name="btnmodificar">
+                            <span id="btnEditartext">Guardar</span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -100,7 +93,7 @@ function openModals(usuario_id) {
     document.getElementById('formEditarUsuario').reset();
     var modalId = "#modaleditarUsuario_" + usuario_id;
     $(modalId).modal('show');
-
+    $('#modaleditarUsuario_').modal('show');
     $('#modaleditarUsuario').modal('show');
     var usuario_id = DatosUsuarios(); // Debes implementar esta función
 
@@ -119,6 +112,8 @@ $(document).ready(function() {
 
     // Evento al enviar el formulario de edición de usuario
     $("#formEditarUsuario").on("submit", function(event) {
+        event.preventDefault();
+
 
         // Obtener los valores del formulario
         var idusuario = $("#idusuarioeditar").val();
@@ -135,7 +130,7 @@ $(document).ready(function() {
             method: 'POST',
             type: "POST",
             data: {
-                action: "/instituto/Includes/sql.php",
+                
                 action: "update",
                 usuario_id: usuario_id,
                 idusuario: idusuario,
