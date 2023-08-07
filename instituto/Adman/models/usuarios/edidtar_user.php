@@ -125,15 +125,12 @@ $(document).ready(function() {
         var estado = $("#listEstadoeditar").val();
 
         // Realizar la petición AJAX para actualizar el usuario
+        
         $.ajax({
-            url: "/instituto/Includes/sql.php",
-            method: 'POST',
-            type: "POST",
-            data: {
-                
-                action: "update",
-                usuario_id: usuario_id,
-                idusuario: idusuario,
+                url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+                type: "POST",
+                data: {
+                usuario_id: idusuario,
                 nombre: nombre,
                 usuario: usuario,
                 mail: mail,
@@ -141,46 +138,16 @@ $(document).ready(function() {
                 rol: rol,
                 estado: estado
             },
-            dataType: 'json',
-            success: function(response) {
-                console.log(response);
-                if (userData) {
-                    $("#idusuarioeditar").val(userData.idusuario);
-                    $("#nombreeditar").val(userData.nombre);
-                    $("#usuarioeditar").val(userData.usuario);
-                    $("#maileditar").val(userData.mail);
-                    $("#claveeditar").val(userData.clave);
-                    $("#listRoleditar").val(userData.rol);
-                    $("#listEstadoeditar").val(userData.estado);
-
-                    // Mostrar el modal después de llenar los datos
-                    $('#modaleditarUsuario').modal('show');
-                } else {
-
-                    // Mostrar mensaje de éxito
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: 'Usuario actualizado exitosamente.',
-                    }).then((result) => {
-                        // Recargar la página después de cerrar el mensaje de éxito
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
+                success: function(response) {
+                    console.log(response);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                },
+                error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
+                    console.log("Error en la solicitud AJAX:", error); // Imprime el mensaje de error en la consola
                 }
-            },
-            error: function(error) {
-                // Mostrar mensaje de error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Ha ocurrido un error al actualizar el usuario.',
-                });
-            }
-        });
-
-        event.preventDefault();
+            });
     });
 });
 </script>

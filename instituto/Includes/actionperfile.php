@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_SESSION['id_usuario']) && $_SESSION['id_usuario']==null) {
-	header("location: ../");
+	header("Location: /instituto/Adman/profile.php");
 }
 require_once './Includes/load.php';
 
@@ -50,7 +50,7 @@ if (isset($_POST['token'])) {
 		}
 	}
 } else {
-	header("location: ../");
+	header("Location: /instituto/Adman/profile.php");
 }
 
 ?>

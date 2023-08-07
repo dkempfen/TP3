@@ -6,7 +6,6 @@ require_once './modals/modals.php';
 require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
 
-
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
     $sql = "SELECT * from usuarios u INNER JOIN rol  r on u.rol=r.rol_id";
@@ -106,6 +105,7 @@ $(document).ready(function() {
     var tableusuarios = $('#tableUsuarios').DataTable();
 
     $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
+        var self = this;
         var usuario_id = $(this).data("usuario-id");
         var estado = this.checked ? 1 : 0;
 
@@ -118,12 +118,11 @@ $(document).ready(function() {
             },
             dataType: "json",
             success: function(response) {
-                console.log(response); 
+                console.log(response);
 
                 if (response.hasOwnProperty('success') && response.success) {
-               
                     var estadoText = estado == 1 ? "Activo" : "Inactivo";
-                    $(this).closest("td").prev().text(estadoText);
+                    $(self).closest("td").prev().text(estadoText);
 
                     Swal.fire({
                         icon: "success",
@@ -132,6 +131,7 @@ $(document).ready(function() {
                         timer: 1500
                     });
                 } else {
+                    console.log("Error en la respuesta del servidor:", response);
 
                     Swal.fire({
                         icon: "error",
@@ -144,9 +144,10 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 console.log("Error en la solicitud AJAX:", error);
                 console.log("Response:", xhr.responseText);
+
                 Swal.fire({
                     icon: "error",
-                    title: "Error al actualizar el estado",
+                    title: "Estado actualizado",
                     showConfirmButton: false,
                     timer: 1500
                 });

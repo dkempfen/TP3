@@ -138,7 +138,7 @@ function insertarNuevoUsuario()
       exit();
   }
   /////////////////////Actulizar Estado//////////////////////////////
-    
+ 
 
 if (isset($_POST['usuario_id']) && isset($_POST['estado'])) {
     $usuario_id = $_POST['usuario_id'];
@@ -148,14 +148,18 @@ if (isset($_POST['usuario_id']) && isset($_POST['estado'])) {
     $stmt = $pdo->prepare($updateQuery);
     $stmt->bindParam(':estado', $estado, PDO::PARAM_INT);
     $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+  
 
     if ($stmt->execute()) {
-        echo json_encode(['success' => true]);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Error updating user state']);
-    }
-   
+      // La consulta se ejecutó correctamente, enviamos el JSON con éxito.
+      echo json_encode(['success' => true]);
+  } else {
+      // Ocurrió un error al ejecutar la consulta, enviamos el JSON con el mensaje de error.
+      echo json_encode(['success' => false, 'error' => 'Error updating user state']);
+  }
 } 
+
+
 
 
 
@@ -172,9 +176,10 @@ function DatosUsuarios($table)
     return $rows;
 }
 function ActulizarUser()
-    {
+    {      
+
 if(isset($_POST['btnmodificar']))
-{
+{session_start();
   global $pdo;
   $idusuarioeditar = $_POST['idusuarioeditar'];
   $nombreeditar = $_POST['nombreeditar'];
@@ -195,18 +200,26 @@ if(isset($_POST['btnmodificar']))
       $stmt->bindParam(":listEstadoeditar", $listEstadoeditar);
       $stmt->bindParam(":idusuarioeditar", $idusuarioeditar);
       $stmt->execute();
-
-      if ($stmt->rowCount() > 0) {
+      
+      if ($stmt->rowCount() === 0) {        
         $_SESSION['message'] = [
-          'type' => 'success',
-          'text' => 'Usuario Actulizado exitosamente'
+            'type' => 'info',
+            'text' => 'No se ha actualizado ningún dato.'
         ];
-      } else {
+    } elseif ($stmt->rowCount() > 0) {
+        // Al menos un dato se actualizó correctamente
         $_SESSION['message'] = [
-          'type' => 'error',
-          'text' => 'Ha ocurrido un error al actulizar el usuario.'
+            'type' => 'success',
+            'text' => 'Usuario actualizado exitosamente.'
         ];
-      }
+    } else {
+        // Ocurrió un error al actualizar el usuario
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al actualizar el usuario.'
+        ];
+    }
+      
 }
 }
 
@@ -216,4 +229,8 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
   header("Location: /instituto/Adman/lista_usuarios.php");
   exit();
 }
+
+
+
+
 ?>

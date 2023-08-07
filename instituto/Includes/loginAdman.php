@@ -25,7 +25,7 @@ if (!empty($_POST)) {
        left JOIN Carrera c on c.id_Carrera=ca.id_Carrera
         WHERE usuario='$login' AND clave='$pass'";
         $query = $pdo->prepare($sql);
-        $query->execute(array($login));
+        $query->execute([$login, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
 
        
