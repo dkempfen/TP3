@@ -6,9 +6,23 @@
   <?php
 
   $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
+  if ($pdo) {
+    // Query para obtener los datos de la tabla 'usuarios'
+    $sql = "SELECT * from usuarios";
+    $result = $pdo->query($sql);    
+    
+    // Check if there's a message in the session
 
-  ?>
+    if (isset($_SESSION['password_message'])) {
+        $message = $_SESSION['password_message'];
+        unset($_SESSION['password_message']); // Clear the session variable after displaying the message
+        showConfirmationMessage($message);
+    }
 
+
+
+
+?>
   <main class="app-content">
       <div class="row-perfil">
           <div class="right_col" role="main">
@@ -50,7 +64,7 @@
                                   <div class="x_content">
                                       <form id="cambiarClaveForm" name="cambiarClaveForm" data-parsley-validate
                                           class="form-horizontal form-label-left"
-                                          action="/instituto/Includes/slqeditar.php" method="post">
+                                          action="/instituto/Includes/sql.php" method="post">
                                           <input type="hidden" name="idusuarioDatos" id="idusuarioDatos"
                                               value="<?php  echo $_SESSION['usuario_id']?>" required>
 
@@ -166,6 +180,9 @@
 
 
   <?php
+  } else {
+    echo "Error: No se pudo establecer la conexión a la base de datos.";
+}
   require_once 'includes/footer.php';
   ?>
   <script>
@@ -192,22 +209,33 @@ $(function() {
 })
   </script>
     <script>
-        function cambiarClave() {
-            var oldPassword = document.getElementById("old_password").value;
-            var newPassword = document.getElementById("new_password").value;
-            $.ajax({
-                type: "POST",
-                url: "/instituto/Includes/slqeditar.php",
-                data: { old_password: oldPassword, new_password: newPassword },
-                success: function(response) {
-                    console.log(response);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2000);
-                },
-                error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
-                    console.log("Error en la solicitud AJAX:", error); // Imprime el mensaje de error en la consola
-                }
-            });
+$(document).ready(function() {
+    // Asociar un evento al botón de cambio de contraseña
+    $("#change_password_button").on("click", function() {
+        var oldPassword = $("#old_password").val();
+        var newPassword = $("#new_password").val();
+
+        // Verificar si las contraseñas no están vacías
+        if (oldPassword === "" || newPassword === "") {
+            console.log("Por favor, complete ambos campos.");
+            return;
         }
+
+        // Realizar la solicitud AJAX para cambiar la contraseña
+        $.ajax({
+            type: "POST",
+            url: "/instituto/Includes/sql.php",
+            data: { old_password: oldPassword, new_password: newPassword },
+            success: function(response) {
+                console.log(response);
+                // Si la respuesta es exitosa, mostrar un mensaje y recargar la página
+                alert(response);
+                window.location.reload();
+            },
+            error: function(xhr, status, error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+});
     </script>

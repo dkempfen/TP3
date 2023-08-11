@@ -16,16 +16,8 @@ if ($pdo) {
     if (isset($_SESSION['message'])) {
         $message = $_SESSION['message'];
         unset($_SESSION['message']); // Clear the session variable after displaying the message
-        echo "<script>
-            Swal.fire({
-                icon: '" . $message['type'] . "',
-                title: '" . $message['text'] . "',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        </script>";
+        showConfirmationMessage($message);
     }
-
 
 ?>
 

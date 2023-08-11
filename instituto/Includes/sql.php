@@ -5,8 +5,16 @@
 
 <?php
 require_once('load.php');
-
-
+function showConfirmationMessage($message) {
+  echo "<script>
+      Swal.fire({
+          icon: '" . $message['type'] . "',
+          title: '" . $message['text'] . "',
+          showConfirmButton: false,
+          timer: 1500
+      });
+  </script>";
+}
 
 function count_by_id($table)
 {
@@ -219,6 +227,8 @@ if(isset($_POST['btnmodificar']))
             'text' => 'Ha ocurrido un error al actualizar el usuario.'
         ];
     }
+
+    
       
 }
 }
@@ -231,6 +241,47 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
 }
 
 
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  session_start();
+global $pdo;
+  $oldPassword = $_POST["old_password"];
+  $newPassword = $_POST["new_password"];
+  $confirmNewPassword = $_POST["confirm_new_password"];
+  $usuario_id = 1; // Cambia esto según tu lógica
 
+  $sql = "SELECT clave FROM usuarios WHERE usuario_id = :usuario_id";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindParam(':usuario_id', $usuario_id);
+  $stmt->execute();
+  $row = $stmt->fetch();
+  $clave_actual_almacenada_db = $row['clave'];
+  if (empty($oldPassword) || empty($newPassword) || empty($confirmNewPassword)) {
+      $_SESSION['password_message'] = [
+          'type' => 'error',
+          'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
+        ];
+      
+      }
+
+  elseif ($oldPassword !== $clave_actual_almacenada_db) {
+      $_SESSION['password_message'] = ['type' => 'error', 'text' => 'La contraseña actual ingresada no coincide con la contraseña almacenada.'];
+  } elseif ($newPassword !== $confirmNewPassword) {
+      $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Las contraseñas no coinciden. No se pudo cambiar la contraseña.'];
+  } else {
+      try {
+          $updateSql = "UPDATE usuarios SET clave = :new_password WHERE usuario_id = :usuario_id";
+          $updateStmt = $pdo->prepare($updateSql);
+          $updateStmt->bindParam(':new_password', $newPassword);
+          $updateStmt->bindParam(':usuario_id', $usuario_id);
+          $updateStmt->execute();
+          $_SESSION['password_message'] = ['type' => 'success', 'text' => '¡Contraseña cambiada exitosamente!'];
+      } catch (PDOException $e) {
+          $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Error al actualizar la contraseña: ' . $e->getMessage()];
+      }
+  }
+
+  header("Location: /instituto/Adman/profile.php");
+  exit();
+}
 
 ?>
