@@ -3,23 +3,23 @@
   require_once '../Includes/load.php';
 
   ?>
-  <?php
+  <?php   
 
-  $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
-  if ($pdo) {
-    // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from usuarios";
-    $result = $pdo->query($sql);    
-    
-    // Check if there's a message in the session
 
-    if (isset($_SESSION['password_message'])) {
-        $message = $_SESSION['password_message'];
-        unset($_SESSION['password_message']); // Clear the session variable after displaying the message
-        showConfirmationMessage($message);
+    if ($pdo) {
+        // Muestra mesaje Query para obtener los datos de la tabla 'usuarios'
+        $sql = "SELECT * from usuarios";
+        $result = $pdo->query($sql);    
+        
+        if (isset($_SESSION['password_message'])) {
+            $messages = $_SESSION['password_message'];
+            unset($_SESSION['password_message']);
+            showConfirmationMessage($messages);
+        }
     }
 
-
+    // Llamar a la función cambiarFotoPerfil()
+    cambiarFotoPerfil('cambio_foto_perfil');
 
 
 ?>
@@ -42,9 +42,10 @@
 
                               <span class="">
                                   <div class="btn btn-info btn-lg btn-cambiar">
-                                      <form method="post" id="formulario" enctype="multipart/form-data">
+                                      <form method="post" id="cambiofotoperfil" enctype="multipart/form-data">
                                           <label for="file">Cambiar imagen</label>
                                           <input type="file" name="file" id="file" accept="image/*" class="file-input">
+
 
 
                                       </form>
@@ -180,16 +181,14 @@
 
 
   <?php
-  } else {
-    echo "Error: No se pudo establecer la conexión a la base de datos.";
-}
+ 
   require_once 'includes/footer.php';
   ?>
   <script>
-$(function() {
+$(document).ready(function() {
     $("input[name='file']").on("change", function() {
-        var formData = new FormData($("#formulario")[0]);
-        var ruta = "/instituto/Includes/cambiofoto.php";
+        var formData = new FormData($("#cambiofotoperfil")[0]);
+        var ruta = "/instituto/Includes/sql.php";
 
         $.ajax({
             url: ruta,
@@ -206,12 +205,12 @@ $(function() {
             }
         });
     });
-})
-  </script>
-    <script>
-$(document).ready(function() {
+
     // Asociar un evento al botón de cambio de contraseña
     $("#change_password_button").on("click", function() {
+        var formData = new FormData($("#cambiarClaveForm")[0]);
+
+        
         var oldPassword = $("#old_password").val();
         var newPassword = $("#new_password").val();
 

@@ -4,4 +4,4 @@ session_start();
 session_unset();
 session_destroy();
 
-header('location: /instituto/index.php');
+header('location: /instituto/Login/index.php');

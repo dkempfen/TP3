@@ -16792,3 +16792,9 @@ be a descendant of the grid when it is being dragged.
   margin: auto;
 }
 
+#labelUsuario,
+#labelPassword {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
