@@ -22,7 +22,7 @@
     <li>
     <li><a class="app-menu__item" href="/instituto/Alumno//lista_finales.php">
         <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Finales</span></a></li>
-    <li><a class="app-menu__item" href="/instituto/logout.php">
+    <li><a class="app-menu__item" href="/instituto/Login/logout.php">
         <i class="app-menu__icon fas fa-sign-out-alt"></i><span class="app-menu__label">Logout</span></a></li>
   </ul>
 </aside>
