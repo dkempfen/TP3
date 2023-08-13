@@ -93,9 +93,10 @@ require_once 'includes/footer.php';
 
 
 <script>
-$(document).ready(function() {
-    var tableusuarios = $('#tableUsuarios').DataTable();
 
+$(document).ready(function() {
+
+    
     $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
         var usuario_id = $(this).data("usuario-id");
@@ -112,37 +113,24 @@ $(document).ready(function() {
             success: function(response) {
                 console.log(response);
 
-                if (response.hasOwnProperty('success') && response.success) {
-                    var estadoText = estado == 1 ? "Activo" : "Inactivo";
-                    $(self).closest("td").prev().text(estadoText);
-
+                if (response.success) {
                     Swal.fire({
                         icon: "success",
                         title: "Estado actualizado",
                         showConfirmButton: false,
                         timer: 1500
                     });
+                    
+                    // Agregamos la recarga después de mostrar el mensaje de éxito
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
                 } else {
-                    console.log("Error en la respuesta del servidor:", response);
-
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error al actualizar el estado",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                    console.log("Error en la solicitud AJAX:", response.error);
                 }
             },
-            error: function(xhr, status, error) {
+            error: function(error) {
                 console.log("Error en la solicitud AJAX:", error);
-                console.log("Response:", xhr.responseText);
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Estado actualizado",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
             }
         });
     });

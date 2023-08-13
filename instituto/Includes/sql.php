@@ -50,18 +50,57 @@ function count_id($table)
 /*--------------------------------------------------------------*/
 function cambiarFotoPerfil($table)
 {
-  global $pdo;
+    global $pdo;
 
-  $sql = "SELECT nueva_foto FROM " . $table;
-  $fotocambio = $pdo->prepare($sql);
-  $fotocambio->execute();
+    $sql = "SELECT nueva_foto FROM " . $table;
+    $fotocambio = $pdo->prepare($sql);
+    $fotocambio->execute();
 
-  $rows = $fotocambio->fetch(PDO::FETCH_ASSOC);
-  if ($rows) {
-    return $rows['nueva_foto'];
-  }
+    $rows = $fotocambio->fetch(PDO::FETCH_ASSOC);
+    if ($rows) {
+        return $rows['nueva_foto'];
+    }
 
-  return ""; 
+    return ""; 
+}
+
+if (isset($_FILES["file"])) {
+    global $pdo;
+    $file = $_FILES["file"];
+    $name = $file["name"];
+    $type = $file["type"];
+    $tmp_n = $file["tmp_name"];
+    $size = $file["size"];
+
+    $folder = "../Imagenes/profiles/";
+
+    // Cambio de foto
+    if ($type != 'image/jpg' && $type != 'image/jpeg' && $type != 'image/png' && $type != 'image/gif') {
+        echo "<div class='alert alert-success' role='alert'>
+            <button type='button' class='close' data-dismiss='alert'>&times;</button>
+            Error, el archivo no es una imagen</div>";
+    } else if ($size > 1024 * 1024) {
+        echo "<div class='alert alert-success' role='alert'>
+            <button type='button' class='close' data-dismiss='alert'>&times;</button>
+            Error, el tamaño máximo permitido es un 1MB</div>";
+    } else {
+        $src = $folder . $name;
+        if (move_uploaded_file($tmp_n, $src)) {
+            $query = "UPDATE cambio_foto_perfil SET nueva_foto = ?";
+            $stmt = $pdo->prepare($query);
+            $stmt->bindParam(1, $name);
+            if ($stmt->execute()) {
+                echo "<div class='alert alert-success' role='alert'>
+                    ¡Bien hecho! Perfil actualizado correctamente</div>";
+            } else {
+                echo "<div class='alert alert-danger' role='alert'>
+                    Error al actualizar el perfil</div>";
+            }
+        } else {
+            echo "<div class='alert alert-danger' role='alert'>
+                Error al subir la imagen</div>";
+        }
+    }
 }
 
 
@@ -147,25 +186,36 @@ function insertarNuevoUsuario()
   }
   /////////////////////Actulizar Estado//////////////////////////////
  
+  function actualizarEstadoUsuario($pdo, $usuario_id, $estado) {
+    $updateQuery = "UPDATE usuarios SET estado = :estado WHERE usuario_id = :usuario_id";
+    $stmt = $pdo->prepare($updateQuery);
+    $stmt->bindParam(':estado', $estado, PDO::PARAM_INT);
+    $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
+
+    if ($stmt->execute()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 if (isset($_POST['usuario_id']) && isset($_POST['estado'])) {
     $usuario_id = $_POST['usuario_id'];
     $estado = $_POST['estado'];
 
-    $updateQuery = "UPDATE usuarios SET estado = :estado WHERE usuario_id = :usuario_id";
-    $stmt = $pdo->prepare($updateQuery);
-    $stmt->bindParam(':estado', $estado, PDO::PARAM_INT);
-    $stmt->bindParam(':usuario_id', $usuario_id, PDO::PARAM_INT);
-  
+    if (actualizarEstadoUsuario($pdo, $usuario_id, $estado)) {
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Estado de usuario actualizado exitosamente'
+        ];
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al actualizar el estado del usuario.'
+        ];
+    }
+}
 
-    if ($stmt->execute()) {
-      // La consulta se ejecutó correctamente, enviamos el JSON con éxito.
-      echo json_encode(['success' => true]);
-  } else {
-      // Ocurrió un error al ejecutar la consulta, enviamos el JSON con el mensaje de error.
-      echo json_encode(['success' => false, 'error' => 'Error updating user state']);
-  }
-} 
 
 
 
@@ -233,15 +283,19 @@ if(isset($_POST['btnmodificar']))
 }
 }
 
+
 if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
   ActulizarUser();
 
   header("Location: /instituto/Adman/lista_usuarios.php");
   exit();
 }
-
-
+/*-------------canbiar ckave-----------------------*/
+ 
+function cambioClave()
+    {   
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  
   session_start();
 global $pdo;
   $oldPassword = $_POST["old_password"];
@@ -283,5 +337,19 @@ global $pdo;
   header("Location: /instituto/Adman/profile.php");
   exit();
 }
+if (isset($_SESSION['password_message'])) {
+  $messages = $_SESSION['password_message'];
+  unset($_SESSION['password_message']);
+  showConfirmationMessage($messages);
+}
+
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  if (isset($_POST["token"])) {
+
+  cambioClave();
+}}
+
+ 
 
 ?>
