@@ -241,7 +241,12 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
 }
 
 
+/*-------------canbiar ckave-----------------------*/
+ 
+function cambioClave()
+    {   
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  
   session_start();
 global $pdo;
   $oldPassword = $_POST["old_password"];
@@ -283,5 +288,19 @@ global $pdo;
   header("Location: /instituto/Adman/profile.php");
   exit();
 }
+if (isset($_SESSION['password_message'])) {
+  $messages = $_SESSION['password_message'];
+  unset($_SESSION['password_message']);
+  showConfirmationMessage($messages);
+}
+
+}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  if (isset($_POST["token"])) {
+
+  cambioClave();
+}}
+
+
 
 ?>
