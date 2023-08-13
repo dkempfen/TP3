@@ -41,7 +41,7 @@ $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
         <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Finales</span></a></li>
         <li><a class="app-menu__item" href="/instituto/Adman/documentacion.php">
         <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Documentación</span></a></li>
-    <li><a class="app-menu__item" href="/instituto/Login/logout.php">
+    <li><a class="app-menu__item" href="/instituto/logout.php">
         <i class="app-menu__icon fas fa-sign-out-alt"></i><span class="app-menu__label">Logout</span></a></li>
   </ul>
 </aside>
