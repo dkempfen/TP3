@@ -18,12 +18,13 @@ if (!empty($_POST)) {
         $login = $_POST['usuario'];
         $pass = $_POST['pass'];
         
-       
-        $sql="SELECT * FROM usuarios u INNER JOIN rol  r on u.rol=r.rol_id
-        left JOIN Alumnos A on u.usuario= A.alumno_id
-       left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id
-       left JOIN Carrera c on c.id_Carrera=ca.id_Carrera
-        WHERE usuario='$login' AND clave='$pass'";
+        
+        $sql="SELECT *, Fechanacimiento,
+        TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS edad FROM usuario u INNER JOIN rol  r on u.fk_Rol=r.id_rol
+        left JOIN persona p on p.DNI= u.fk_DNI
+         /*left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id*/
+        left JOIN plan pn on pn.cod_Plan=u.fk_Plan
+         WHERE user='$login' AND clave='$pass'";
         $query = $pdo->prepare($sql);
         $query->execute([$login, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
@@ -34,55 +35,56 @@ if (!empty($_POST)) {
 
         if ($query->rowCount() > 0) {
            
-            if( $result["rol_id"]==1){
+            if( $result["fk_Rol"]==3){
                 $_SESSION['active'] = true;
                 header('Location:/instituto/Adman/index.php');
-                $_SESSION['id_usuario'] = $result['usuario_id'];
-                $_SESSION['nombre'] = $result['nombre'];
-                $_SESSION['mail'] = $result['mail'];
+                $_SESSION['id_usuario'] = $result['Id_Usuario'];
+                $_SESSION['nombre'] = $result['Nombre'];
+                $_SESSION['mail'] = $result['Email'];
+                $_SESSION['usuario'] = $result['user'];
                 $_SESSION['clave'] = $result['clave'];
-                $_SESSION['rol'] = $result['rol_id'];
-                $_SESSION['nombre_rol'] = $result['nombre_rol'];
+                $_SESSION['rol'] = $result['fk_Rol'];
+                $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
-                $_SESSION['fechanac'] = $result['fecha_nac'];
-                $_SESSION['carrrea'] = $result['nombre_Carrera'];
-                $_SESSION['usuario_id'] = $result['usuario'];
-                echo '<div class="alert alert-success"><button type="button" class="close"
+                $_SESSION['fechanac'] = $result['Fechanacimiento'];
+                $_SESSION['carrrea'] = $result['carrera'];
+               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
+               echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
-            if( $result["rol_id"]==0){
+            if( $result["fk_Rol"]==2){
                 $_SESSION['activep'] = true;
                 header('Location:/instituto/profesor/index.php');
-                $_SESSION['id_usuario'] = $result['usuario_id'];
-                $_SESSION['nombre'] = $result['nombre'];
-                $_SESSION['mail'] = $result['mail'];
-                $_SESSION['usuario'] = $result['usuario'];
+                $_SESSION['id_usuario'] = $result['Id_Usuario'];
+                $_SESSION['nombre'] = $result['Nombre'];
+                $_SESSION['mail'] = $result['Email'];
+                $_SESSION['usuario'] = $result['user'];
                 $_SESSION['clave'] = $result['clave'];
-                $_SESSION['rol'] = $result['rol_id'];
-                $_SESSION['nombre_rol'] = $result['nombre_rol'];
+                $_SESSION['rol'] = $result['fk_Rol'];
+                $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
-                $_SESSION['fechanac'] = $result['fecha_nac'];
-                $_SESSION['carrrea'] = $result['nombre_Carrera'];
-                $_SESSION['usuario_id'] = $result['usuario'];
+                $_SESSION['fechanac'] = $result['Fechanacimiento'];
+                $_SESSION['carrrea'] = $result['carrera'];
+               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
 
-            if( $result["rol_id"]==3){
+            if( $result["fk_Rol"]==1){
                 $_SESSION['activea'] = true;
                 header('Location:/instituto/Alumno/index.php');
-                $_SESSION['id_usuario'] = $result['usuario_id'];
-                $_SESSION['nombre'] = $result['nombre'];
-                $_SESSION['mail'] = $result['mail'];    
-                $_SESSION['usuario'] = $result['usuario'];
+                $_SESSION['id_usuario'] = $result['Id_Usuario'];
+                $_SESSION['nombre'] = $result['Nombre'];
+                $_SESSION['mail'] = $result['Email'];
+                $_SESSION['usuario'] = $result['user'];
                 $_SESSION['clave'] = $result['clave'];
-                $_SESSION['rol'] = $result['rol_id'];
-                $_SESSION['nombre_rol'] = $result['nombre_rol'];
+                $_SESSION['rol'] = $result['fk_Rol'];
+                $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
-                $_SESSION['fechanac'] = $result['fecha_nac'];
-                $_SESSION['carrrea'] = $result['nombre_Carrera'];
-                $_SESSION['usuario_id'] = $result['usuario'];
-                echo '<div class="alert alert-success"><button type="button" class="close"
+                $_SESSION['fechanac'] = $result['Fechanacimiento'];
+                $_SESSION['carrrea'] = $result['carrera'];
+               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
+               echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
            /*if (password_verify($pass, $result['clave'])) {
@@ -106,4 +108,7 @@ if (!empty($_POST)) {
     }
    
 }
+
+
+
 

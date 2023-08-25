@@ -8,7 +8,8 @@ require_once '../Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from usuarios u INNER JOIN rol  r on u.rol=r.rol_id";
+    $sql = "SELECT * from usuario u INNER JOIN rol  r on u.fk_Rol=r.id_Rol
+    INNER JOIN persona p ON p.DNI = u.fk_DNI";
     $result = $pdo->query($sql);    
     
     // Check if there's a message in the session
@@ -58,16 +59,16 @@ if ($pdo) {
                                             echo '<td class="">';
                                             echo '<label class="switch">';
                                             // Aquí agregamos un ternario para comprobar si el estado está activado o no
-                                            $checked = ($row['estado'] == 1) ? 'checked' : '';
-                                            echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['usuario_id'] . '">';
+                                            $checked = ($row['fk_Estado_Usuario'] == 1) ? 'checked' : '';
+                                            echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['Id_Usuario'] . '">';
                                             echo '<span class="slider"></span>';
                                             echo '</label>';
                                             echo '</td>';
-                                            echo '<td>' . $row['usuario_id'] . '</td>';
-                                            echo '<td>' . $row['nombre'] . '</td>';
-                                            echo '<td>' . $row['usuario'] . '</td>';
-                                            echo '<td>' . $row['nombre_rol'] . '</td>';                                        
-                                            echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['usuario_id'] . ')">Editar</button></td>';
+                                            echo '<td>' . $row['Id_Usuario'] . '</td>';
+                                            echo '<td>' . $row['Nombre'] . '</td>';
+                                            echo '<td>' . $row['User'] . '</td>';
+                                            echo '<td>' . $row['fk_Rol'] . '</td>';                                        
+                                            echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
                                             echo '</tr>';
                                         }
                                     } else {
@@ -98,22 +99,22 @@ $(document).ready(function() {
 
     $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
-        var usuario_id = $(this).data("usuario-id");
-        var estado = this.checked ? 1 : 0;
+        var Id_Usuario = $(this).data("usuario-id");
+        var fk_Estado_Usuario = this.checked ? 1 : 2;
 
         $.ajax({
             url: "/instituto/Includes/sql.php",
             type: "POST",
             data: {
-                usuario_id: usuario_id,
-                estado: estado
+                Id_Usuario: Id_Usuario,
+                fk_Estado_Usuario: fk_Estado_Usuario
             },
             dataType: "json",
             success: function(response) {
                 console.log(response);
 
                 if (response.hasOwnProperty('success') && response.success) {
-                    var estadoText = estado == 1 ? "Activo" : "Inactivo";
+                    var estadoText = estado == 1 ? "Habilitado" : "Inhabilitado";
                     $(self).closest("td").prev().text(estadoText);
 
                     Swal.fire({

@@ -8,7 +8,7 @@
   $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
   if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from usuarios";
+    $sql = "SELECT * from usuario";
     $result = $pdo->query($sql);    
     
     // Check if there's a message in the session
@@ -66,7 +66,7 @@
                                           class="form-horizontal form-label-left"
                                           action="/instituto/Includes/sql.php" method="post">
                                           <input type="hidden" name="idusuarioDatos" id="idusuarioDatos"
-                                              value="<?php  echo $_SESSION['usuario_id']?>" required>
+                                              value="<?php  echo $_SESSION['Id_Usuario']?>" required>
 
                                           <div class="form-group">
                                               <label class="control-label percontrasena col-sm-3 col-xs-12"
@@ -96,7 +96,7 @@
                                               <div class="col-md-6 col-sm-6 col-xs-12">
                                                   <label type="text" id="last-edad" name="first-edad"
                                                       class="password form-control col-md-7 col-xs-12">
-                                                      <?= $_SESSION['edad']; ?>
+                                                      <?=$_SESSION['edad']; ?>
                                                   </label>
                                               </div>
                                           </div>
@@ -136,8 +136,9 @@
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
                                                   <input id="old_password" name="old_password"
-                                                      class="password form-control col-md-7 col-xs-12" type="password"
-                                                      placeholder="**********">
+                                                      class="password form-control col-md-7 col-xs-12" type=""
+                                                      placeholder="**********"  value="<?= $_SESSION['clave']; ?>"
+                                                    >                                                                         
                                               </div>
                                           </div>
                                           <div class="form-group">
