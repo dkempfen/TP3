@@ -47,21 +47,12 @@ include '../Includes/header.php';
                     </form>
                 </div>
                 <div class="text-center">
-
-
-
                     <h6>¿Desea inscribirse a una carrea?</h6>
                     <a class="buttons button-large button-rounded botonfooter" id=""
                         href="/instituto/Login/registro.php">Inscripción</a>
-
-
-
                 </div>
             </div>
-
-
         </div>
-
     </header>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/plugins/login.js"></script>
