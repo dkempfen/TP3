@@ -20,11 +20,12 @@ if (!empty($_POST)) {
         
         
         $sql="SELECT *, Fechanacimiento,
-        TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS edad FROM usuario u INNER JOIN rol  r on u.fk_Rol=r.id_rol
-        left JOIN persona p on p.DNI= u.fk_DNI
+        TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS edad FROM Usuario u INNER JOIN Rol  r on u.fk_Rol=r.id_rol
+        left JOIN Persona p on p.DNI= u.fk_DNI
+        INNER JOIN Estado e on e.Id_Estado= u.fk_Estado_Usuario
          /*left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id*/
-        left JOIN plan pn on pn.cod_Plan=u.fk_Plan
-         WHERE user='$login' AND clave='$pass'";
+        left JOIN Plan pn on pn.cod_Plan=u.fk_Plan
+         WHERE User='$login' AND Password='$pass'";
         $query = $pdo->prepare($sql);
         $query->execute([$login, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
@@ -42,13 +43,13 @@ if (!empty($_POST)) {
                 $_SESSION['nombre'] = $result['Nombre'];
                 $_SESSION['mail'] = $result['Email'];
                 $_SESSION['usuario'] = $result['user'];
-                $_SESSION['clave'] = $result['clave'];
+                $_SESSION['clave'] = $result['Password'];
                 $_SESSION['rol'] = $result['fk_Rol'];
                 $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
-               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
+                $_SESSION['estado'] = $result['fk_Estado_Usuario'];
                echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -59,13 +60,13 @@ if (!empty($_POST)) {
                 $_SESSION['nombre'] = $result['Nombre'];
                 $_SESSION['mail'] = $result['Email'];
                 $_SESSION['usuario'] = $result['user'];
-                $_SESSION['clave'] = $result['clave'];
+                $_SESSION['clave'] = $result['Password'];
                 $_SESSION['rol'] = $result['fk_Rol'];
                 $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
-               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
+                $_SESSION['estado'] = $result['fk_Estado_Usuario'];
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -77,13 +78,13 @@ if (!empty($_POST)) {
                 $_SESSION['nombre'] = $result['Nombre'];
                 $_SESSION['mail'] = $result['Email'];
                 $_SESSION['usuario'] = $result['user'];
-                $_SESSION['clave'] = $result['clave'];
+                $_SESSION['clave'] = $result['Password'];
                 $_SESSION['rol'] = $result['fk_Rol'];
                 $_SESSION['nombre_rol'] = $result['descripcion'];
                 $_SESSION['edad'] = $result['edad'];
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
-               /* $_SESSION['usuario_id'] = $result['id_usuario'];*/
+                $_SESSION['estado'] = $result['fk_Estado_Usuario'];
                echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 

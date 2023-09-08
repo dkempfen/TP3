@@ -41,17 +41,17 @@ $DatosUsuarios = DatosUsuarios();
                     <div class="form-group">
                         <label for="control-label">Contraseña:</label>
                         <input type="text" class="form-control" name="claveeditar" id="claveeditar"
-                            value="<?php echo $DatosUsuarios['clave']; ?>" required>
+                            value="<?php echo $DatosUsuarios['Password']; ?>" required>
 
                     </div>
                     <div class="form-group">
                         <label for="listRol">Rol</label>
                         <select class="form-control" name="listRoleditar" id="listRoleditar" required>
-                            <option value="1" <?php echo $DatosUsuarios['descripcion'] == 1 ? 'selected' : ''; ?>>Administrador
+                            <option value="1" <?php echo $DatosUsuarios['descripcion'] == 3 ? 'selected' : ''; ?>>Administrador
                             </option>
                             <option value="2" <?php echo $DatosUsuarios['descripcion'] == 2 ? 'selected' : ''; ?>>Profesor
                             </option>
-                            <option value="3" <?php echo $DatosUsuarios['descripcion'] == 3 ? 'selected' : ''; ?>>Alumno
+                            <option value="3" <?php echo $DatosUsuarios['descripcion'] == 1 ? 'selected' : ''; ?>>Alumno
                             </option>
                         </select>
                     </div>
@@ -118,40 +118,42 @@ $(document).ready(function() {
 
 
         // Obtener los valores del formulario
+
         var idusuario = $("#idusuarioeditar").val();
         var nombre = $("#nombreeditar").val();
-        var usuario = $("#usuarioeditar").val();
+
         var mail = $("#maileditar").val();
         var clave = $("#claveeditar").val();
         var rol = $("#listRoleditar").val();
         var estado = $("#listEstadoeditar").val();
         var dni = $("#dni_a_editar").val();
 
+
         // Realizar la petición AJAX para actualizar el usuario
-        
+
         $.ajax({
-                url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
-                type: "POST",
-                data: {
-                Id_Usuario: idusuario,
+            url: "/instituto/Includes/sql.php",
+            type: "POST",
+            data: {
+                idusuarioeditar: idusuario,
                 dni_a_editar: dni,
-                nombre: nombre,
-                usuario: usuario,
-                mail: mail,
-                clave: clave,
-                rol: rol,
-                estado: estado
+                nombreeditar: nombre,
+                maileditar: mail,
+                claveeditar: clave,
+                listRoleditar: rol,
+                listEstadoeditar: estado,
+                btnmodificar: 1 // Agrega una marca para indicar que es una solicitud de modificación
             },
-                success: function(response) {
-                    console.log(response);
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 2000);
-                },
-                error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
-                    console.log("Error en la solicitud AJAX:", error); // Imprime el mensaje de error en la consola
-                }
-            });
+            success: function(response) {
+                console.log(response);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            },
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
     });
 });
 </script>

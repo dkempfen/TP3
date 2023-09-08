@@ -7,10 +7,10 @@ require_once '../Includes/load.php';
 ?>
 <?php
 
- $c_user        = count_by_id('usuario');
- $c_materias     = count_by_id('materia');
- $c_alum         = count_by_id('persona');
- $c_prof         = count_by_id('persona');
+ $c_user        = count_by_id('Usuario');
+ $c_materias     = count_by_id('Materia');
+ $c_alum         = count_by_id('Persona');
+ $c_prof         = count_by_id('Persona');
 ?>
 
 <main class="app-content">

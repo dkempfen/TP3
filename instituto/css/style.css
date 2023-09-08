@@ -480,3 +480,9 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
     opacity: 0;
     pointer-events: none;
   }
+#message tr {
+    min-height: 40px; /* Ajusta la altura mínima según tus necesidades */
+}
+#message tr {
+    height: 40px; /* Ajusta la altura según tus necesidades */
+}

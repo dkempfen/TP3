@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 
 require_once 'includes/header.php';
 require_once './modals/modals.php';
@@ -7,11 +7,11 @@ require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
 
 if ($pdo) {
-    // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from usuario u INNER JOIN rol  r on u.fk_Rol=r.id_Rol
-    INNER JOIN persona p ON p.DNI = u.fk_DNI";
-    $result = $pdo->query($sql);    
-    
+   // Query para obtener los datos de la tabla 'usuarios'
+   $sql = "SELECT * from Usuario u INNER JOIN Rol  r on u.fk_Rol=r.id_Rol
+   INNER JOIN Persona p ON p.DNI = u.fk_DNI
+   INNER JOIN Estado e on e.Id_Estado= u.fk_Estado_Usuario";
+   $result = $pdo->query($sql);
     // Check if there's a message in the session
 
     if (isset($_SESSION['message'])) {
@@ -34,10 +34,10 @@ if ($pdo) {
         </ul>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" >
             <div class="tile">
                 <div class="tile-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" >
                         <table class="table table-hover table-bordered" id="tableUsuarios">
                             <thead>
                                 <tr>
@@ -49,7 +49,7 @@ if ($pdo) {
                                     <th>EDITAR</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="message">
                                 <?php
                                     // Comprueba si la consulta fue exitosa
                                     if ($result) {
@@ -67,7 +67,7 @@ if ($pdo) {
                                             echo '<td>' . $row['Id_Usuario'] . '</td>';
                                             echo '<td>' . $row['Nombre'] . '</td>';
                                             echo '<td>' . $row['User'] . '</td>';
-                                            echo '<td>' . $row['fk_Rol'] . '</td>';                                        
+                                            echo '<td>' . $row['fk_Rol'] . '</td>';  
                                             echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
                                             echo '</tr>';
                                         }
@@ -103,48 +103,24 @@ $(document).ready(function() {
         var fk_Estado_Usuario = this.checked ? 1 : 2;
 
         $.ajax({
-            url: "/instituto/Includes/sql.php",
+            url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 Id_Usuario: Id_Usuario,
                 fk_Estado_Usuario: fk_Estado_Usuario
             },
-            dataType: "json",
+            
             success: function(response) {
-                console.log(response);
-
-                if (response.hasOwnProperty('success') && response.success) {
-                    var estadoText = estado == 1 ? "Habilitado" : "Inhabilitado";
-                    $(self).closest("td").prev().text(estadoText);
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Estado actualizado",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                } else {
-                    console.log("Error en la respuesta del servidor:", response);
-
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error al actualizar el estado",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
+                var messageDiv = $('#message'); // Elemento donde se mostrará el mensaje
+                messageDiv.html(response); // Coloca el mensaje en el elemento
+                setTimeout(function() {
+                    messageDiv.html(''); // Borra el mensaje después de un tiempo
+                    window.location.reload(); // Recarga la página si es necesario
+                }, 2000);
             },
-            error: function(xhr, status, error) {
-                console.log("Error en la solicitud AJAX:", error);
-                console.log("Response:", xhr.responseText);
-
-                Swal.fire({
-                    icon: "error",
-                    title: "Estado actualizado",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            }
+           error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
+                    console.log("Error en la solicitud AJAX:", error); // Imprime el mensaje de error en la consola
+                }
         });
     });
 });

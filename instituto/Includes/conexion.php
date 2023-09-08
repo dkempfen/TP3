@@ -1,9 +1,9 @@
 <?php
 
-$host = 'localhost';
-$user = 'root';
-$db = 'mydb';
-$pass = '';
+$host = '149.56.22.100';
+$user = 'lujanbue_adm_bas';
+$db = 'lujanbue_practica_prof';
+$pass = 'Marconi6725';
 
 
 try {

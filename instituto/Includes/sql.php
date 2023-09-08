@@ -75,7 +75,7 @@ function obtenerFotoPerfilActual()
 function obtenerEstadoTodosUsuarios()
 {
   global $pdo;
-  $sql = "SELECT Id_Usuario, fk_Estado_Usuario FROM usuario";
+  $sql = "SELECT Id_Usuario, fk_Estado_Usuario FROM Usuario";
   $stmt = $pdo->query($sql);
   $usersState = array();
   while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -86,88 +86,170 @@ function obtenerEstadoTodosUsuarios()
 
  
 function insertarNuevoUsuario()
-    {
-      session_start();
-      $nombre = $_POST["nombre"];
-      $usuario = $_POST["usuario"];
-      $mail = $_POST["mail"];
-      $clave = $_POST["clave"];
-      $listRol = $_POST["listRol"];
-      $listEstado = isset($_POST["listEstado"]) ? intval($_POST["listEstado"]) : 0;
+{    var_dump($_POST); // Agrega esta línea para depurar
 
-
-      if (empty($nombre) || empty($usuario) || empty($mail) || empty($clave) || empty($listRol) || empty($listEstado)) {
+    session_start();
+    $nombre = $_POST["nombre"];
+    $apellido = $_POST["apellido"];
+    $fechanacimiento = $_POST["fechanacimiento"];
+    $telefono = $_POST["telefono"];
+    $mailPersona = $_POST["mail"]; // Cambiamos el nombre del campo
+    $domicilio = $_POST["domicilio"];
+    $usuario = $_POST["usuario"];
+    $clave = $_POST["clave"];
+    $listRol = $_POST["listRol"];
+    $listEstado = isset($_POST["listEstado"]) ? intval($_POST["listEstado"]) : 0;
+    $plan = $_POST["plan"];
+    $legajo = $_POST["legajo"];
+    $matriz = $_POST["matriz"];
+    
+    if (empty($nombre) || empty($apellido) || empty($fechanacimiento) || empty($telefono) ||  empty($mailPersona) ||  empty($domicilio) ||  
+         empty($usuario) || empty($mailPersona) || empty($clave) || empty($listRol) || empty($listEstado)
+       || empty($plan) || empty($legajo) || empty($matriz)) {
         $_SESSION['message'] = [
-          'type' => 'error',
-          'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
+            'type' => 'error',
+            'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
         ];
         return;
-      }
+    }
 
-      $rol = ($listRol == 1) ? "Administrador" : (($listRol == 2) ? "Profesor" : "Alumno");
+    // Insertar en la tabla Persona
+    global $pdo;
+    $sqlPersona = "INSERT INTO Persona (DNI, Nombre, Apellido, Fechanacimiento, Telefono, Email, Domicilio) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmtPersona = $pdo->prepare($sqlPersona);
+    $stmtPersona->execute([$usuario, $nombre, $apellido, $fechanacimiento, $telefono, $mailPersona, $domicilio]);
 
-      global $pdo;
-      $sql = "SELECT rol_id FROM rol WHERE nombre_rol = ?";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$rol]);
-      $result = $stmt->fetch(PDO::FETCH_ASSOC);
-      if (!$result) {
+    // Insertar en la tabla Usuario
+    $rol = ($listRol == 1) ? "Administrador" : (($listRol == 2) ? "Profesor" : "Alumno");
+    $sqlRol = "SELECT id_Rol FROM Rol WHERE descripcion = ?";
+    $stmtRol = $pdo->prepare($sqlRol);
+    $stmtRol->execute([$rol]);
+    $resultRol = $stmtRol->fetch(PDO::FETCH_ASSOC);
+
+    if ($resultRol) {
+        $rol_id = $resultRol['id_Rol'];
+
+        $sqlUsuario = "INSERT INTO Usuario (User, Password, Libromatriz, fk_Plan, fk_Estado_Usuario, fk_Rol, fk_DNI) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmtUsuario = $pdo->prepare($sqlUsuario);
+        $stmtUsuario->execute([$usuario, $clave, $matriz, $plan, $listEstado, $rol_id, $usuario]);
+
+        if ($stmtUsuario->rowCount() > 0) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Usuario insertado exitosamente'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al insertar el usuario en la tabla Usuario.'
+            ];
+        }
+    } else {
         $_SESSION['message'] = [
-          'type' => 'error',
-          'text' => 'El rol seleccionado no existe.'
+            'type' => 'error',
+            'text' => 'El rol seleccionado no existe.'
         ];
-        return;
-      }
-
-      $rol_id = $result['rol_id'];
-
-
-      $sql = "INSERT INTO usuarios (nombre, usuario, mail, clave, rol, estado) VALUES (?, ?, ?, ?, ?, ?)";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute([$nombre, $usuario, $mail, $clave, $rol_id, $listEstado]);
-
-      if ($stmt->rowCount() > 0) {
-        $_SESSION['message'] = [
-          'type' => 'success',
-          'text' => 'Usuario insertado exitosamente'
-        ];
-      } else {
-        $_SESSION['message'] = [
-          'type' => 'error',
-          'text' => 'Ha ocurrido un error al insertar el usuario.'
-        ];
-      }
+    }
 }
 
-  if (isset($_POST['nombre']) && isset($_POST['usuario']) && isset($_POST['mail']) && isset($_POST['clave']) && isset($_POST['listRol']) && isset($_POST['listEstado'])) {
-      insertarNuevoUsuario();
+if (isset($_POST['nombre']) && isset($_POST['apellido']) && isset($_POST['fechanacimiento']) && isset($_POST['telefono']) && isset($_POST['mail']) &&
+isset($_POST['domicilio']) && isset($_POST['usuario']) && isset($_POST['clave']) && isset($_POST['listRol']) && isset($_POST['listEstado']) && isset($_POST['plan']) &&
+isset($_POST['legajo']) && isset($_POST['matriz'])) {
+    insertarNuevoUsuario();
 
-      header("Location: /instituto/Adman/lista_usuarios.php");
-      exit();
-  }
+    header("Location: /instituto/Adman/lista_usuarios.php");
+    exit();
+}
   /////////////////////Actulizar Estado//////////////////////////////
- 
 
-if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario'])) {
-    $usuario_id = $_POST['Id_Usuario'];
-    $estado = $_POST['fk_Estado_Usuario'];
+  function actualizarEstadoUsuario()
+{
+    session_start();
+    if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario'])) {
+        $usuario_id = $_POST['Id_Usuario'];
+        $estado = isset($_POST["fk_Estado_Usuario"]) ? intval($_POST["fk_Estado_Usuario"]) : 0;
 
-    $updateQuery = "UPDATE usuario SET fk_Estado_Usuario = :fk_Estado_Usuario WHERE Id_Usuario = :Id_Usuario";
-    $stmt = $pdo->prepare($updateQuery);
-    $stmt->bindParam(':fk_Estado_Usuario', $estado, PDO::PARAM_INT);
-    $stmt->bindParam(':Id_Usuario', $usuario_id, PDO::PARAM_INT);
+        $estados = ($estado == 1) ? "Habilitado" : "Inhabilitado" ;
+
+        global $pdo;
+        $sql = "SELECT Id_Estado FROM Estado WHERE Descripcion_Estado = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$estados]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) {
+          $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'El Estado seleccionado no existe.'
+          ];
+          return;
+        }
   
+        $estados = $result['Id_Estado'];
+  
+        // La consulta SQL se actualiza para usar los marcadores de posición
+        global $pdo;
+        $sql = "UPDATE Usuario SET fk_Estado_Usuario = :fk_Estado_Usuario WHERE Id_Usuario = :Id_Usuario";
+        $stmt = $pdo->prepare($sql);
 
-    if ($stmt->execute()) {
-      // La consulta se ejecutó correctamente, enviamos el JSON con éxito.
-      echo json_encode(['success' => true]);
-  } else {
-      // Ocurrió un error al ejecutar la consulta, enviamos el JSON con el mensaje de error.
-      echo json_encode(['success' => false, 'error' => 'Error updating user state']);
+        // Vincula los valores a los marcadores de posición
+        $stmt->bindParam(':fk_Estado_Usuario', $estado, PDO::PARAM_INT);
+        $stmt->bindParam(':Id_Usuario', $usuario_id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Estado de usuario actualizado exitosamente'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar el estado del usuario.'
+            ];
+        }
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Faltan parámetros requeridos para actualizar el estado del usuario.'
+        ];
+    }
+}
+
+if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
+  actualizarEstadoUsuario();
+
+    header("Location: /instituto/Adman/lista_usuarios.php");
+    exit();
+}
+  /*function actualizarEstadoUsuario($pdo)
+  {
+      if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario'])) {
+          $usuario_id = $_POST['Id_Usuario'];
+          $estado = $_POST['fk_Estado_Usuario'];
+  
+          try {
+              $updateQuery = "UPDATE Usuario SET fk_Estado_Usuario = :fk_Estado_Usuario WHERE Id_Usuario = :Id_Usuario";
+              $stmt = $pdo->prepare($updateQuery);
+              $stmt->bindParam(':fk_Estado_Usuario', $estado, PDO::PARAM_INT);
+              $stmt->bindParam(':Id_Usuario', $usuario_id, PDO::PARAM_INT);
+  
+              if ($stmt->execute()) {
+                  // La consulta se ejecutó correctamente, enviamos el JSON con éxito.
+                  echo json_encode(['success' => true, 'message' => 'Estado actualizado']);
+              } else {
+                  // Ocurrió un error al ejecutar la consulta, enviamos el JSON con el mensaje de error.
+                  echo json_encode(['success' => false, 'error' => 'Error updating user state']);
+              }
+          } catch (PDOException $e) {
+              // Manejar errores de PDO
+              echo json_encode(['success' => false, 'error' => 'PDO error: ' . $e->getMessage()]);
+          }
+      } else {
+          echo json_encode(['success' => false, 'error' => 'Missing parameters']);
+      }
   }
-} 
-
-
+  
+  // Llama a la función para procesar la solicitud
+  actualizarEstadoUsuario($pdo);*/
 
 
 
@@ -176,11 +258,11 @@ function DatosUsuarios()
 {
     global $pdo;
 
-    $sql = "SELECT u.id_usuario, p.nombre, p.email,p.DNI, u.clave, u.fk_Rol, u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
-    FROM usuario u 
-    INNER JOIN persona p ON p.DNI = u.fk_DNI
-    INNER JOIN rol r ON r.id_Rol = u.fk_Rol
-    INNER JOIN estado e ON e.Id_Estado = u.fk_Estado_Usuario"
+    $sql = "SELECT u.id_usuario, p.nombre, p.email,p.DNI, u.Password, u.fk_Rol, u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
+    FROM Usuario u 
+    INNER JOIN Persona p ON p.DNI = u.fk_DNI
+    INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
+    INNER JOIN Estado e ON e.Id_Estado = u.fk_Estado_Usuario"
     ;
 
     $datosUsuarios = $pdo->prepare($sql);
@@ -246,8 +328,8 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
   exit();
 }*/
 function ActualizarUser()
-{      
-    if(isset($_POST['btnmodificar'])) {
+{
+    if (isset($_POST['btnmodificar'])) {
         session_start();
         global $pdo;
         $idusuarioeditar = $_POST['idusuarioeditar'];
@@ -258,33 +340,45 @@ function ActualizarUser()
         $listEstadoeditar = $_POST['listEstadoeditar'];
         $dni_a_editar = $_POST['dni_a_editar'];
 
+        try {
+            $pdo->beginTransaction();
+            
+            // Actualizar los datos en la tabla 'usuario'
+            $queryUsuario = "UPDATE usuario SET Password=:claveeditar, fk_Rol=:listRoleditar, fk_Estado_Usuario=:listEstadoeditar WHERE Id_Usuario=:idusuarioeditar";
+            $stmtUsuario = $pdo->prepare($queryUsuario);
+            $stmtUsuario->bindParam(':claveeditar', $claveeditar);
+            $stmtUsuario->bindParam(':listRoleditar', $listRoleditar);
+            $stmtUsuario->bindParam(':listEstadoeditar', $listEstadoeditar);
+            $stmtUsuario->bindParam(':idusuarioeditar', $idusuarioeditar);
+            $stmtUsuario->execute();
 
-        // Actualizar los datos en la tabla 'persona'
-        $queryPersona = "UPDATE persona SET Nombre=:nombreeditar, Email=:maileditar WHERE DNI=:dni_a_editar";
-        $stmtPersona = $pdo->prepare($queryPersona);
-        $stmtPersona->bindParam(':nombreeditar', $nombreeditar);
-        $stmtPersona->bindParam(':maileditar', $maileditar);
-        $stmtPersona->bindParam(':dni_a_editar', $dni_a_editar);
-        $stmtPersona->execute();
+            // Actualizar los datos en la tabla 'persona'
+            $queryPersona = "UPDATE persona SET Nombre=:nombreeditar, Email=:maileditar WHERE DNI=:dni_a_editar";
+            $stmtPersona = $pdo->prepare($queryPersona);
+            $stmtPersona->bindParam(':nombreeditar', $nombreeditar);
+            $stmtPersona->bindParam(':maileditar', $maileditar);
+            $stmtPersona->bindParam(':dni_a_editar', $dni_a_editar);
+            $stmtPersona->execute();
 
-        // Actualizar los datos en la tabla 'usuario'
-        $queryUsuario = "UPDATE usuario SET clave=:claveeditar, fk_Rol=:listRoleditar, fk_Estado_Usuario=:listEstadoeditar WHERE Id_Usuario=:idusuarioeditar";
-        $stmtUsuario = $pdo->prepare($queryUsuario);
-        $stmtUsuario->bindParam(':claveeditar', $claveeditar);
-        $stmtUsuario->bindParam(':listRoleditar', $listRoleditar);
-        $stmtUsuario->bindParam(':listEstadoeditar', $listEstadoeditar);
-        $stmtUsuario->bindParam(':idusuarioeditar', $idusuarioeditar);
-        $stmtUsuario->execute();
 
-        if ($stmtUsuario->rowCount() === 0 && $stmtUsuario->rowCount() === 0) {
+            $pdo->commit();
+
+            if (($stmtPersona->rowCount() > 0) || ($stmtUsuario->rowCount() > 0)) {
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Usuario actualizado exitosamente.'
+                ];
+            } else {
+                $_SESSION['message'] = [
+                    'type' => 'info',
+                    'text' => 'No se ha actualizado ningún dato.'
+                ];
+            }
+        } catch (PDOException $e) {
+            $pdo->rollBack();
             $_SESSION['message'] = [
-                'type' => 'info',
-                'text' => 'No se ha actualizado ningún dato.'
-            ];
-        } else {
-            $_SESSION['message'] = [
-                'type' => 'success',
-                'text' => 'Usuario actualizado exitosamente.'
+                'type' => 'error',
+                'text' => 'Error al actualizar el usuario: ' . $e->getMessage()
             ];
         }
     }
@@ -311,12 +405,12 @@ global $pdo;
   $confirmNewPassword = $_POST["confirm_new_password"];
   $usuario_id = 1; // Cambia esto según tu lógica
 
-  $sql = "SELECT clave FROM usuario WHERE Id_Usuario = :usuario_id";
+  $sql = "SELECT Password FROM usuario WHERE Id_Usuario = :usuario_id";
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':usuario_id', $usuario_id);
   $stmt->execute();
   $row = $stmt->fetch();
-  $clave_actual_almacenada_db = $row['clave'];
+  $clave_actual_almacenada_db = $row['Password'];
   if (empty($oldPassword) || empty($newPassword) || empty($confirmNewPassword)) {
     $_SESSION['password_message'] = [
         'type' => 'error',
@@ -328,7 +422,7 @@ global $pdo;
       $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Las contraseñas no coinciden. No se pudo cambiar la contraseña.'];
   } else {
         try {
-            $updateSql = "UPDATE usuario SET clave = :new_password WHERE Id_Usuario = :usuario_id";
+            $updateSql = "UPDATE usuario SET Password = :new_password WHERE Id_Usuario = :usuario_id";
             $updateStmt = $pdo->prepare($updateSql);
             $updateStmt->bindParam(':new_password', $newPassword);
             $updateStmt->bindParam(':usuario_id', $usuario_id);

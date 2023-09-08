@@ -8,7 +8,7 @@
   $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
   if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from usuario";
+    $sql = "SELECT * from Usuario";
     $result = $pdo->query($sql);    
     
     // Check if there's a message in the session
