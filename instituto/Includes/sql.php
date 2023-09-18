@@ -87,7 +87,7 @@ function obtenerEstadoTodosUsuarios()
  
 function insertarNuevoUsuario()
 {    var_dump($_POST); // Agrega esta línea para depurar
-
+    global $pdo;
     session_start();
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
@@ -258,7 +258,8 @@ function DatosUsuarios()
 {
     global $pdo;
 
-    $sql = "SELECT u.id_usuario, p.nombre, p.email,p.DNI, u.Password, u.fk_Rol, u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
+    $sql = "SELECT u.id_usuario, p.nombre, p.email,p.DNI, u.Password,u.fk_Plan, u.Libromatriz,u.Legajo,u.Legajo,
+    u.fk_DNI, u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
     FROM Usuario u 
     INNER JOIN Persona p ON p.DNI = u.fk_DNI
     INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
@@ -327,7 +328,7 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
   header("Location: /instituto/Adman/lista_usuarios.php");
   exit();
 }*/
-function ActualizarUser()
+/*function ActualizarUser()
 {
     if (isset($_POST['btnmodificar'])) {
         session_start();
@@ -390,7 +391,77 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
     header("Location: /instituto/Adman/lista_usuarios.php");
     exit();
 }
+*/
 
+
+function ActualizarUser()
+{  var_dump($_POST); 
+    if (isset($_POST['btnmodificar'])) {
+        session_start();
+        global $pdo;
+        $idusuarioeditar = $_POST['idusuarioeditar'];
+        $legajoeditar = $_POST['legajoeditar'];
+        $planeditar = $_POST['planeditar'];
+        $claveeditar = $_POST['claveeditar'];
+        $listRoleditar = $_POST['listRoleditar'];
+        $listEstadoeditar = $_POST['listEstadoeditar'];
+        $dnieditar = $_POST['dnieditar'];
+
+        try {
+            $pdo->beginTransaction();
+            
+            // Actualizar los datos en la tabla 'usuario'
+            $queryUsuario = "UPDATE usuario SET Password=:claveeditar, fk_Rol=:listRoleditar, fk_Estado_Usuario=:listEstadoeditar,
+            Legajo=:legajoeditar, fk_Plan=:planeditar, fk_DNI=:dnieditar WHERE Id_Usuario=:idusuarioeditar";
+            $stmtUsuario = $pdo->prepare($queryUsuario);
+            $stmtUsuario->bindParam(':claveeditar', $claveeditar);
+            $stmtUsuario->bindParam(':listRoleditar', $listRoleditar);
+            $stmtUsuario->bindParam(':listEstadoeditar', $listEstadoeditar);
+            $stmtUsuario->bindParam(':idusuarioeditar', $idusuarioeditar);
+            $stmtUsuario->bindParam(':legajoeditar', $legajoeditar);
+            $stmtUsuario->bindParam(':planeditar', $planeditar);
+            $stmtUsuario->bindParam(':dnieditar', $dnieditar);
+            $stmtUsuario->execute();
+
+            // Actualizar los datos en la tabla 'persona'
+           /* $queryPersona = "UPDATE persona SET Nombre=:nombreeditar, Email=:maileditar WHERE DNI=:dni_a_editar";
+            $stmtPersona = $pdo->prepare($queryPersona);
+            $stmtPersona->bindParam(':nombreeditar', $nombreeditar);
+            $stmtPersona->bindParam(':maileditar', $maileditar);
+            $stmtPersona->bindParam(':dni_a_editar', $dni_a_editar);
+            $stmtPersona->execute();*/
+
+
+            $pdo->commit();
+
+            if (($stmtUsuario->rowCount() > 0)) {
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Usuario actualizado exitosamente.'
+                ];
+            } else {
+                $_SESSION['message'] = [
+                    'type' => 'info',
+                    'text' => 'No se ha actualizado ningún dato.'
+                ];
+            }
+        } catch (PDOException $e) {
+            $pdo->rollBack();
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Error al actualizar el usuario: ' . $e->getMessage()
+            ];
+        }
+    }
+}
+
+if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['legajoeditar']) && isset($_POST['planeditar']) && isset($_POST['dnieditar']) &&
+      isset($_POST['dni_a_editar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
+    ActualizarUser();
+
+    header("Location: /instituto/Adman/lista_usuarios.php");
+    exit();
+}
 
 /*-------------canbiar ckave-----------------------*/
  

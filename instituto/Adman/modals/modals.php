@@ -97,18 +97,28 @@
                                     <option value="2">Inactivo</option>
                                 </select>
                             </div>
+
+
+
                         </form>
                     </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button id="btnActionForm" class="btn btn-primary">Guardar</button>
+
                 </div>
 
 
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnActionForm" class="btn btn-primary">Guardar</button>
 
             </div>
+
+
         </div>
     </div>
 </div>
@@ -123,6 +133,7 @@ function isValidInput(value) {
 }
 
 function openModal() {
+    console.log('Abrir modal'); // Agrega este log para verificar si se llama a la función
     document.getElementById('idusuario').value = "";
     document.getElementById('idusuarios').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
@@ -139,7 +150,14 @@ function openModal() {
 $(document).ready(function() {
     var tableusuarios = $('#tableUsuarios').DataTable();
 
+    function openModal() {
+        $('#modalUsuario').modal('show');
+    }
+    $('#btnActionForm').on('click', openModal);
+
+
     $('.btn-primary').on('click', function() {
+        console.log('Botón Guardar clickeado');
         openModal();
     });
 
@@ -155,6 +173,7 @@ $(document).ready(function() {
             get_users_state: true
         },
         success: function(data) {
+            console.log('Datos enviados al servidor:', data); // Agrega este log
             var usersState = JSON.parse(data);
             for (var usuario_id in usersState) {
                 var estado = usersState[usuario_id];
@@ -164,7 +183,7 @@ $(document).ready(function() {
         },
         error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
             console.log("Error en la solicitud AJAX:",
-            error); // Imprime el mensaje de error en la consola
+                error); // Imprime el mensaje de error en la consola
         }
     });
 
@@ -188,7 +207,7 @@ $(document).ready(function() {
             },
             error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
                 console.log("Error en la solicitud AJAX:",
-                error); // Imprime el mensaje de error en la consola
+                    error); // Imprime el mensaje de error en la consola
             }
         });
     });
@@ -199,3 +218,9 @@ $(document).ready(function() {
 
 
 </script>
+
+
+
+
+
+

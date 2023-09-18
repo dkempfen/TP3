@@ -50,6 +50,9 @@ if (!empty($_POST)) {
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
                 $_SESSION['estado'] = $result['fk_Estado_Usuario'];
+                $_SESSION['dni'] = $result['fk_DNI'];
+                $_SESSION['plan'] = $result['fk_Plan'];
+                $_SESSION['libromatriz'] = $result['Libromatriz'];
                echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -67,6 +70,9 @@ if (!empty($_POST)) {
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
                 $_SESSION['estado'] = $result['fk_Estado_Usuario'];
+                $_SESSION['dni'] = $result['fk_DNI'];
+                $_SESSION['plan'] = $result['fk_Plan'];
+                $_SESSION['libromatriz'] = $result['Libromatriz'];
                 echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 
@@ -85,6 +91,9 @@ if (!empty($_POST)) {
                 $_SESSION['fechanac'] = $result['Fechanacimiento'];
                 $_SESSION['carrrea'] = $result['carrera'];
                 $_SESSION['estado'] = $result['fk_Estado_Usuario'];
+                $_SESSION['dni'] = $result['fk_DNI'];
+                $_SESSION['plan'] = $result['fk_Plan'];
+                $_SESSION['libromatriz'] = $result['Libromatriz'];
                echo '<div class="alert alert-success"><button type="button" class="close"
                 data-dismiss="alert"></button>Redirecting</div>';}
 

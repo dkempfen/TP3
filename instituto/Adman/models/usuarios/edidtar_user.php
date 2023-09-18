@@ -22,21 +22,17 @@ $DatosUsuarios = DatosUsuarios();
             <div class="modal-body">
                 <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/sql.php"
                     method="POST">
-                    <input type="hidden" name="idusuarioeditar" id="idusuarioeditar" value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
-                    <input type="hidden" name="dni_a_editar" id="dni_a_editar" value="<?php  echo $DatosUsuarios['DNI']?>" required>
+                    <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
+                        value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
+                    <input type="hidden" name="dni_a_editar" id="dni_a_editar"
+                        value="<?php  echo $DatosUsuarios['DNI']?>" required>
 
                     <div class="form-group">
-                        <label for="control-label">Nombre:</label>
+                        <label for="control-label">Legajo:</label>
 
 
-                        <input type="text" class="form-control" name="nombreeditar" id="nombreeditar"
-                            value="<?php  echo $DatosUsuarios['nombre']?>" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="control-label">Mail:</label>
-                        <input type="text" class="form-control" name="maileditar" id="maileditar"
-                            value="<?php echo $DatosUsuarios['email']; ?>" required>
-
+                        <input type="text" class="form-control" name="legajoeditar" id="legajoeditar"
+                            value="<?php  echo $DatosUsuarios['Legajo']?>" required>
                     </div>
                     <div class="form-group">
                         <label for="control-label">Contraseña:</label>
@@ -44,12 +40,27 @@ $DatosUsuarios = DatosUsuarios();
                             value="<?php echo $DatosUsuarios['Password']; ?>" required>
 
                     </div>
+
+                    <div class="form-group">
+                        <label for="control-label">Plan:</label>
+                        <input type="text" class="form-control" name="planeditar" id="planeditar"
+                            value="<?php echo $DatosUsuarios['fk_Plan']; ?>" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="control-label">DNI:</label>
+                        <input type="text" class="form-control" name="dnieditar" id="dnieditar"
+                            value="<?php echo $DatosUsuarios['fk_DNI']; ?>" required>
+
+                    </div>
                     <div class="form-group">
                         <label for="listRol">Rol</label>
                         <select class="form-control" name="listRoleditar" id="listRoleditar" required>
-                            <option value="1" <?php echo $DatosUsuarios['descripcion'] == 3 ? 'selected' : ''; ?>>Administrador
+                            <option value="1" <?php echo $DatosUsuarios['descripcion'] == 3 ? 'selected' : ''; ?>>
+                                Administrador
                             </option>
-                            <option value="2" <?php echo $DatosUsuarios['descripcion'] == 2 ? 'selected' : ''; ?>>Profesor
+                            <option value="2" <?php echo $DatosUsuarios['descripcion'] == 2 ? 'selected' : ''; ?>>
+                                Profesor
                             </option>
                             <option value="3" <?php echo $DatosUsuarios['descripcion'] == 1 ? 'selected' : ''; ?>>Alumno
                             </option>
@@ -58,15 +69,18 @@ $DatosUsuarios = DatosUsuarios();
                     <div class="form-group">
                         <label for="listEstado">Estado</label>
                         <select class="form-control" name="listEstadoeditar" id="listEstadoeditar" required>
-                            <option value="1" <?php echo $DatosUsuarios['Descripcion_Estado'] == 1 ? 'selected' : ''; ?>>Activo
+                            <option value="1"
+                                <?php echo $DatosUsuarios['Descripcion_Estado'] == 1 ? 'selected' : ''; ?>>Activo
                             </option>
-                            <option value="2" <?php echo $DatosUsuarios['Descripcion_Estado'] == 2 ? 'selected' : ''; ?>>Inactivo
+                            <option value="2"
+                                <?php echo $DatosUsuarios['Descripcion_Estado'] == 2 ? 'selected' : ''; ?>>Inactivo
                             </option>
                         </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit" name="btnmodificar">
+                        <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit"
+                            name="btnmodificar">
                             <span id="btnEditartext">Guardar</span>
                         </button>
                     </div>
@@ -119,14 +133,16 @@ $(document).ready(function() {
 
         // Obtener los valores del formulario
 
-        var idusuario = $("#idusuarioeditar").val();
+        var legajo = $("#legajoeditar").val();
+        var plan = $("#planeditar").val();
+        var dni = $("#dnieditar").val();
         var nombre = $("#nombreeditar").val();
-
+        
         var mail = $("#maileditar").val();
         var clave = $("#claveeditar").val();
         var rol = $("#listRoleditar").val();
         var estado = $("#listEstadoeditar").val();
-        var dni = $("#dni_a_editar").val();
+        var dni_a_editar = $("#dni_a_editar").val();
 
 
         // Realizar la petición AJAX para actualizar el usuario
@@ -135,6 +151,10 @@ $(document).ready(function() {
             url: "/instituto/Includes/sql.php",
             type: "POST",
             data: {
+                legajoeditar: legajo,
+                planeditar: plan,
+                dnieditar: dni,
+
                 idusuarioeditar: idusuario,
                 dni_a_editar: dni,
                 nombreeditar: nombre,
@@ -147,7 +167,7 @@ $(document).ready(function() {
             success: function(response) {
                 console.log(response);
                 setTimeout(function() {
-                    window.location.reload();
+                    window.location.href = "/instituto/Adman/lista_usuarios.php";
                 }, 2000);
             },
             error: function(error) {
