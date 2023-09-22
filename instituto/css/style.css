@@ -486,3 +486,139 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
 #message tr {
     height: 40px; /* Ajusta la altura según tus necesidades */
 }
+
+#container {
+    margin-left: auto; /* Margen izquierdo automático para centrar horizontalmente */
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    margin-right: auto; /* Margen derecho automático para centrar horizontalmente */
+    margin-bottom: 20px; /* Margen inferior para separar de otros elementos */
+    max-width: 100%; /* Ancho máximo del contenedor */
+
+}
+
+#table-container {
+    margin-top: 20px;
+    overflow-x: auto; /* Agrega desplazamiento horizontal si es necesario */
+
+}
+
+#my-table {
+
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+#my-table th, #my-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+#my-table th {
+    background-color: #333;
+    color: #fff;
+}
+
+#my-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.edit-btn, .delete-btn {
+    cursor: pointer;
+    color: #007BFF;
+}
+
+.edit-btn:hover, .delete-btn:hover {
+    color: #0056b3;
+}
+
+
+
+--------------------
+#filter-container .filter-inputs {
+    margin-bottom: 5px; /* Añade margen inferior para separar los div */
+}
+#filter-container {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto; /* Margen izquierdo automático para centrar horizontalmente */
+    max-width: 100%; /* Ancho máximo del contenedor */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en una nueva línea si no caben en el ancho de la pantalla */
+    justify-content: space-between;
+}
+
+/* Estilos para las etiquetas */
+#filter-container label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Estilos para los campos de entrada */
+#fecha_desde, #fecha_hasta, #titulo {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Estilos para el botón de búsqueda */
+#btn_buscar {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px; /* Margen izquierdo para separar del último campo de entrada */
+    margin-top: 8px; /* Margen superior para separar de los elementos anteriores */
+    margin-bottom: 8px; /* Margen inferior para separar de los elementos siguientes */
+    align-self: center; /* Centra verticalmente el botón dentro del contenedor */
+}
+
+#btn_buscar:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para el contenedor principal */
+.filter-container {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-bottom: 20px; /* Espacio inferior para separar de otros elementos */
+}
+
+/* Estilos para el grupo de filtros */
+.filter-inputs {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    margin-right: 10px; /* Añade margen inferior para separar los div */
+    margin-bottom: 5px; /* Añade margen inferior para separar los elementos */
+    text-align: center; /* Centra el contenido horizontalmente */
+}
+
+/* Estilos para el botón de nueva publicación */
+.new-publication-button {
+    margin-left: 10px; /* Agrega un margen izquierdo para separar el botón */
+}
+@media (max-width: 768px) {
+    .filter-inputs {
+        flex: 0 0 100%; /* Los elementos ocuparán todo el ancho en pantallas pequeñas */
+    }
+}
+
+

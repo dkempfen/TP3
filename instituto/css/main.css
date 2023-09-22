@@ -14910,14 +14910,19 @@ be a descendant of the grid when it is being dragged.
 }
 
 .app-content {
-  min-height: calc(100vh - 50px);
-  margin-top: 50px;
-  padding: 30px;
-  background-color: #E5E5E5;
+  flex-direction: column; /* Alinea los elementos verticalmente */
+  justify-content: center; /* Centra verticalmente el contenido */
+  align-items: center; /* Centra horizontalmente el contenido */
+  height: 100vh; /* Establece la altura del contenedor al 100% del viewport */
+  min-height: calc(100vh - 50px); /* Altura mínima con margen superior */
+  margin-top: 50px; /* Margen superior */
+  padding: 30px; /* Espaciado interno */
+  background-color: #E5E5E5; /* Fondo de color */
   -webkit-transition: margin-left 0.3s ease;
   -o-transition: margin-left 0.3s ease;
   transition: margin-left 0.3s ease;
 }
+
 
 @media (min-width: 768px) {
   .app-content {

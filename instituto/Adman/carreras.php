@@ -1,41 +1,60 @@
 <?php
 require_once 'includes/header.php';
-require_once './modals/modal_carrera.php';
+require_once '../Includes/load.php';
 ?>
 
 <main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1><i class="fa fa-dashboard"></i>Lista de Carrea</h1>
-            <button class="btn btn-success" type="button" onclick="openModalC()">Nueva Carrea</button>
-        </div>
-        <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="#">Lista de Carrera</a></li>
-        </ul>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div class="tile-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="tablecarrera">
-                            <thead>
-                                <tr>
-                                    <th>Acciones</th>
-                                    <th>ID</th>
-                                    <th>Nombre</th>        
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2>Plan 1</h2>
+                                <p>Descripción del Plan 1..</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-info">Más Información</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2>Plan 2</h2>
+                                <p>Descripción del Plan 2.</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-info">Más Información</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h2>Plan 3</h2>
+                                <p>Descripción del Plan 3. </p>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary">Editar</button>
+                                <button class="btn btn-info">Más Información</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

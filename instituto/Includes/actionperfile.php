@@ -11,7 +11,7 @@ $pass = $_POST['password'];
 
 if (isset($_POST['token'])) {
 
-	$sql = "UPDATE usuarios SET mail='$email' WHERE usuario='$login'";
+	$sql = "UPDATE Persona SET Email='$email' WHERE DNI='$login'";
 	if ($sql) {
 		$success = sha1(md5("datos actualizados"));
 		header("location: /instituto/Adman/profile.php?success=$success");
@@ -28,14 +28,14 @@ if (isset($_POST['token'])) {
 
 		if ($_POST['new_password'] == $_POST['confirm_new_password']) {
 
-			$sql = mysqli_query($con, "SELECT * from usuarios where usuario='$login'");
+			$sql = mysqli_query($con, "SELECT * from Usuario where Id_Usuario='$login'");
 			while ($row = mysqli_fetch_array($sql)) {
 				$p = $row['password'];
 			}
 
 			if ($p == $password) { //comprobamos que la contraseña sea igual ala anterior
 
-				$update_passwd = mysqli_query($con, "UPDATE usuarios set clave='$password' where usuario='$login'");
+				$update_passwd = mysqli_query($con, "UPDATE Usuario set Password='$password' where Id_Usuario='$login'");
 				if ($update_passwd) {
 					$success_pass = sha1(md5("contrasena actualizada"));
 					header("location:/instituto/Adman/profile.php?success_pass=$success_pass");

@@ -394,7 +394,7 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
 */
 
 
-function ActualizarUser()
+/*function ActualizarUsers()
 {  var_dump($_POST); 
     if (isset($_POST['btnmodificar'])) {
         session_start();
@@ -432,7 +432,7 @@ function ActualizarUser()
             $stmtPersona->execute();*/
 
 
-            $pdo->commit();
+            /*  $pdo->commit();
 
             if (($stmtUsuario->rowCount() > 0)) {
                 $_SESSION['message'] = [
@@ -453,16 +453,15 @@ function ActualizarUser()
             ];
         }
     }
-}
+}*/
 
-if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['legajoeditar']) && isset($_POST['planeditar']) && isset($_POST['dnieditar']) &&
-      isset($_POST['dni_a_editar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
-    ActualizarUser();
+ /* if (isset($_POST['idusuarioeditar']) && isset($_POST['legajoeditar']) && isset($_POST['dnieditar']) &&
+    isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
+        ActualizarUsers();
 
     header("Location: /instituto/Adman/lista_usuarios.php");
     exit();
-}
-
+}*/
 /*-------------canbiar ckave-----------------------*/
  
 function cambioClave()
@@ -470,13 +469,13 @@ function cambioClave()
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   
   session_start();
-global $pdo;
+  global $pdo;
   $oldPassword = $_POST["old_password"];
   $newPassword = $_POST["new_password"];
   $confirmNewPassword = $_POST["confirm_new_password"];
   $usuario_id = 1; // Cambia esto según tu lógica
 
-  $sql = "SELECT Password FROM usuario WHERE Id_Usuario = :usuario_id";
+  $sql = "SELECT Password FROM Usuario WHERE Id_Usuario = :usuario_id";
   $stmt = $pdo->prepare($sql);
   $stmt->bindParam(':usuario_id', $usuario_id);
   $stmt->execute();
@@ -493,7 +492,7 @@ global $pdo;
       $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Las contraseñas no coinciden. No se pudo cambiar la contraseña.'];
   } else {
         try {
-            $updateSql = "UPDATE usuario SET Password = :new_password WHERE Id_Usuario = :usuario_id";
+            $updateSql = "UPDATE Usuario SET Password = :new_password WHERE Id_Usuario = :usuario_id";
             $updateStmt = $pdo->prepare($updateSql);
             $updateStmt->bindParam(':new_password', $newPassword);
             $updateStmt->bindParam(':usuario_id', $usuario_id);

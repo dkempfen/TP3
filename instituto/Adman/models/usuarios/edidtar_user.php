@@ -20,7 +20,7 @@ $DatosUsuarios = DatosUsuarios();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/sql.php"
+                <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/slqeditar.php"
                     method="POST">
                     <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
                         value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
@@ -132,7 +132,7 @@ $(document).ready(function() {
 
 
         // Obtener los valores del formulario
-
+        var idusuario = $("#idusuarioeditar").val();
         var legajo = $("#legajoeditar").val();
         var plan = $("#planeditar").val();
         var dni = $("#dnieditar").val();
@@ -148,32 +148,33 @@ $(document).ready(function() {
         // Realizar la petición AJAX para actualizar el usuario
 
         $.ajax({
-            url: "/instituto/Includes/sql.php",
+            url: "/instituto/Includes/slqeditar.php",
             type: "POST",
             data: {
-                legajoeditar: legajo,
-                planeditar: plan,
-                dnieditar: dni,
+                Legajo: legajo,
+                fk_Plan: plan,
+                fk_DNI: dni,
 
-                idusuarioeditar: idusuario,
-                dni_a_editar: dni,
-                nombreeditar: nombre,
-                maileditar: mail,
-                claveeditar: clave,
-                listRoleditar: rol,
-                listEstadoeditar: estado,
+                Id_Usuario: idusuario,
+                DNI: dni_a_editar,
+                Nombre: nombre,
+                Email: mail,
+                Password: clave,
+                fk_Rol: rol,
+                fk_Rol: estado,
                 btnmodificar: 1 // Agrega una marca para indicar que es una solicitud de modificación
             },
+           
             success: function(response) {
-                console.log(response);
-                setTimeout(function() {
-                    window.location.href = "/instituto/Adman/lista_usuarios.php";
-                }, 2000);
-            },
-            error: function(error) {
-                console.log("Error en la solicitud AJAX:", error);
-            }
-        });
+                    console.log(response);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                },
+                error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
+                    console.log("Error en la solicitud AJAX:", error); // Imprime el mensaje de error en la consola
+                }
+            });
     });
 });
 </script>
