@@ -21,9 +21,10 @@ function showConfirmationMessages($message) {
 }
 
 
-    session_start();
+    
     function actualizaruser($idUsuario, $legajo, $plan, $password, $rol, $estado) {
         global $pdo;
+        session_start();
     
         try {
             $pdo->beginTransaction();

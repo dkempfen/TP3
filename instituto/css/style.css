@@ -622,3 +622,170 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
 }
 
 
+
+/* Estilos para los contenedores de texto y botones */
+.col-lg-4 .card  {
+    border-radius: 10px; /* Redondea las esquinas de los contenedores de texto */
+}
+
+.card-divider {
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+.card-footer .btn-group .btn {
+    border-radius: 0;
+}
+
+
+.custom-button {
+    background-color: #e0e0e0; /* Gris suave */
+    color: #333; /* Color del texto */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.custom-button:hover {
+    background-color: #ccc; /* Gris un poco más oscuro al pasar el cursor */
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+
+#carrers {
+    background: #f7f6f4;
+    padding: 60px 0;
+    padding-bottom: 80px; }
+    #carrers .container-carrera  {
+      display: flex;
+      justify-content: center;
+      max-width: 760px;
+      flex-wrap: wrap; }
+      #carrers .container-carrera  .title__primary {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 40px; }
+      #carrers .container-carrera  .card {
+        flex: 1;
+        margin-right: 10px;
+        position: relative; }
+        #carrers .container-carrera  .card:hover .centrado .button {
+          height: 42px;
+          opacity: 1;
+          visibility: visible; }
+        #carrers .container-carrera  .card:hover:before {
+          background: linear-gradient(to top, black 0%, transparent 100%); }
+        #carrers .container-carrera  .card:before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+          z-index: 1;
+          transition: .3s; }
+        #carrers .container-carrera  .card:last-child {
+          margin-right: 0; }
+        #carrers .container-carrera  .card .centrado {
+          position: absolute;
+          bottom: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 2;
+          color: white;
+          font-weight: 600;
+          font-size: 20px;
+          text-align: center;
+          width: 100%;
+          line-height: 20px;
+          display: flex;
+          flex-direction: column; }
+          #carrers .container-carrera  .card .centrado .button {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            padding: 10px 20px;
+            overflow: hidden;
+            visibility: hidden;
+            opacity: 0;
+            transition: .3s;
+            height: 0; }
+  
+  @media screen and (max-width: 499px) {
+    #carrers {
+      padding: 40px 0;
+      padding-bottom: 60px; }
+      #carrers .container-carrera  {
+        flex-direction: column; }
+        #carrers .container-carrera  .card {
+          display: flex;
+          width: 100%;
+          margin-right: 0;
+          margin-bottom: 20px; }
+          #carrers .container-carrera  .card:last-child {
+            margin-bottom: 0; }
+          #carrers .container-carrera  .card .centrado .button {
+            visibility: visible;
+            opacity: 1;
+            height: initial; } 
+        }
+
+.container-carrera {
+    width: 100%;
+    /* padding-right: 15px; */
+    /* padding-left: 15px; */
+    margin-right: auto;
+    margin-left: auto;
+    }
+
+
+.custom-button {
+    background-color: #4CAF50; /* Color de fondo verde */
+    color: #fff; /* Texto en blanco */
+    border: none;
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin: 5px;
+    transition: background-color 0.3s, transform 0.1s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    font-weight: bold; /* Texto en negrita */
+    font-size: 18px; /* Tamaño del texto */
+}
+  
+.custom-button:hover {
+    background-color: #45a049; /* Color de fondo verde más oscuro al pasar el cursor */
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+/* Estilo para el checkbox y el texto "Seleccionar" */
+.tarjeta-checkbox {
+    position: absolute;
+    top: 10px; /* Ajusta la posición vertical según tus preferencias */
+    right: 10px; /* Ajusta la posición horizontal según tus preferencias */
+    transform: scale(1.5); /* Ajusta el tamaño del checkbox según tus preferencias */
+}
+
+/* Ajusta el estilo del texto "Seleccionar" */
+#seleccionar-label {
+    position: absolute;
+    top: 10px; /* Ajusta la posición vertical según tus preferencias */
+    right: 30px; /* Ajusta la posición horizontal según tus preferencias */
+    font-size: 14px; /* Ajusta el tamaño de fuente según tus preferencias */
+    color: #555; /* Ajusta el color del texto según tus preferencias */
+}
+
+
+
+
+

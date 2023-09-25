@@ -1,41 +1,63 @@
 <?php
 require_once 'includes/header.php';
-require_once './modals/modal_materia.php';
+require_once '../Includes/load.php';
 ?>
 
 <main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1><i class="fa fa-dashboard"></i>Plan Estudio</h1>
-            <button class="btn btn-success" type="button" onclick="openModalMPL()">Nuevo Plan</button>
-        </div>
-        <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="#">Plan Estudio</a></li>
-        </ul>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div class="tile-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="tablemateria">
-                            <thead>
-                                <tr>
-                                    <th>Acciones</th>
-                                    <th>ID</th>
-                                    <th>Plan</th>        
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Plan A1</h2>
+                        <div class="card-divider"></div>
+                        <p><strong>Estado:</strong> Activo</p>
+                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
+                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-primary btn-sm mr-2">Editar</button>
+                            <button class="btn btn-info btn-sm">Más Información</button>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Plan A2023</h2>
+                        <div class="card-divider"></div>
+                        <p><strong>Estado:</strong> Activo</p>
+                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
+                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-primary btn-sm mr-2">Editar</button>
+                            <button class="btn btn-info btn-sm">Más Información</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Plan XYZ</h2>
+                        <div class="card-divider"></div>
+                        <p><strong>Estado:</strong> Activo</p>
+                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
+                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-primary btn-sm mr-2">Editar</button>
+                            <button class="btn btn-info btn-sm">Más Información</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
