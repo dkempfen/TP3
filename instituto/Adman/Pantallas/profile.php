@@ -1,6 +1,6 @@
   <?php
-  require_once 'includes/header.php';
-  require_once '../Includes/load.php';
+require_once '../includes/header.php';
+require_once '../Includes/load.php';
 
   ?>
   <?php
@@ -18,7 +18,7 @@
         unset($_SESSION['password_message']); // Clear the session variable after displaying the message
         showConfirmationMessage($message);
     }
-
+    
 
 
 

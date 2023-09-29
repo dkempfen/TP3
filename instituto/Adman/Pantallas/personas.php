@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.php';
+require_once '../includes/header.php';
 require_once './modals/modals.php';
 require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
@@ -45,10 +45,7 @@ if ($pdo) {
                                     <th>ACCIONES</th>
                                     <th>ID</th>
                                     <th>NOMBRE</th>
-                                    <th>Legajo</th>
                                     <th>USUARIO</th>
-                                    <th>Plan</th>
-                                    <th>DNI</th>
                                     <th>ROL</th>
                                     <th>EDITAR</th>
                                 </tr>
@@ -71,9 +68,6 @@ if ($pdo) {
                                         echo '<td>' . $row['Id_Usuario'] . '</td>';
                                         echo '<td>' . $row['Nombre'] . '</td>';
                                         echo '<td>' . $row['User'] . '</td>';
-                                        echo '<td>' . $row['Legajo'] . '</td>';
-                                        echo '<td>' . $row['fk_Plan'] . '</td>';
-                                        echo '<td>' . $row['fk_DNI'] . '</td>';
                                         echo '<td>' . $row['fk_Rol'] . '</td>';
                                         echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
                                         echo '</tr>';

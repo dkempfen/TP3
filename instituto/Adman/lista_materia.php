@@ -4,39 +4,132 @@ require_once './modals/modal_materia.php';
 ?>
 
 <main class="app-content">
-    <div class="app-title">
-        <div>
-            <h1><i class="fa fa-dashboard"></i>Lista de Materia</h1>
-            <button class="btn btn-success" type="button" onclick="openModalM()">Nueva Materia</button>
-        </div>
-        <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="#">Lista de Materia</a></li>
-        </ul>
+
+    <div class="custom-menu">
+        <nav class="custom-nav">
+            <div class="menu-group">
+                <ul class="custom-menu-list">
+                    <!-- Carreras -->
+                    <li class="custom-menu-item">
+                        <a class="custom-menu-link" href="/instituto/Adman/carreras.php">Nuestras Carreras</a>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <ul class="custom-menu-list">
+                    <!-- Planes de Estudio -->
+                    <li class="custom-menu-item">
+                        <a class="custom-menu-link" href="/instituto/Adman/lista_planes.php">Planes de Estudio</a>
+
+                    </li>
+                </ul>
+            </div>
+
+            <div class="menu-group">
+                <ul class="custom-menu-list">
+                    <!-- Materias -->
+                    <li class="custom-menu-item">
+                        <a class="custom-menu-link" href="/instituto/Adman/lista_materia.php">Materias</a>
+
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <div class="tile-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered" id="tablemateria">
-                            <thead>
-                                <tr>
-                                    <th>Acciones</th>
-                                    <th>ID</th>
-                                    <th>Nombre</th>  
-                                    <th>Profesor</th>        
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                               
-                            </tbody>
-                        </table>
+
+    <div id="menu-container" class="container">
+
+
+
+        <div class="row espaciado-entre-filas align-items-center">
+
+            <div class="mx-auto text-center">
+                <form id="busquedaForm" class="form-inline mb-5">
+                    <div class="form-group mb-2">
+                        <label for="materia" class="label-spacing">Materia:</label>
+                        <input type="text" class="form-control  " id="materia">
+                        </select>
                     </div>
+                    <div class="form-group mb-2">
+                        <label for="nombrePlan" class="label-spacing">Nombre del Plan:</label>
+                        <input type="text" class="form-control" id="nombrePlan">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="carrera" class="label-spacing">Carrera:</label>
+                        <input type="text" class="form-control" id="carrera">
+                        </select>
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="age" class="label-spacing">Año:</label>
+                        <input type="text" class="form-control" id="age">
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="col-lg-6 text-left">
+                <!-- Divide la fila en 2 columnas y alinea a la derecha -->
+                <a id="generarPDFBtn" href="#" onclick="descargarMateriaPDF(); return false;" class="planpdf-button">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+
+                <a id="generareEXCLBtn" href="#" onclick="descargarMateriaEXCL(); return false;"
+                    class="planexcel-button">
+                    <i class="fas fa-file-excel"></i> Descargar Excel
+                </a>
+
+                <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
+                    onclick="mostrarCrearNuevoPlan(); return false;">
+                    <i class="fas fa-plus"></i> Crear Nuevo Plan
+                </a>-->
+            </div>
+
+            <div class="col-lg-6 text-right">
+                <!-- Divide la fila en 2 columnas y alinea a la derecha -->
+
+
+
+                <button data-toggle="modal" class="planalta-button" id="crearNuevoPlanBtn" type="button"
+                    onclick="openModalM()"><i class="fas fa-plus"></i> Crear Nuevo Materia</button>
+
+                <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
+                    onclick="mostrarCrearNuevoPlan(); return false;">
+                    <i class="fas fa-plus"></i> Crear Nuevo Plan
+                </a>-->
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile">
+                    <div class="tile-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="tablemateria">
+                                <thead>
+                                    <tr>
+                                        <th>Acciones</th>
+                                        <th>ID</th>
+                                        <th>Carrera</th>
+                                        <th>Plan</th>
+                                        <th>Nivel</th>
+                                        <th>Promocional</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
                 </div>
-
-
             </div>
         </div>
     </div>

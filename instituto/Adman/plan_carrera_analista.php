@@ -2,26 +2,28 @@
 require_once 'includes/header.php';
 require_once '../Includes/load.php';
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-<style>
-.expansor {
-    cursor: pointer;
-    font-size: 18px;
-    color: #007bff;
-    /* Color azul de Bootstrap */
-    margin-left: 10px;
-    /* Espacio entre el texto y el icono */
-}
 
-.expansor:hover {
-    color: #0056b3;
-    /* Cambia el color al pasar el mouse por encima */
-}
-</style>
+
 
 <main class="app-content">
-    <div class="container mt-5">
-        <div class="row">
+    <div class="container">
+
+        <div class="row espaciado-entre-filas align-items-center">
+            <div class="col-lg-6">
+            </div>
+            <div class="col-lg-6 text-right">
+                <!-- Divide la fila en 2 columnas y alinea a la derecha -->
+                <a id="generarPDFBtn" href="#" onclick="mostrarSeleccionTarjetasPDF(); return false;"
+                    class="highlighted-button">
+                    <i class="fas fa-file-pdf"></i> Descargar PDF
+                </a>
+            </div>
+        </div>
+
+
+        <div class="row espaciado-entre-filas">
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -38,8 +40,8 @@ require_once '../Includes/load.php';
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end">
-
-                            <button class="btn btn-primary btn-sm mr-2"  type="button" onclick="mostrarEditarTarjeta()">Editar</button>
+                            <button class="btn btn-primary btn-sm mr-2" type="button"
+                                onclick="mostrarEditarTarjeta()">Editar</button>
                             <button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional()">Más
                                 Información</button>
                         </div>
@@ -62,8 +64,7 @@ require_once '../Includes/load.php';
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm mr-2"
-                                onclick="mostrarEditarTarjetat()">Editar</button>
+                            <button class="btn btn-primary btn-sm mr-2" onclick="mostrarEditarTarjeta()">Editar</button>
                             <button class="btn btn-info btn-sm">Más Información</button>
                         </div>
                     </div>
@@ -85,23 +86,31 @@ require_once '../Includes/load.php';
                     </div>
                     <div class="card-footer">
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm mr-2"
-                                onclick="mostrarEditarTarjetas()">Editar</button>
+                            <button class="btn btn-primary btn-sm mr-2" onclick="mostrarEditarTarjeta()">Editar</button>
                             <button class="btn btn-info btn-sm">Más Información</button>
-
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="row mt-3">
-            <div class="col-lg-12 d-flex align-items-center justify-content-between">
-                <button class="btn btn-secondary btn-xs" onclick="window.history.back()">Volver Atrás</button>
-                <button class="btn btn-success btn-xs" onclick="mostrarSeleccionTarjetasPDF()">Generar PDF</button>
+        <div class="row espaciado-entre-plames align-items-center">
+            <div class="col-lg-6">
+                <!-- Divide la fila en 2 columnas -->
+                <div class="custom-link">
+                    <a href="/instituto/Adman/carreras.php" title="">
+                        <span class="buttonIcon" aria-hidden="true">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                        <span class="buttonText">Anterior</span>
+                    </a>
+                </div>
             </div>
+
         </div>
+
     </div>
+
     <!-- Selector de tarjetas para el PDF -->
     <div class="modal fade" id="selectorTarjetasPDF" tabindex="-1" role="dialog"
         aria-labelledby="selectorTarjetasPDFLabel" aria-hidden="true">
@@ -122,6 +131,51 @@ require_once '../Includes/load.php';
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success" onclick="generarPDF()">Generar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar la tarjeta -->
+    <div class="modal fade" id="editarTarjetaModal" tabindex="-1" role="dialog"
+        aria-labelledby="editarTarjetaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarTarjetaModalLabel">Editar Tarjeta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Agregar aquí los campos de edición -->
+                    <div class="form-group">
+                        <label for="nombreTarjeta">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreTarjeta">
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoTarjeta">Estado:</label>
+                        <select class="form-control" id="estadoTarjeta">
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha Inicio:</label>
+                        <input type="text" class="form-control" id="fechaInicio">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFinal">Fecha Final:</label>
+                        <input type="text" class="form-control" id="fechaFinal">
+                    </div>
+                    <div class="form-group">
+                        <label for="adjunto">Adjuntar archivo del Plan:</label>
+                        <input type="file" class="form-control-file" id="adjunto">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
                 </div>
             </div>
         </div>
@@ -664,3 +718,96 @@ $(document).ready(function() {
 });
 </script>
 
+<script>
+// Función para mostrar el modal de edición
+function mostrarEditarTarjeta() {
+    // Obtener los datos de la tarjeta actual
+    var nombre = document.querySelector('.card-title').innerText;
+    var estadoElement = null;
+    var elementosP = document.querySelectorAll('.card-body p');
+    elementosP.forEach(function(p) {
+        var strongText = p.querySelector('strong');
+        if (strongText && strongText.innerText === 'Estado:') {
+            estadoElement = p;
+        }
+    });
+    var estado = estadoElement ? estadoElement.lastChild.textContent.trim() : '';
+    var fechaInicio = obtenerTextoSiguiente('Fecha Inicio:');
+    var fechaFinal = obtenerTextoSiguiente('Fecha Final:');
+
+    // Llenar el modal con los datos actuales
+    document.getElementById('nombreTarjeta').value = nombre;
+    document.getElementById('estadoTarjeta').value = estado;
+    document.getElementById('fechaInicio').value = fechaInicio;
+    document.getElementById('fechaFinal').value = fechaFinal;
+
+    // Mostrar el modal
+    $('#editarTarjetaModal').modal('show');
+}
+
+// Función auxiliar para obtener el texto siguiente a un encabezado específico
+function obtenerTextoSiguiente(encabezado) {
+    var elementosP = document.querySelectorAll('.card-body p');
+    for (var i = 0; i < elementosP.length; i++) {
+        var strongText = elementosP[i].querySelector('strong');
+        if (strongText && strongText.innerText === encabezado) {
+            var textoSiguiente = elementosP[i].textContent.trim();
+            return textoSiguiente.replace(encabezado, '').trim();
+        }
+    }
+    return '';
+}
+
+// Función para guardar los cambios
+function guardarCambios() {
+    // Obtener los valores editados desde el modal
+    var nuevoNombre = document.getElementById('nombreTarjeta').value;
+    var nuevoEstado = document.getElementById('estadoTarjeta').value;
+    var nuevaFechaInicio = document.getElementById('fechaInicio').value;
+    var nuevaFechaFinal = document.getElementById('fechaFinal').value;
+
+    // Obtener el archivo adjunto seleccionado
+    var adjuntoInput = document.getElementById('adjunto');
+    var archivoAdjunto = adjuntoInput.files[0];
+
+    // Realizar la lógica de actualización de datos aquí
+
+    // Si se ha seleccionado un archivo adjunto, puedes subirlo al servidor
+    if (archivoAdjunto) {
+        // Aquí puedes usar JavaScript o una biblioteca como FormData para enviar el archivo al servidor
+        var formData = new FormData();
+        formData.append('archivo', archivoAdjunto);
+
+        // Ejemplo de uso de fetch para enviar el archivo al servidor
+        fetch('/ruta/del/servidor', {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) {
+                // Manejar la respuesta del servidor aquí
+                if (response.status === 200) {
+                    console.log('Archivo subido exitosamente.');
+                } else {
+                    console.error('Error al subir el archivo.');
+                }
+            })
+            .catch(function(error) {
+                console.error('Error en la solicitud:', error);
+            });
+    }
+
+    // Cerrar el modal
+    $('#editarTarjetaModal').modal('hide');
+}
+
+// Función auxiliar para actualizar el texto siguiente a un encabezado específico
+function actualizarTextoSiguiente(encabezado, nuevoTexto) {
+    var elementosP = document.querySelectorAll('.card-body p');
+    for (var i = 0; i < elementosP.length; i++) {
+        var strongText = elementosP[i].querySelector('strong');
+        if (strongText && strongText.innerText === encabezado) {
+            elementosP[i].lastChild.textContent = encabezado + ' ' + nuevoTexto;
+        }
+    }
+}
+</script>

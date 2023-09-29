@@ -1,6 +1,6 @@
 <?php
 
-$host = '149.56.22.100';
+$host = '167.250.5.73';
 $user = 'lujanbue_adm_bas';
 $db = 'lujanbue_practica_prof';
 $pass = 'Marconi6725';

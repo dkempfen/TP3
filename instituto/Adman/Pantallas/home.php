@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.php';
+require_once '../includes/header.php';
 require_once './modals/modal_materia.php';
 ?>
 

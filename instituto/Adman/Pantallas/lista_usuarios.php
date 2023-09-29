@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/header.php';
+require_once '../includes/header.php';
 require_once './modals/modals.php';
 require_once './models/usuarios/edidtar_user.php';
 require_once '../Includes/load.php';
@@ -20,38 +20,59 @@ if ($pdo) {
 
     ?>
 
-    <main class="app-content">
-        <div class="app-title">
-            <div>
-                <h1><i class="fa fa-dashboard"></i>Lista de Usuarios</h1>
-                <button class="btn btn-success" type="button" onclick="openModal()">Nuevo Usuario</button>
-                <button class="btn btn-success" type="button" onclick="exportToExcel()">Exportar a Excel</button>
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="fa fa-dashboard"></i>Lista de Personas</h1>
 
-            </div>
-            <ul class="app-breadcrumb breadcrumb">
-                <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-                <li class="breadcrumb-item"><a href="#">Lista de Usuarios</a></li>
-
-            </ul>
         </div>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 text-left">
+            <!-- Divide la fila en 2 columnas y alinea a la izquierda -->
+            <a id="generarPDFBtn" href="#" onclick="descargarMateriaPDF(); return false;" class="planpdf-button">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+
+            <a id="generarEXCELBtn" href="#" onclick="descargarMateriaEXCEL(); return false;" class="planexcel-button">
+                <i class="fas fa-file-excel"></i> Descargar Excel
+            </a>
+        </div>
+
+        <div class="col-lg-6 text-right">
+            <!-- Divide la fila en 2 columnas y alinea a la derecha -->
+            <button class="Usernalta-button" id="crearNuevaCarreraBtn" type="button" data-toggle="modal"
+                onclick="openModal()"><i class="fas fa-plus"></i> Nuevo Usuario</button>
+        </div>
+    </div>
+    <div class="mt-4">
         <div class="row">
+
+
             <div class="col-md-12">
                 <div class="tile">
                     <div class="tile-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered" id="tableUsuarios">
                                 <thead>
-                                <tr>
-                                    <th>ACCIONES</th>
-                                    <th>ID</th>
-                                    <th>NOMBRE</th>
-                                    <th>USUARIO</th>
-                                    <th>ROL</th>
-                                    <th>EDITAR</th>
-                                </tr>
+                                    <tr>
+                                        <th>ACCIONES</th>
+                                        <th>ID</th>
+                                        <th>NOMBRE</th>
+                                        <th>Legajo</th>
+                                        <th>USUARIO</th>
+                                        <th>Plan</th>
+                                        <th>DNI</th>
+                                        <th>ROL</th>
+                                        <th>EDITAR</th>
+                                    </tr>
                                 </thead>
                                 <tbody id="message">
-                                <?php
+                                    <?php
                                 // Comprueba si la consulta fue exitosa
                                 if ($result) {
                                     // Loop a través del resultado y generar filas de la tabla
@@ -68,6 +89,9 @@ if ($pdo) {
                                         echo '<td>' . $row['Id_Usuario'] . '</td>';
                                         echo '<td>' . $row['Nombre'] . '</td>';
                                         echo '<td>' . $row['User'] . '</td>';
+                                        echo '<td>' . $row['Legajo'] . '</td>';
+                                        echo '<td>' . $row['fk_Plan'] . '</td>';
+                                        echo '<td>' . $row['fk_DNI'] . '</td>';
                                         echo '<td>' . $row['fk_Rol'] . '</td>';
                                         echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
                                         echo '</tr>';
@@ -83,9 +107,10 @@ if ($pdo) {
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <?php
+<?php
 } else {
     echo "Error: No se pudo establecer la conexión a la base de datos.";
 }
@@ -95,47 +120,44 @@ require_once 'includes/footer.php';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        var tableusuarios = $('#tableUsuarios').DataTable();
+$(document).ready(function() {
+    var tableusuarios = $('#tableUsuarios').DataTable();
 
-        $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function () {
-            var self = this;
-            var Id_Usuario = $(this).data("usuario-id");
-            var fk_Estado_Usuario = this.checked ? 1 : 2;
+    $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
+        var self = this;
+        var Id_Usuario = $(this).data("usuario-id");
+        var fk_Estado_Usuario = this.checked ? 1 : 2;
 
-            $.ajax({
-                url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
-                type: "POST",
-                data: {
-                    Id_Usuario: Id_Usuario,
-                    fk_Estado_Usuario: fk_Estado_Usuario
-                },
+        $.ajax({
+            url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            type: "POST",
+            data: {
+                Id_Usuario: Id_Usuario,
+                fk_Estado_Usuario: fk_Estado_Usuario
+            },
 
-                success: function (response) {
-                    var messageDiv = $('#message'); // Elemento donde se mostrará el mensaje
-                    messageDiv.html(response); // Coloca el mensaje en el elemento
-                    setTimeout(function () {
-                        messageDiv.html(''); // Borra el mensaje después de un tiempo
-                        window.location.reload(); // Recarga la página si es necesario
-                    }, 2000);
-                },
-                error: function (error) {
-                    console.log("Error en la solicitud AJAX:", error);
-                }
-            });
+            success: function(response) {
+                var messageDiv = $('#message'); // Elemento donde se mostrará el mensaje
+                messageDiv.html(response); // Coloca el mensaje en el elemento
+                setTimeout(function() {
+                    messageDiv.html(''); // Borra el mensaje después de un tiempo
+                    window.location.reload(); // Recarga la página si es necesario
+                }, 2000);
+            },
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
         });
     });
+});
 
-    function exportToExcel() {
-        // Utiliza la biblioteca TableExport para exportar la tabla a Excel
-        TableExport(document.getElementById('tableUsuarios'), {
-            headers: true,
-            footers: true,
-            formats: ['xlsx'],
-            filename: 'listado_usuarios',
-        });
-    }
-
-
+function exportToExcel() {
+    // Utiliza la biblioteca TableExport para exportar la tabla a Excel
+    TableExport(document.getElementById('tableUsuarios'), {
+        headers: true,
+        footers: true,
+        formats: ['xlsx'],
+        filename: 'listado_usuarios',
+    });
+}
 </script>
-

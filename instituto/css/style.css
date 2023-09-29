@@ -656,7 +656,10 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
     text-decoration: none;
 }
 
-
+#columna1 {
+}
+#columna2 {
+}
 #carrers {
     background: #f7f6f4;
     padding: 60px 0;
@@ -786,6 +789,312 @@ input[type=checkbox].ace.ace-switch.ace-switch-6+.lbl::before {
 }
 
 
+.expansor {
+    cursor: pointer;
+    font-size: 18px;
+    color: #007bff;
+    /* Color azul de Bootstrap */
+    margin-left: 10px;
+    /* Espacio entre el texto y el icono */
+}
+
+.expansor:hover {
+    color: #0056b3;
+    /* Cambia el color al pasar el mouse por encima */
+}
+
+.espaciado-entre-filas {
+    margin-bottom: 40px;
+}
+
+.espaciado-entre-plames {
+    margin-top: 200px;
+
+    /* Ajusta la cantidad de espacio según tus preferencias */
+}
+
+.buttonIcon {
+    margin-right: 15px;
+   
+
+
+    /* Ajusta el valor según la separación deseada */
+}
+
+.custom-link {
+    display: inline-block;
+    border: 1px solid #4a6da7;
+    background-color: #4a6da7;
+    
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    /* Bordes redondeados */
+    text-decoration: none;
+}
+
+.custom-link a {
+    text-decoration: none;
+    color: white;
+}
+
+.custom-link a:hover {
+  
+    text-decoration: none;
+    color: white; /* Cambia el color del texto al pasar el mouse */
+}
+
+.planpdf-button {
+    display: inline-block;
+    padding: 10px 20px;
+    /* Ajusta el espaciado interior según sea necesario */
+    background-color: #D32F2F; /* Tono de rojo oscuro similar al de los PDF */
+    /* Color de fondo */
+    color: white;
+    /* Color de texto */
+    border: 1px solid #4a6da7;
+    /* Borde con el mismo color de fondo */
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    /* Bordes redondeados */
+    text-decoration: none;
+    /* Quitar subrayado de enlace */
+    margin-right: 10px; /* Ajusta el margen entre los botones */
+
+
+}
+
+.planpdf-button:hover {
+    background-color: #395c94;
+    color: white; /* Cambia el color del texto al pasar el mouse */
+    text-decoration: none;
+
+    /* Cambiar el color de fondo al pasar el mouse */
+}
+
+.planexcel-button {
+    display: inline-block;
+    padding: 10px 20px;
+    /* Ajusta el espaciado interior según sea necesario */
+    background-color: #1E8449; /* Un tono de verde similar al de Excel */
+    /* Color de fondo */
+    color: white;
+    /* Color de texto */
+    border: 1px solid #4a6da7;
+    /* Borde con el mismo color de fondo */
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    /* Bordes redondeados */
+    text-decoration: none;
+    /* Quitar subrayado de enlace */
+    margin-right: 10px; /* Ajusta el margen entre los botones */
+
+
+}
+.btn-buscar {
+    font-weight: bold;
+    display: inline-flex; /* Usa flexbox para alinear el icono y el texto en línea */
+    align-items: center; /* Alinea verticalmente el contenido */
+    padding: 10px 30px;
+    background-color: #E74C3C;
+    color: white;
+    border: 1px solid #4a6da7;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 210px;
+}
+
+.btn-buscar i {
+    margin-right: 15px; /* Espacio entre el icono y el texto */
+}
+
+
+.btn-buscar:hover 
+.planexcel-button:hover {
+    background-color: #395c94;
+    color: white; /* Cambia el color del texto al pasar el mouse */
+    text-decoration: none;
+
+    /* Cambiar el color de fondo al pasar el mouse */
+}
+.Usernalta-button,
+.planalta-button {
+    display: inline-block;
+    padding: 10px 20px; /* Ajusta el espaciado según tus preferencias */
+    background-color: blue; /* Cambia el color según tus preferencias */
+    color: white; /* Cambia el color del texto según tus preferencias */
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+
+
+}
+
+Usernalta-button:hover,
+.planalta-button:hover {
+    background-color: #00008B; /* Cambia el color de fondo cuando se pasa el mouse */
+    /* Puedes ajustar este color según tus preferencias */
+    color: white; /* Cambia el color del texto al pasar el mouse */
+    text-decoration: none;
+
+}
+
+
+/* Estilos para el menú principal */
+.custom-menu {
+    
+    background-color: #f2f2f2; /* Cambiar el color de fondo */
+    text-align: center; /* Centro horizontalmente el contenido */
+
+}
+
+.custom-nav {
+    
+    font-family: Arial, sans-serif; /* Cambiar la fuente */
+
+}
+
+.custom-menu-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.custom-menu-item {
+    display: inline-block;
+    margin-right: 0px;
+
+}
+
+.custom-menu-link {
+    text-decoration: none;
+    font-size: 18px; /* Agrandar el tamaño del texto */
+    color: #333; /* Cambiar el color del texto */
+    transition: color 0.3s ease;
+    text-align: center; /* Centra el texto dentro del enlace */
+    display: block; /* Hace que el enlace ocupe todo el ancho disponible */
+    margin-top: 10px; /* Agrega espacio arriba del enlace para centrarlo verticalmente */
+
+}
+
+.custom-menu-link:hover {
+    text-decoration: none; /* Elimina el subrayado al hacer hover */
+    background-color: #ccc; /* Cambia el color de fondo al pasar el mouse */
+    color: #000; /* Cambia el color del texto al pasar el mouse */
+}
+
+/* Estilos para el menú desplegable */
+.custom-sub-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff; /* Cambiar el color de fondo */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.custom-menu-item:hover .custom-sub-menu {
+    display: block;
+}
+
+.custom-sub-menu ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.custom-sub-menu li {
+    margin: 10px;
+}
+
+.custom-sub-menu a {
+    text-decoration: none;
+    color: #333; /* Cambiar el color del texto */
+}
 
 
 
+.menu-group {
+    background-color: #f0f0f0; /* Cambia el color de fondo según tu preferencia */
+    width: 300px; /* Cambia el valor según tu preferencia */
+    padding: 20px; /* Agrega espacio interno según tu preferencia */
+    width: calc(34.1% - 12px);
+    display: inline-block;
+    box-sizing: border-box; /* Incluye el relleno y el borde en el ancho total */
+    margin: 0; /* Elimina el margen */
+    text-align: center; /* Centra el contenido horizontalmente */
+
+
+
+}
+
+.menu-group:hover {
+    text-align: center  ; /* Elimina el centrado horizontal al hacer hover */
+
+    background-color: #ccc; /* Cambia el color de fondo al pasar el mouse */
+}
+
+.custom-form-group {
+    margin-right: 40px; /* Puedes ajustar el valor según tu preferencia */
+}
+
+.label-spacing {
+    margin-right: 10px; /* Ajusta este valor según la cantidad de espacio que desees */
+    color: #000; /* Color de texto más oscuro */
+
+}
+
+#menu-container {
+    margin-top: 25px; /* Puedes ajustar el valor según tus necesidades */
+}
+
+
+
+
+
+
+
+.btn-compacto {
+    padding: 1px 1px; /* Ajusta el espaciado interior del botón según tus preferencias */
+    font-size: 14px; /* Ajusta el tamaño del texto según tus preferencias */
+}
+
+#calificaciones-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+
+/* Estilo para el encabezado de la tabla */
+#calificaciones-table th {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+    padding: 10px;
+}
+
+/* Estilo para las celdas de datos de la tabla */
+#calificaciones-table td {
+    text-align: center; /* Alineación centrada */
+    padding: 5px 10px; /* Espaciado interior */
+}
+
+/* Estilo para el botón "Editar" en cada fila */
+#calificaciones-table .edit-button {
+    background-color: #1E8449; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 5px 10px; /* Espaciado interior */
+    cursor: pointer;
+}
+
+/* Estilo para alternar el color de fondo de las filas */
+#calificaciones-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Color de fondo alternativo */
+}
