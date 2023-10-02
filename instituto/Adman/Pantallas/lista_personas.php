@@ -1,8 +1,8 @@
 <?php
 require_once '../includes/header.php';
-require_once './modals/modals.php';
-require_once './models/usuarios/edidtar_user.php';
-require_once '../Includes/load.php';
+require_once '../modals/modals.php';
+require_once '../models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
@@ -17,7 +17,12 @@ if ($pdo) {
         unset($_SESSION['message']); // Clear the session variable after displaying the message
         showConfirmationMessage($message);
     }
-
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        unset($_SESSION['message']); // Clear the session variable after displaying the message
+        showConfirmationMessages($message);
+    }
+    
     ?>
 
 <main class="app-content">
@@ -61,13 +66,14 @@ if ($pdo) {
                                 <thead>
                                     <tr>
                                         <th>ACCIONES</th>
-                                        <th>ID</th>
-                                        <th>NOMBRE</th>
-                                        <th>Legajo</th>
-                                        <th>USUARIO</th>
-                                        <th>Plan</th>
                                         <th>DNI</th>
-                                        <th>ROL</th>
+                                        <th>NOMBRE</th>
+                                        <th>Apellido</th>
+                                        <th>Fechanacimiento</th>
+                                        <th>Telefono</th>
+                                        <th>Email</th>
+                                        <th>Domicilio</th>
+                                        <th>Inscripto</th>
                                         <th>EDITAR</th>
                                     </tr>
                                 </thead>
@@ -86,13 +92,14 @@ if ($pdo) {
                                         echo '<span class="slider"></span>';
                                         echo '</label>';
                                         echo '</td>';
-                                        echo '<td>' . $row['Id_Usuario'] . '</td>';
+                                        echo '<td>' . $row['DNI'] . '</td>';
                                         echo '<td>' . $row['Nombre'] . '</td>';
-                                        echo '<td>' . $row['User'] . '</td>';
-                                        echo '<td>' . $row['Legajo'] . '</td>';
-                                        echo '<td>' . $row['fk_Plan'] . '</td>';
-                                        echo '<td>' . $row['fk_DNI'] . '</td>';
-                                        echo '<td>' . $row['fk_Rol'] . '</td>';
+                                        echo '<td>' . $row['Apellido'] . '</td>';
+                                        echo '<td>' . $row['Fechanacimiento'] . '</td>';
+                                        echo '<td>' . $row['Telefono'] . '</td>';
+                                        echo '<td>' . $row['Email'] . '</td>';
+                                        echo '<td>' . $row['Domicilio'] . '</td>';
+                                        echo '<td>' . $row['Inscripto'] . '</td>';
                                         echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
                                         echo '</tr>';
                                     }
@@ -114,7 +121,7 @@ if ($pdo) {
 } else {
     echo "Error: No se pudo establecer la conexión a la base de datos.";
 }
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>

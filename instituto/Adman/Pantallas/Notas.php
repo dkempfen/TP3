@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/header.php';
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 
 ?>
@@ -128,5 +128,5 @@ require_once '../Includes/load.php';
 </main>
 
 <?php
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>

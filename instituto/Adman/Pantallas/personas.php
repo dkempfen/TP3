@@ -1,8 +1,8 @@
 <?php
 require_once '../includes/header.php';
-require_once './modals/modals.php';
-require_once './models/usuarios/edidtar_user.php';
-require_once '../Includes/load.php';
+require_once '../modals/modals.php';
+require_once '../models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
@@ -89,7 +89,7 @@ if ($pdo) {
 } else {
     echo "Error: No se pudo establecer la conexión a la base de datos.";
 }
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>

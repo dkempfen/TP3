@@ -1,6 +1,6 @@
   <?php
 require_once '../includes/header.php';
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
   ?>
   <?php
@@ -37,7 +37,7 @@ require_once '../Includes/load.php';
                           <div class="col-md-4">
                               <div class="image foto-perfil view-first">
                                   <img class="perfil-image" style="width: 120%; display: block;"
-                                      src="../Imagenes/profiles/<?php echo $nueva_foto; ?>" alt="image">
+                                      src="/instituto/Imagenes/profiles/<?php echo $nueva_foto; ?>" alt="image">
                               </div>
 
                               <span class="">
@@ -184,7 +184,7 @@ require_once '../Includes/load.php';
   } else {
     echo "Error: No se pudo establecer la conexión a la base de datos.";
 }
-  require_once 'includes/footer.php';
+require_once '../includes/footer.php';
   ?>
   <script>
 $(function() {

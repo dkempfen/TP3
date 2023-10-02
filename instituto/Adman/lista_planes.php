@@ -1,6 +1,6 @@
 <?php
 require_once './ModelsPlan/crearPlan.php';
-require_once 'includes/header.php';
+require_once './includes/header.php';
 require_once '../Includes/load.php';
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -15,7 +15,7 @@ require_once '../Includes/load.php';
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/carreras.php">Nuestras Carreras</a>
+                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -161,7 +161,7 @@ require_once '../Includes/load.php';
             <div class="col-lg-6">
                 <!-- Divide la fila en 2 columnas -->
                 <div class="custom-link">
-                    <a href="/instituto/Adman/carreras.php" title="">
+                    <a href="/instituto/Adman/Pantallas/carreras.php" title="">
                         <span class="buttonIcon" aria-hidden="true">
                             <i class="fas fa-chevron-left"></i>
                         </span>

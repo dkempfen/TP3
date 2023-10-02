@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/header.php';
-require_once './modals/modal_carrera.php';
+require_once '../includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 
 <main class="app-content">
@@ -42,5 +42,5 @@ require_once './modals/modal_carrera.php';
 </main>
 
 <?php
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>

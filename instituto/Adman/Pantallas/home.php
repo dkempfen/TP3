@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/header.php';
-require_once './modals/modal_materia.php';
+require_once '../modals/modal_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 
 
@@ -140,5 +141,5 @@ require_once './modals/modal_materia.php';
         </div>
     </div>
     <?php
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>

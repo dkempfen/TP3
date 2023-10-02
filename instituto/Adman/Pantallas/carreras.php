@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/header.php';
-require_once '.../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 
 
@@ -12,7 +12,7 @@ require_once '.../Includes/load.php';
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/carreras.php">Nuestras Carreras</a>
+                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -67,5 +67,5 @@ require_once '.../Includes/load.php';
 </main>
 
 <?php
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>

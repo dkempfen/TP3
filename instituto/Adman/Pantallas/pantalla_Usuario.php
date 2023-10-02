@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/header.php';
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 
 <?php
@@ -72,5 +72,5 @@ $c_prof = count_by_id('Persona');
 </main>
 
 <?php
-require_once 'includes/footer.php';
+require_once '../includes/footer.php';
 ?>

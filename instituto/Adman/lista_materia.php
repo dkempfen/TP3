@@ -11,7 +11,7 @@ require_once './modals/modal_materia.php';
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/carreras.php">Nuestras Carreras</a>
+                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -131,6 +131,20 @@ require_once './modals/modal_materia.php';
 
                 </div>
             </div>
+        </div>
+        <div class="row espaciado-entre-plames align-items-center">
+            <div class="col-lg-6">
+                <!-- Divide la fila en 2 columnas -->
+                <div class="custom-link">
+                    <a href="/instituto/Adman/Pantallas/carreras.php" title="">
+                        <span class="buttonIcon" aria-hidden="true">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                        <span class="buttonText">Anterior</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>

@@ -98,7 +98,7 @@ require_once '../Includes/load.php';
             <div class="col-lg-6">
                 <!-- Divide la fila en 2 columnas -->
                 <div class="custom-link">
-                    <a href="/instituto/Adman/carreras.php" title="">
+                    <a href="/instituto/Adman/Pantallas/carreras.php" title="">
                         <span class="buttonIcon" aria-hidden="true">
                             <i class="fas fa-chevron-left"></i>
                         </span>

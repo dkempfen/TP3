@@ -1,5 +1,5 @@
 <?php
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 ?>
 <?php
@@ -21,18 +21,20 @@ $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
   <ul class="app-menu">
     <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/home.php">
         <i class="app-menu__icon fas fa-home"></i><span class="app-menu__label">Home</span></a></li>
-    <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/lista_usuarios.php">
+    <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/lista_personas.php">
         <i class="app-menu__icon fas fa-users"></i><span class="app-menu__label">Personas</span></a></li>
     <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/pantalla_Usuario.php">
         <i class="app-menu__icon fas fa-users"></i><span class="app-menu__label">Usuarios</span></a></li>
     <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/carreras.php">
-        <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Carreras</span></a></li>
+        <i class="app-menu__icon fas fa-graduation-cap"></i><span class="app-menu__label">Carreras</span></a></li>
     <li>
     <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/Notas.php">
-        <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Notas</span></a></li>
+        <i class="app-menu__icon fas fa-clipboard-list"></i><span class="app-menu__label">Notas</span></a></li>
     <li>
-    <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/lista_finales.php">
-        <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Finales</span></a></li>
+    <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/parciales.php">
+        <i class="app-menu__icon fas fa-edit"></i><span class="app-menu__label">Parciales</span></a></li>
+    <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/finales.php">
+        <i class="app-menu__icon fas fa-clipboard-check"></i><span class="app-menu__label">Finales</span></a></li>
         <li><a class="app-menu__item" href="/instituto/Adman/Pantallas/documentacion.php">
         <i class="app-menu__icon fas fa-list-alt"></i><span class="app-menu__label">Documentación</span></a></li>
     <li><a class="app-menu__item" href="/instituto/Login/logout.php">

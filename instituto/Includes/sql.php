@@ -157,7 +157,7 @@ isset($_POST['domicilio']) && isset($_POST['usuario']) && isset($_POST['clave'])
 isset($_POST['legajo']) && isset($_POST['matriz'])) {
     insertarNuevoUsuario();
 
-    header("Location: /instituto/Adman/lista_usuarios.php");
+    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
   /////////////////////Actulizar Estado//////////////////////////////
@@ -201,7 +201,8 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
                 'text' => 'Estado de usuario actualizado exitosamente'
             ];
         } else {
-            $_SESSION['message'] = [
+            $_SESSION['
+            message'] = [
                 'type' => 'error',
                 'text' => 'Ha ocurrido un error al actualizar el estado del usuario.'
             ];
@@ -217,8 +218,8 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
 if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
   actualizarEstadoUsuario();
 
-    header("Location: /instituto/Adman/lista_usuarios.php");
-    exit();
+  header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+  exit();
 }
   /*function actualizarEstadoUsuario($pdo)
   {
@@ -258,13 +259,12 @@ function DatosUsuarios()
 {
     global $pdo;
 
-    $sql = "SELECT u.id_usuario, p.nombre, p.email,p.DNI, u.Password,u.fk_Plan, u.Libromatriz,u.Legajo,u.Legajo,
-    u.fk_DNI, u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
+    $sql = "SELECT u.id_usuario, p.nombre,p.Apellido ,p.email, p.DNI,p.Fechanacimiento,p.Telefono,p.Email,p.Domicilio,
+    u.fk_Plan,u.Libromatriz,u.Legajo,u.Legajo, u.fk_Rol, u.fk_DNI,u.Password,u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
     FROM Usuario u 
     INNER JOIN Persona p ON p.DNI = u.fk_DNI
     INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
-    INNER JOIN Estado e ON e.Id_Estado = u.fk_Estado_Usuario"
-    ;
+    INNER JOIN Estado e ON e.Id_Estado = u.fk_Estado_Usuario";
 
     $datosUsuarios = $pdo->prepare($sql);
     $datosUsuarios->execute();
@@ -501,9 +501,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         } catch (PDOException $e) {
             $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Error al actualizar la contraseña: ' . $e->getMessage()];
         }
-    }
+    }    
 
-  header("Location: /instituto/Adman/profile.php");
+
+  header("Location: /instituto/Adman/Pantallas/profile.php");
   exit();
 }
 if (isset($_SESSION['password_message'])) {
