@@ -1,6 +1,6 @@
 <?php
-require_once 'includes/header.php';
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 
 <div class="modal fade" id="editarTarjeta1Modal" tabindex="-1" role="dialog" aria-labelledby="editarTarjeta1ModalLabel" aria-hidden="true">

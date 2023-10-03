@@ -1098,3 +1098,15 @@ Usernalta-button:hover,
 #calificaciones-table tbody tr:nth-child(even) {
     background-color: #f2f2f2; /* Color de fondo alternativo */
 }
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.edit-icon {
+    font-size: 46px; /* Ajusta el tamaño del icono según sea necesario */
+    color: #FFA500; /* Cambia el color del icono según tus preferencias */
+}

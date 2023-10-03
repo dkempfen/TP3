@@ -1,6 +1,7 @@
 <?php
-require_once 'includes/header.php';
-require_once './modals/modal_profesor.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_profesor.php';
+
 ?>
 
 <main class="app-content">

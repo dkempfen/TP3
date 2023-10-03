@@ -1,7 +1,7 @@
 <?php
-require_once '../includes/header.php';
-require_once '../modals/modals.php';
-require_once '../models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/edidtar_user.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 if ($pdo) {
@@ -51,7 +51,7 @@ if ($pdo) {
         <div class="col-lg-6 text-right">
             <!-- Divide la fila en 2 columnas y alinea a la derecha -->
             <button class="Usernalta-button" id="crearNuevaCarreraBtn" type="button" data-toggle="modal"
-                onclick="openModal()"><i class="fas fa-plus"></i> Nuevo Usuario</button>
+                onclick="openModal()"><i class="fas fa-plus"></i> Nueva Persona</button>
         </div>
     </div>
     <div class="mt-4">
@@ -75,6 +75,7 @@ if ($pdo) {
                                         <th>Domicilio</th>
                                         <th>Inscripto</th>
                                         <th>EDITAR</th>
+                                        <th>Crear Usuario</th>
                                     </tr>
                                 </thead>
                                 <tbody id="message">
@@ -100,7 +101,8 @@ if ($pdo) {
                                         echo '<td>' . $row['Email'] . '</td>';
                                         echo '<td>' . $row['Domicilio'] . '</td>';
                                         echo '<td>' . $row['Inscripto'] . '</td>';
-                                        echo '<td><button class="btn btn-sm btn-warning edit-link" onclick="openModals(' . $row['Id_Usuario'] . ')">Editar</button></td>';
+                                        echo '<td><button class="btn-icon" onclick="openModals(' . $row['Id_Usuario'] . ')"><i class="edit-btn"></i>✏️</button></td>';
+                                        echo '<td><button class="btn-icon" onclick="openModalsCrearUser(' . $row['Id_Usuario'] . ')"><i class="fas fa-plus" style="color: blue;"></i></button></td>';
                                         echo '</tr>';
                                     }
                                 } else {

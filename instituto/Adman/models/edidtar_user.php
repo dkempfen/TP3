@@ -76,18 +76,6 @@ $DatosUsuarios = DatosUsuarios();
                             value="<?php echo $DatosUsuarios['Domicilio']; ?>" required>
 
                     </div>
-                    <div class="form-group">
-                        <label for="listEstado">Rol</label>
-                        <select class="form-control" name="roleditar" id="roleditar" required>
-                            <option value="0">Seleccione</option>
-                            <option value="3" <?php if ($DatosUsuarios['fk_Rol'] == 3) echo "selected"; ?>>Administrador
-                            </option>
-                            <option value="1" <?php if ($DatosUsuarios['fk_Rol'] == 1) echo "selected"; ?>>Alumno
-                            </option>
-                            <option value="2" <?php if ($DatosUsuarios['fk_Rol'] == 2) echo "selected"; ?>>Profesor
-                            </option>
-                        </select>
-                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit"

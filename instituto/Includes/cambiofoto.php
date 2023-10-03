@@ -1,7 +1,6 @@
 <?php
 
-
-require_once './load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 
 if (isset($_FILES["file"])) {

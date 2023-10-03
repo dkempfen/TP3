@@ -1,6 +1,5 @@
 <?php
-require_once '../Includes/load.php';
-
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 <?php
 

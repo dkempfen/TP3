@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header headerRegister">
-                <h5 class="modal-title fs-5" id="tituloModal">Nuevo Usuario</h5>
+                <h5 class="modal-title fs-5" id="tituloModal">Nueva Persona</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -13,9 +13,6 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#datos" role="tab">Datos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#datosAdicionales" role="tab">Datos Adicionales</a>
                     </li>
                 </ul>
 
@@ -51,69 +48,20 @@
                                 <input type="text" class="form-control" name="domicilio" id="domicilio">
                             </div>
 
-
-                        </form>
-                    </div>
-
-                    <!-- Datos Adicionales -->
-                    <div class="tab-pane" id="datosAdicionales" role="tabpanel">
-                        <form id="formDatosAdicionales" name="formDatosAdicionales" action="/instituto/Includes/sql.php"
-                            method="POST">
-                            <input type="hidden" name="action" value="insert">
-                            <input type="hidden" name="idusuarios" id="idusuarios" value="">
-                            <div class="form-group">
-                                <label for="control-label">Usuario:</label>
-                                <input type="text" class="form-control" name="usuario" id="usuario">
-                            </div>
-                            <div class="form-group">
-                                <label for="control-label">Legajo:</label>
-                                <input type="text" class="form-control" name="legajo" id="legajo">
-                            </div>
-                            <div class="form-group">
-                                <label for="control-label">Contraseña:</label>
-                                <input type="text" class="form-control" name="clave" id="clave">
-                            </div>
-                            <div class="form-group">
-                                <label for="control-label">Plan:</label>
-                                <input type="text" class="form-control" name="plan" id="plan">
-                            </div>
-                            <div class="form-group">
-                                <label for="control-label">Matriz:</label>
-                                <input type="text" class="form-control" name="matriz" id="matriz">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="listRol">Rol</label>
-                                <select class="form-control" name="listRol" id="listRol">
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Profesor</option>
-                                    <option value="3">Alumno</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="listEstado">Estado</label>
-                                <select class="form-control" name="listEstado" id="listEstado">
-                                    <option value="1">Activo</option>
-                                    <option value="2">Inactivo</option>
-                                </select>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button id="btnActionForm" class="btn btn-primary">Guardar</button>
                             </div>
 
 
 
                         </form>
+
                     </div>
 
 
 
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button id="btnActionForm" class="btn btn-primary">Guardar</button>
-
-                </div>
-
-
 
 
             </div>
@@ -135,13 +83,11 @@ function isValidInput(value) {
 function openModal() {
     console.log('Abrir modal'); // Agrega este log para verificar si se llama a la función
     document.getElementById('idusuario').value = "";
-    document.getElementById('idusuarios').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
     document.getElementById('btnActionForm').classList.replace("btn-info", "btn-primary");
     document.getElementById('btnActionForm').innerHTML = 'Guardar';
     document.getElementById('tituloModal').innerHTML = 'Nuevo Usuario';
     document.getElementById('formUsuario').reset();
-    document.getElementById('formDatosAdicionales').reset();
 
     $('#modalUsuario').modal('show');
 }
@@ -162,7 +108,6 @@ $(document).ready(function() {
     });
 
     var formUsuario = document.getElementById('formUsuario');
-    var formDatosAdicionales = document.getElementById('formDatosAdicionales');
 
 
     // AJAX request to load user states on page load
@@ -214,13 +159,4 @@ $(document).ready(function() {
 
 
 });
-
-
-
 </script>
-
-
-
-
-
-

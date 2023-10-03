@@ -1,7 +1,7 @@
 <?php
-require_once './ModelsPlan/crearPlan.php';
-require_once './includes/header.php';
-require_once '../Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/ModelsPlan/crearPlan.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
