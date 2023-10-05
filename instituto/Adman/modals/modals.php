@@ -24,33 +24,47 @@
                             <input type="hidden" name="action" value="insert">
                             <input type="hidden" name="idusuario" id="idusuario" value="">
                             <div class="form-group">
+                                <label for="control-label">DNI:</label>
+                                <input type="number" class="form-control" name="dni" id="dni" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="control-label">Nombre:</label>
-                                <input type="text" class="form-control" name="nombre" id="nombre">
+                                <input type="text" class="form-control" name="nombre" id="nombre" required>
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Apellido:</label>
-                                <input type="text" class="form-control" name="apellido" id="apellido">
+                                <input type="text" class="form-control" name="apellido" id="apellido" required>
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Fecha Nacimiento:</label>
-                                <input type="date" class="form-control" name="fechanacimiento" id="fechanacimiento">
+                                <input type="date" class="form-control" name="fechanacimiento" id="fechanacimiento"
+                                    required>
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Telefono:</label>
-                                <input type="tel" class="form-control" name="telefono" id="telefono">
+                                <input type="number" class="form-control" name="telefono" id="telefono" required>
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Mail:</label>
-                                <input type="text" class="form-control" name="mail" id="mail">
+                                <input type="email" class="form-control" name="mail" id="mail" required>
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Domicilio:</label>
-                                <input type="text" class="form-control" name="domicilio" id="domicilio">
+                                <input type="text" class="form-control" name="domicilio" id="domicilio" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="control-label">Inscripto:</label>
+                                <select class="form-control" name="inscripto" id="inscripto">
+                                    <option value="0">Seleccione</option> <!-- Opción por defecto con valor "0" -->
+                                    <option value="1">Inscripto</option> <!-- Valor "1" para "Inscripto" -->
+                                    <!-- Otras opciones aquí -->
+                                </select>
                             </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                <button id="btnActionForm" class="btn btn-primary">Guardar</button>
+                                <button id="btnActionForm" class="btn btn-primary"
+                                    name="btnaltaPersona">Guardar</button>
                             </div>
 
 
@@ -96,67 +110,65 @@ function openModal() {
 $(document).ready(function() {
     var tableusuarios = $('#tableUsuarios').DataTable();
 
-    function openModal() {
-        $('#modalUsuario').modal('show');
-    }
-    $('#btnActionForm').on('click', openModal);
-
-
-    $('.btn-primary').on('click', function() {
+    $('#btnActionForm').on('click', function() {
         console.log('Botón Guardar clickeado');
-        openModal();
-    });
+        var dni = $("#dni").val();
+        var nombre = $("#nombre").val();
+        var apellido = $("#apellido").val();
+        var fechanacimiento = $("#fechanacimiento").val();
+        var telefono = $("#telefono").val();
+        var email = $("#mail").val();
+        var domicilio = $("#domicilio").val();
+        var Inscripto = $("#Inscripto").val();
+        var idusuario = $("#idusuario").val();
+        var inscritoValue = (inscripto === '1') ? 1 : 0;
 
-    var formUsuario = document.getElementById('formUsuario');
 
-
-    // AJAX request to load user states on page load
-    $.ajax({
-        url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
-        type: "POST",
-        data: {
-            get_users_state: true
-        },
-        success: function(data) {
-            console.log('Datos enviados al servidor:', data); // Agrega este log
-            var usersState = JSON.parse(data);
-            for (var usuario_id in usersState) {
-                var estado = usersState[usuario_id];
-                var checkbox = $('input[data-usuario-id="' + usuario_id + '"]');
-                checkbox.prop("checked", estado === "activo");
-            }
-        },
-        error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
-            console.log("Error en la solicitud AJAX:",
-                error); // Imprime el mensaje de error en la consola
-        }
-    });
-
-    // Event to change user state via AJAX
-    $(".onoffswitch-checkbox").on("change", function() {
-        var usuario_id = $(this).data("usuario-id");
-        var estado = this.checked ? 'activo' : 'inactivo';
-
+        // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
             url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
-                usuario_id: usuario_id,
-                estado: estado
+                idusuario: idusuario,
+                dni: dni,
+                nombre: nombre,
+                apellido: apellido,
+                fechanacimiento: fechanacimiento,
+                telefono: telefono,
+                mail: email,
+                domicilio: domicilio,
+                Inscripto: Inscripto,
+                btnaltaPersona: 1 // Agrega una marca para indicar que es una solicitud de inserción o actualización
             },
             success: function(response) {
-                console.log(response);
-                setTimeout(function() {
-                    window.location.reload();
-                }, 2000);
+                // Verificar la respuesta del servidor
+                if (response.success) {
+                    // Cerrar el modal
+                    $('#modalUsuario').modal('hide');
+
+                    // Mostrar mensaje de éxito
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos guardados exitosamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    // Mostrar mensaje de error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al guardar los datos',
+                        text: response.message
+                    });
+                }
             },
-            error: function(error) { // Eliminamos 'xhr' de los parámetros de la función
-                console.log("Error en la solicitud AJAX:",
-                    error); // Imprime el mensaje de error en la consola
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
             }
         });
+
     });
-
-
 });
 </script>

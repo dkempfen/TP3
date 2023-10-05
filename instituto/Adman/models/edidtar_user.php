@@ -29,9 +29,7 @@ $DatosUsuarios = DatosUsuarios();
 
                     <div class="form-group">
                         <label for="control-label">DNI:</label>
-
-
-                        <input type="text" class="form-control" name="dnioeditar" id="dnioeditar"
+                        <input type="number" class="form-control" name="dnioeditar" id="dnioeditar"
                             value="<?php  echo $DatosUsuarios['DNI']?>" required>
                     </div>
                     <div class="form-group">
@@ -47,27 +45,22 @@ $DatosUsuarios = DatosUsuarios();
                             value="<?php echo $DatosUsuarios['Apellido']; ?>" required>
 
                     </div>
-                    <div class="form-group">
-                        <label for="control-label">DNI:</label>
-                        <input type="text" class="form-control" name="dnieditar" id="dnieditar"
-                            value="<?php echo $DatosUsuarios['fk_DNI']; ?>" required>
 
-                    </div>
                     <div class="form-group">
                         <label for="listRol">Fechanacimiento</label>
-                        <input type="text" class="form-control" name="fechanacimientoeditar" id="fechanacimientoeditar"
+                        <input type="date" class="form-control" name="fechanacimientoeditar" id="fechanacimientoeditar"
                             value="<?php echo $DatosUsuarios['Fechanacimiento']; ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="control-label">Telefono:</label>
-                        <input type="text" class="form-control" name="telefonoeditar" id="telefonoeditar"
+                        <input type="number" class="form-control" name="telefonoeditar" id="telefonoeditar"
                             value="<?php echo $DatosUsuarios['Telefono']; ?>" required>
 
                     </div>
                     <div class="form-group">
                         <label for="control-label">Email:</label>
-                        <input type="text" class="form-control" name="emailoeditar" id="emailoeditar"
-                            value="<?php echo $DatosUsuarios['Email']; ?>" required>
+                        <input type="email" class="form-control" name="emailoeditar" id="emailoeditar" value="<?php echo $DatosUsuarios['Email']; ?>" required>
+
 
                     </div>
                     <div class="form-group">
@@ -104,22 +97,29 @@ function openModals(usuario_id) {
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
     document.getElementById('btnActionEditarForm').classList.replace("btn-info", "btn-open-modal");
     document.getElementById('btnEditartext').innerHTML = 'Guardar';
-    document.getElementById('tituloModalEditar').innerHTML = 'Modificar Usuario';
+    document.getElementById('tituloModalEditar').innerHTML = 'Modificar Persona';
     document.getElementById('formEditarUsuario').reset();
     var modalId = "#modaleditarUsuario_" + usuario_id;
     $(modalId).modal('show');
     $('#modaleditarUsuario_').modal('show');
     $('#modaleditarUsuario').modal('show');
-    var usuario_id = DatosUsuarios(); // Debes implementar esta función
 
 }
+
+
+
 
 $(document).ready(function() {
     var tableusuarios = $('#tableUsuarios').DataTable();
 
     $('.btn-open-modal').on('click', function() {
-        openModals();
+        var modalType = $(this).data('modal-type'); // Obtén el tipo de modal desde el atributo 'data-modal-type' del botón
+
+        if (modalType === 'modals') {
+            openModals(); // Abre el modal utilizando openModals
+        }
     });
+
 
     var formUsuario = document.getElementById('formEditarUsuario');
 

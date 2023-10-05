@@ -6,9 +6,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT * from Usuario u INNER JOIN Rol  r on u.fk_Rol=r.id_Rol
-   INNER JOIN Persona p ON p.DNI = u.fk_DNI
-   INNER JOIN Estado e on e.Id_Estado= u.fk_Estado_Usuario";
+    $sql = "SELECT p.*, u.Id_Usuario, u.fk_Rol, u.fk_Estado_Usuario, r.descripcion as RolNombre, e.Descripcion_Estado as EstadoNombre
+    FROM Persona p
+    LEFT JOIN Usuario u ON p.DNI = u.fk_DNI
+    LEFT JOIN Rol r ON u.fk_Rol = r.id_Rol
+    LEFT JOIN Estado e ON u.fk_Estado_Usuario = e.Id_Estado";
+    
     $result = $pdo->query($sql);
     // Check if there's a message in the session
 
