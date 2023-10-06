@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/crearUsuario.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/edidtar_user.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
@@ -25,6 +26,8 @@ if ($pdo) {
         unset($_SESSION['message']); // Clear the session variable after displaying the message
         showConfirmationMessages($message);
     }
+
+    
     
     ?>
 

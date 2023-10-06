@@ -20,7 +20,8 @@
                 <div class="tab-content">
                     <!-- Datos -->
                     <div class="tab-pane active" id="datos" role="tabpanel">
-                        <form id="formUsuario" name="formUsuario" action="/instituto/Includes/sql.php" method="POST">
+                        <form id="formUsuario" name="formUsuario" action="/instituto/Includes/slqeditar.php"
+                            method="POST">
                             <input type="hidden" name="action" value="insert">
                             <input type="hidden" name="idusuario" id="idusuario" value="">
                             <div class="form-group">
@@ -54,11 +55,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="control-label">Inscripto:</label>
-                                <select class="form-control" name="inscripto" id="inscripto">
-                                    <option value="0">Seleccione</option> <!-- Opción por defecto con valor "0" -->
-                                    <option value="1">Inscripto</option> <!-- Valor "1" para "Inscripto" -->
-                                    <!-- Otras opciones aquí -->
-                                </select>
+                                <input type="checkbox" class="form-check-input" name="inscripto" id="inscripto">
+
                             </div>
 
                             <div class="modal-footer">
@@ -119,14 +117,16 @@ $(document).ready(function() {
         var telefono = $("#telefono").val();
         var email = $("#mail").val();
         var domicilio = $("#domicilio").val();
-        var Inscripto = $("#Inscripto").val();
+        var inscripto = $("#inscripto").is(":checked") ? 1 :
+            0; // Asigna 1 si está marcado, 0 si no lo está
         var idusuario = $("#idusuario").val();
-        var inscritoValue = (inscripto === '1') ? 1 : 0;
+
+        console.log('Estado del checkbox "inscripto":', inscripto);
 
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/instituto/Includes/slqeditar.php",
             type: "POST",
             data: {
                 idusuario: idusuario,
@@ -137,8 +137,8 @@ $(document).ready(function() {
                 telefono: telefono,
                 mail: email,
                 domicilio: domicilio,
-                Inscripto: Inscripto,
-                btnaltaPersona: 1 // Agrega una marca para indicar que es una solicitud de inserción o actualización
+                inscripto: inscripto,
+                btnaltaPersona: 0
             },
             success: function(response) {
                 // Verificar la respuesta del servidor
@@ -168,7 +168,16 @@ $(document).ready(function() {
                 console.log("Error en la solicitud AJAX:", error);
             }
         });
+    });
 
+    // Obtén el elemento checkbox por su id y agrega un oyente de eventos para el evento "change"
+    $('#inscripto').on('change', function() {
+        // Obtiene el valor del checkbox (true o false) y realiza alguna acción basada en el valor
+        if ($(this).is(':checked')) {
+            alert("El usuario está inscrito");
+        } else {
+            alert("El usuario no está inscrito");
+        }
     });
 });
 </script>
