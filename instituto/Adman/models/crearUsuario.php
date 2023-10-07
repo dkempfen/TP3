@@ -3,18 +3,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 require_once '../Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
+$DatosPersonas = DatosPersonas();
+
 
 
 ?>
-<?php foreach ($DatosUsuarios as $DatosUsuarios) { ?>
+<?php foreach ($DatosUsuarios as $DatosUsuarios); foreach ($DatosPersonas as $DatosPersonas)  { ?>
 
 
-<div class="modal fade" id="modalCrearUsuario_<?php echo $DatosUsuarios['id_usuario']; ?>" tabindex="-1" role="dialog"
+<div class="modal fade" id="modalCrearUsuario_<?php echo $DatosPersonas['DNI']; ?>" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header headerRegister">
-                <h5 class="modal-title fs-5" id="tituloModalEditar">Editar Persona</h5>
+                <h5 class="modal-title fs-5" id="tituloModalEditar">Crear Usuairo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -25,11 +27,10 @@ $DatosUsuarios = DatosUsuarios();
                     <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
                         value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
                     <input type="hidden" name="dni_a_editar" id="dni_a_editar"
-                        value="<?php  echo $DatosUsuarios['DNI']?>" required>
-
+                        value="<?php  echo $DatosPersonas['DNI']?>" required>
                     <div class="form-group">
                         <label for="control-label">DNI:</label>
-                        <span id="dniUser" class="form-control"><?php echo $DatosUsuarios['DNI']; ?></span>
+                        <span id="dniUser" class="form-control"><?php  echo $DatosPersonas['DNI']?></span>
 
                     </div>
                     <div class="form-group">

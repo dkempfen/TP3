@@ -1110,3 +1110,14 @@ Usernalta-button:hover,
     font-size: 46px; /* Ajusta el tamaño del icono según sea necesario */
     color: #FFA500; /* Cambia el color del icono según tus preferencias */
 }
+/*--Boton de habilitar Inscrpcion*/
+.custom-control-input {
+    width: 3em; /* Ajusta el tamaño del input */
+    height: 2em; /* Ajusta el tamaño del input */
+}
+
+.custom-control-label-lg::before {
+    width: 3em; /* Ajusta el tamaño del label */
+    height: 2em; /* Ajusta el tamaño del label */
+    line-height: 2em; /* Alinea verticalmente el texto del label */
+}

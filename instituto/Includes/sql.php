@@ -262,7 +262,7 @@ function DatosUsuarios()
     $sql = "SELECT u.id_usuario, p.nombre,p.Apellido ,p.email, p.DNI,p.Fechanacimiento,p.Telefono,p.Email,p.Domicilio,
     u.fk_Plan,u.Libromatriz,u.Legajo,u.Legajo, u.fk_Rol, u.fk_DNI,u.Password,u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
     FROM Usuario u 
-    INNER JOIN Persona p ON p.DNI = u.fk_DNI
+    left JOIN Persona p ON p.DNI = u.fk_DNI
     INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
     INNER JOIN Estado e ON e.Id_Estado = u.fk_Estado_Usuario";
 
@@ -271,6 +271,20 @@ function DatosUsuarios()
 
     $rows = $datosUsuarios->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
+}
+
+function DatosPersonas()
+{
+    global $pdo;
+
+    $sql = "SELECT *
+    FROM Persona";
+
+    $datosPersonas = $pdo->prepare($sql);
+    $datosPersonas->execute();
+
+    $rowPersona = $datosPersonas->fetchAll(PDO::FETCH_ASSOC);
+    return $rowPersona;
 }
 /*function ActulizarUser()
     {      

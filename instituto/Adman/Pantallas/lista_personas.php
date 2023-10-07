@@ -7,11 +7,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
-    $sql = "SELECT p.*, u.Id_Usuario, u.fk_Rol, u.fk_Estado_Usuario, r.descripcion as RolNombre, e.Descripcion_Estado as EstadoNombre
-    FROM Persona p
-    LEFT JOIN Usuario u ON p.DNI = u.fk_DNI
-    LEFT JOIN Rol r ON u.fk_Rol = r.id_Rol
-    LEFT JOIN Estado e ON u.fk_Estado_Usuario = e.Id_Estado";
+    $sql = "SELECT p.*
+    FROM Persona p";
     
     $result = $pdo->query($sql);
     // Check if there's a message in the session
@@ -71,7 +68,6 @@ if ($pdo) {
                             <table class="table table-hover table-bordered" id="tableUsuarios">
                                 <thead>
                                     <tr>
-                                        <th>ACCIONES</th>
                                         <th>DNI</th>
                                         <th>NOMBRE</th>
                                         <th>Apellido</th>
@@ -91,14 +87,14 @@ if ($pdo) {
                                     // Loop a través del resultado y generar filas de la tabla
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                         echo '<tr>';
-                                        echo '<td class="">';
-                                        echo '<label class="switch">';
+                                        //echo '<td class="">';
+                                        //echo '<label class="switch">';
                                         // Aquí agregamos un ternario para comprobar si el estado está activado o no
-                                        $checked = ($row['fk_Estado_Usuario'] == 1) ? 'checked' : '';
-                                        echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['Id_Usuario'] . '">';
-                                        echo '<span class="slider"></span>';
-                                        echo '</label>';
-                                        echo '</td>';
+                                        //$checked = ($row['fk_Estado_Usuario'] == 1) ? 'checked' : '';
+                                       // echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row[''] . '">';
+                                       // echo '<span class="slider"></span>';
+                                       // echo '</label>';
+                                       // echo '</td>';
                                         echo '<td>' . $row['DNI'] . '</td>';
                                         echo '<td>' . $row['Nombre'] . '</td>';
                                         echo '<td>' . $row['Apellido'] . '</td>';
@@ -106,9 +102,9 @@ if ($pdo) {
                                         echo '<td>' . $row['Telefono'] . '</td>';
                                         echo '<td>' . $row['Email'] . '</td>';
                                         echo '<td>' . $row['Domicilio'] . '</td>';
-                                        echo '<td>' . $row['Inscripto'] . '</td>';
-                                        echo '<td><button class="btn-icon" onclick="openModals(' . $row['Id_Usuario'] . ')"><i class="edit-btn"></i>✏️</button></td>';
-                                        echo '<td><button class="btn-icon" onclick="openModalsCrearUser(' . $row['Id_Usuario'] . ')"><i class="fas fa-plus" style="color: blue;"></i></button></td>';
+                                        echo '<td>' . ($row['Inscripto'] ? 'Inscrito' : 'No Inscrito') . '</td>';
+                                        echo '<td><button class="btn-icon" onclick="openModals(' . $row['DNI'] . ')"><i class="edit-btn"></i>✏️</button></td>';
+                                        echo '<td><button class="btn-icon" onclick="openModalsCrearUser(' . $row['DNI'] . ')"><i class="fas fa-plus" style="color: blue;"></i></button></td>';
                                         echo '</tr>';
                                     }
                                 } else {

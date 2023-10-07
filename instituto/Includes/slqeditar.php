@@ -20,17 +20,19 @@ function showConfirmationMessages($message) {
     </script>";
 }       
 
-function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio) {
+
+
+
+function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio, $inscripto) {
     session_start();
     global $pdo;
+    
 
- 
-    // Actualizar los campos de la tabla Persona
-    $sql = "UPDATE Persona SET Nombre = ?, Apellido = ?, Fechanacimiento = ?, Telefono = ?, Email = ?, Domicilio = ? WHERE DNI = ?";
+    $sql = "UPDATE Persona SET Nombre = ?, Apellido = ?, Fechanacimiento = ?, Telefono = ?, Email = ?, Domicilio = ?, Inscripto=? WHERE DNI = ?";
     $stmt = $pdo->prepare($sql);
 
     // Verifica si los valores son nulos antes de ejecutar la consulta
-    $stmt->execute([$nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio, $dni]);
+    $stmt->execute([$nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto,$dni]);
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['message'] = [
@@ -50,22 +52,68 @@ function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $
 
 // Verificar si se ha enviado una solicitud de edición (update)
 if (isset($_POST['btnmodificar'])) {
-    $dni = $_POST['dnioeditar'];
+    $dni = $_POST['nuevoDNI'];
     $nombre = $_POST['nombreeditar'];
     $apellido = $_POST['apellidoeditar'];
     $fechanacimiento = $_POST['fechanacimientoeditar'];
     $telefono = $_POST['telefonoeditar'];
     $email = $_POST['emailoeditar'];
     $domicilio = $_POST['domicilioeditar'];
+    $inscripto= $_POST['inscriptoeditar'];
+
 
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
-    actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio);
+    actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto);
 
     header("Location: /instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
+/*function cambioDNI() {
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        session_start();
+        global $pdo;
+        $oldDNI = $_POST["old_dni"];
+        $newDNI = $_POST["nuevoDNI"]; // Cambiamos esto para usar el campo 'nuevoDNI' del formulario
 
+        $sql = "SELECT DNI FROM Persona WHERE DNI = :old_dni";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':old_dni', $oldDNI);
+        $stmt->execute();
+        $row = $stmt->fetch();
 
+        if (empty($oldDNI) || empty($newDNI)) {
+            $_SESSION['dni_message'] = [
+                'type' => 'error',
+                'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
+            ];
+        } elseif (!$row) {
+            $_SESSION['dni_message'] = [
+                'type' => 'error',
+                'text' => 'El DNI actual ingresado no coincide con ningún registro en la base de datos.'
+            ];
+        } else {
+            try {
+                $updateSql = "UPDATE Persona SET DNI = :new_dni WHERE DNI = :old_dni";
+                $updateStmt = $pdo->prepare($updateSql);
+                $updateStmt->bindParam(':new_dni', $newDNI);
+                $updateStmt->bindParam(':old_dni', $oldDNI);
+                $updateStmt->execute();
+                $_SESSION['dni_message'] = [
+                    'type' => 'success',
+                    'text' => '¡DNI cambiado exitosamente!'
+                ];
+            } catch (PDOException $e) {
+                $_SESSION['dni_message'] = [
+                    'type' => 'error',
+                    'text' => 'Error al actualizar el DNI: ' . $e->getMessage()
+                ];
+            }
+        }
+
+        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        exit();
+    }
+}*/
 
 function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto) {
     session_start();
@@ -164,10 +212,6 @@ function insertarUsuario($dni, $idUsuario, $legajo, $user, $password, $libroMatr
 }
 
 
-if (insertarUsuario($dni, $idUsuario, $legajo, $user, $password, $libroMatriz, $plan, $rol)) {
-    echo "Usuario insertado correctamente.";
-} else {
-    echo "No se pudo insertar el usuario. Asegúrate de que el DNI exista en la tabla Persona.";
-}
+
 ?>
 
