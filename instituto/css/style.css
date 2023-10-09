@@ -1121,3 +1121,31 @@ Usernalta-button:hover,
     height: 2em; /* Ajusta el tamaño del label */
     line-height: 2em; /* Alinea verticalmente el texto del label */
 }
+
+
+/* Aplicar estilos al área de información del usuario */
+.user-info {
+    background-color: #f8f8f8;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para los títulos (h4) */
+.user-info h4 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Estilos para los elementos de la lista (<li>) */
+.user-info ul li {
+    margin-bottom: 5px;
+}
+
+/* Estilos para los títulos fuertes (<strong>) */
+.user-info ul li strong {
+    font-weight: bold;
+    margin-right: 5px;
+}

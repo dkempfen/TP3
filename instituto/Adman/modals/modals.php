@@ -1,3 +1,18 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+require_once '../Pantallas/lista_personas.php';
+
+$DatosUsuarios = DatosUsuarios();
+$DatosPersonas = DatosPersonas();
+
+
+
+?>
+
+
+
+<?php foreach ($DatosUsuarios as $DatosUsuarios); foreach ($DatosPersonas as $DatosPersonas)  { ?>
+
 <div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -53,10 +68,16 @@
                                 <label for="control-label">Domicilio:</label>
                                 <input type="text" class="form-control" name="domicilio" id="domicilio" required>
                             </div>
+         
                             <div class="form-group">
-                                <label for="control-label">Inscripto:</label>
-                                <input type="checkbox" class="form-check-input" name="inscripto" id="inscripto">
-
+                                <label for="inscripto">Inscripto:</label>
+                                <div class="custom-control custom-switch custom-control-lg">
+                                    <input type="checkbox" class="custom-control-input" id="inscripto" name="inscripto"
+                                        <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == 'on' ? 'checked' : ''; ?>>
+                                    <label class="custom-control-label custom-control-label-lg" for="inscripto">
+                                        <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == 'on' ? 'Sí, está inscrito' : 'No, no está inscrito'; ?>
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="modal-footer">
@@ -83,6 +104,7 @@
     </div>
 </div>
 </div>
+<?php } ?>
 
 <!-- Agrega SweetAlert2 y jQuery a tu página -->
 
@@ -98,7 +120,7 @@ function openModal() {
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
     document.getElementById('btnActionForm').classList.replace("btn-info", "btn-primary");
     document.getElementById('btnActionForm').innerHTML = 'Guardar';
-    document.getElementById('tituloModal').innerHTML = 'Nuevo Usuario';
+    document.getElementById('tituloModal').innerHTML = 'Nueva Persona';
     document.getElementById('formUsuario').reset();
 
     $('#modalUsuario').modal('show');
@@ -117,8 +139,7 @@ $(document).ready(function() {
         var telefono = $("#telefono").val();
         var email = $("#mail").val();
         var domicilio = $("#domicilio").val();
-        var inscripto = $("#inscripto").is(":checked") ? 1 :
-            0; // Asigna 1 si está marcado, 0 si no lo está
+        var inscripto = $("#inscripto").is(":checked") ? 1 :0; // Asigna 1 si está marcado, 0 si no lo está
         var idusuario = $("#idusuario").val();
 
         console.log('Estado del checkbox "inscripto":', inscripto);
@@ -180,4 +201,12 @@ $(document).ready(function() {
         }
     });
 });
+</script>
+
+<script>
+    // Agrega un console.log para verificar el estado del checkbox cuando la página se carga
+    document.addEventListener('DOMContentLoaded', function() {
+        var inscriptoCheckbox = document.getElementById('inscripto');
+        console.log('Checkbox está marcado:', inscriptoCheckbox.checked);
+    });
 </script>

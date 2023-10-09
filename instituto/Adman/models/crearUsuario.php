@@ -1,14 +1,26 @@
 <?php
+
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 require_once '../Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
 $DatosPersonas = DatosPersonas();
-
+$DatosPersonasUsuarios = DatosPersonasUsuarios();
 
 
 ?>
-<?php foreach ($DatosUsuarios as $DatosUsuarios); foreach ($DatosPersonas as $DatosPersonas)  { ?>
+
+
+<?php foreach ($DatosUsuarios as $DatosUsuarios) {
+    // Code to process $DatosUsuario goes here
+}
+
+
+
+foreach ($DatosPersonas as $DatosPersonas) {
+    // Code to process $DatosPersona goes here
+ ?>
+
 
 
 <div class="modal fade" id="modalCrearUsuario_<?php echo $DatosPersonas['DNI']; ?>" tabindex="-1" role="dialog"
@@ -16,26 +28,66 @@ $DatosPersonas = DatosPersonas();
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header headerRegister">
-                <h5 class="modal-title fs-5" id="tituloModalEditar">Crear Usuairo</h5>
+                <h5 class="modal-title fs-5" id="tituloModalCrearUser">Crear Usuairo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+
             <div class="modal-body">
-                <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/slqeditar.php"
+                <form id="formCrearUsuario" name="formCrearUsuario" action="/instituto/Includes/slqeditar.php"
                     method="POST">
-                    <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
-                        value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
-                    <input type="hidden" name="dni_a_editar" id="dni_a_editar"
-                        value="<?php  echo $DatosPersonas['DNI']?>" required>
+
+                    <!-- Mostrar información adicional si el usuario ya existe -->
+                    <div class="modal-body">
+                        <!-- Mostrar información adicional del usuario correspondiente -->
+                        <div class="user-info">
+                            <h4>Detalles del Usuario Registrado:</h4>
+
+                            <?php $firstUser = true; ?>
+                            <?php foreach ($DatosPersonasUsuarios as $DatosUsuarioss): ?>
+                            <?php if ($DatosUsuarioss['fk_DNI'] == $DatosPersonas['DNI']): ?>
+                            <?php if (!$firstUser): ?>
+                            <hr> <!-- Agrega una línea horizontal -->
+                            <?php else:
+                                  $firstUser = false;
+                            endif; ?>
+
+                            <li>
+                                <strong>Usuario:</strong> <?php echo $DatosUsuarioss['User']; ?>
+                            </li>
+                            <li>
+                                <strong>Rol:</strong> <?php echo $DatosUsuarioss['descripcion']; ?>
+                            </li>
+                            <li>
+                                <strong>Plan:</strong> <?php echo $DatosUsuarioss['fk_Plan']; ?>
+                            </li>
+                            <li>
+                                <strong>Libro Matriz:</strong> <?php echo $DatosUsuarioss['Libromatriz']; ?>
+                            </li>
+                            <li>
+                                <strong>Legajo:</strong> <?php echo $DatosUsuarioss['Legajo']; ?>
+                            </li>
+
+                            <?php endif; ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <input type="hidden" name="idusuariocrear" id="idusuariocrear"
+                        value="<?php  echo $DatosUsuarios['Id_Usuario']?>">
+                    <input type="hidden" name="dniCrear" id="dniCrear" value="<?php  echo $DatosPersonas['DNI']?>">
+
+
                     <div class="form-group">
                         <label for="control-label">DNI:</label>
-                        <span id="dniUser" class="form-control"><?php  echo $DatosPersonas['DNI']?></span>
+                         <!-- <input type="number" class="form-control" name="dniUser" id="dniUser" required>-->
+
+                         <input type="number" class="form-control" name="dniUser" id="dniUser" value="<?php echo $DatosPersonas['DNI']; ?>" readonly>
 
                     </div>
                     <div class="form-group">
                         <label for="control-label">Id_Usuario:</label>
-                        <input type="text" class="form-control" name="IdUsuario" id="IdUsuario" required>
+                        <input type="text" class="form-control" name="IdUser" id="IdUser" required>
                     </div>
                     <div class="form-group">
                         <label for="control-label">Legajo:</label>
@@ -51,40 +103,55 @@ $DatosPersonas = DatosPersonas();
                     </div>
                     <div class="form-group">
                         <label for="control-label">Libro Matriz:</label>
-                        <input type="text" class="form-control" name="libromatriz" id="libromatriz" required>
+                        <input type="text" class="form-control" name="libromatriz" id="libromatriz">
                     </div>
                     <div class="form-group">
                         <label for="control-label">Plan:</label>
-                        <input type="text" class="form-control" name="plan" id="plan" required>
+                        <!--<input type="text" class="form-control" name="plan" id="plan">-->
+                        <select class="form-control" name="plan" id="plan" required>
+                            <option value="">--Selecione--</option>
+                            <option value="5817/03">5817/03</option>
+                            <option value="6790/19">6790/19</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
                         <label for="control-label">Rol:</label>
-                        <select class="form-control" name="rol" id="rol" required>
+                         <!--<input type="text" class="form-control" name="rol" id="rol">-->
+                       <select class="form-control" name="rol" id="rol" required>
+                            <option value="">--Selecione--</option>
                             <option value="3">Administrador</option>
                             <option value="1">Alumno</option>
                             <option value="2">Profesor</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="control-label">Estado:</label>
-                        <input type="checkbox" class="form-check-input" name="estadoUser" id="estadoUser">
+                       <!-- <input type="text" class="form-control" name="estadoUser" id="estadoUser">-->
+                        <select class="form-control" name="estadoUser" id="estadoUser" required>
+                            <option value="">--Selecione--</option>
+                            <option value="1">Habilitado</option>
+                            <option value="2">Inhabilitado</option>
 
+                        </select>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button id="btnActionEditarForm" class="btn btn-primary btn-open-modal" type="submit"
-                            name="btnmodificar">
-                            <span id="btnEditartext">Guardar</span>
+                        <button id="btnActionAltaUserForm" class="btn btn-primary btn-open-modal" type="submit"
+                            name="btnmCrearUser">
+                            <span id="btnCrearUser">Guardar</span>
                         </button>
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 </div>
-
 <?php } ?>
+
 
 
 <!-- Agrega SweetAlert2 y jQuery a tu página -->
@@ -95,49 +162,45 @@ function isValidInput(value) {
 }
 
 function openModalsCrearUser(usuario_id) {
-    document.getElementById('idusuarioeditar').value = "";
+    document.getElementById('idusuariocrear').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
-    document.getElementById('btnActionEditarForm').classList.replace("btn-info", "btn-open-modal");
-    document.getElementById('btnEditartext').innerHTML = 'Guardar';
-    document.getElementById('tituloModalEditar').innerHTML = 'Modificar Usuario';
-    document.getElementById('formEditarUsuario').reset();
-    var modalId = "#modalCrearUsuario_" + usuario_id;
-    $(modalId).modal('show');
+    document.getElementById('btnActionAltaUserForm').classList.replace("btn-info", "btn-open-modal");
+    document.getElementById('btnCrearUser').innerHTML = 'Guardar';
+    document.getElementById('tituloModalCrearUser').innerHTML = 'Crear Usuario';
+    document.getElementById('formCrearUsuario').reset();
+    var modalIdUser = "#modalCrearUsuario_" + usuario_id;
+    $(modalIdUser).modal('show');
     $('#modalCrearUsuario_').modal('show');
-    $('#modaleditarUsuario').modal('show');
     var usuario_id = DatosUsuarios(); // Debes implementar esta función
 
 }
 
 $(document).ready(function() {
     var tableusuarios = $('#tableUsuarios').DataTable();
-
-    $('#btnActionForm').on('click', function() {
+    $('#formCrearUsuario').on('submit', function(event) {
+        event.preventDefault(); //
         console.log('Botón Guardar clickeado');
-        var dni = $("#dni").val();
-        var nombre = $("#IdUsuario").val();
-        var apellido = $("#legajo").val();
-        var fechanacimiento = $("#user").val();
-        var telefono = $("#password").val();
-        var email = $("#libromatriz").val();
-        var domicilio = $("#plan").val();
-        var domicilio = $("#rol").val();
+        var dniUser = $("#dniUser").text(); // Usar "dniUser" en lugar de "dni"
+        var IdUser = $("#IdUser").val();
+        var legajo = $("#legajo").val();
+        var user = $("#user").val();
+        var password = $("#password").val();
+        var libromatriz = $("#libromatriz").val();
+        var plan = $("#plan").val();
+        var rol = $("#rol").val();
+        var idusuariocrear = $("#idusuariocrear").val();
+        var estadoUser = $("#estadoUser").val(); // En lugar de "estadoUser", usar "estadoUser" si es un campo de selección
 
-        var inscripto = $("#estadoUser").is(":checked") ? 1 :
-            0; // Asigna 1 si está marcado, 0 si no lo está
-        var idusuario = $("#idusuario").val();
-
-        console.log('Estado del checkbox "inscripto":', inscripto);
-
+        console.log('Estado del campo de selección "estadoUser":', estadoUser);
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/instituto/Includes/sqleditar.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/instituto/Includes/slqeditar.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
-                idusuario: idusuario,
-                dni: dni,
-                IdUsuario: IdUsuario,
+                idusuariocrear: idusuariocrear,
+                dniUser: dniUser,
+                IdUser: IdUser,
                 legajo: legajo,
                 user: user,
                 password: password,
@@ -145,8 +208,9 @@ $(document).ready(function() {
                 plan: plan,
                 rol: rol,
                 estadoUser: estadoUser,
-                btnaltaPersona: 0
+                btnmCrearUser: 0
             },
+            
             success: function(response) {
                 // Verificar la respuesta del servidor
                 if (response.success) {
@@ -177,29 +241,8 @@ $(document).ready(function() {
         });
     });
 
-    // Obtén el elemento checkbox por su id y agrega un oyente de eventos para el evento "change"
-    $('#inscripto').on('change', function() {
-        // Obtiene el valor del checkbox (true o false) y realiza alguna acción basada en el valor
-        if ($(this).is(':checked')) {
-            alert("El usuario está inscrito");
-        } else {
-            alert("El usuario no está inscrito");
-        }
-    });
 
-    $("#buscarPersona").on("click", function() {
-        // Aquí debes implementar una forma de seleccionar la persona desde la tabla de Personas
-        // Puedes abrir un modal o utilizar una ventana emergente para mostrar la lista de personas
-        // y permitir al usuario seleccionar una persona.
 
-        // Una vez seleccionada la persona, obtén su DNI y actualiza el elemento <span> correspondiente en el formulario.
-        var dniSeleccionado = ObtenerDNIPersonaSeleccionada(); // Implementa esta función para obtener el DNI seleccionado.
 
-        if (dniSeleccionado) {
-            $("#dniUser").text(dniSeleccionado);
-        } else {
-            alert("Debes seleccionar una persona.");
-        }
-    });
 });
 </script>

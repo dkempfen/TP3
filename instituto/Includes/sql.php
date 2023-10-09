@@ -259,10 +259,10 @@ function DatosUsuarios()
 {
     global $pdo;
 
-    $sql = "SELECT u.id_usuario, p.nombre,p.Apellido ,p.email, p.DNI,p.Fechanacimiento,p.Telefono,p.Email,p.Domicilio,
+    $sql = "SELECT u.id_usuario, p.nombre,p.Apellido ,p.email, p.DNI,p.Fechanacimiento,p.Telefono,p.Email,p.Domicilio,u.User,
     u.fk_Plan,u.Libromatriz,u.Legajo,u.Legajo, u.fk_Rol, u.fk_DNI,u.Password,u.fk_Estado_Usuario, r.descripcion,e.Descripcion_Estado
     FROM Usuario u 
-    left JOIN Persona p ON p.DNI = u.fk_DNI
+    INNER JOIN Persona p ON p.DNI = u.fk_DNI
     INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
     INNER JOIN Estado e ON e.Id_Estado = u.fk_Estado_Usuario";
 
@@ -285,6 +285,24 @@ function DatosPersonas()
 
     $rowPersona = $datosPersonas->fetchAll(PDO::FETCH_ASSOC);
     return $rowPersona;
+}
+
+
+function DatosPersonasUsuarios()
+{
+    global $pdo;
+
+    $sql = "SELECT *
+    FROM Persona p
+    LEFT JOIN Usuario u ON p.DNI = u.fk_DNI
+    INNER JOIN Rol r ON r.id_Rol = u.fk_Rol
+    WHERE u.fk_DNI IS NOT NULL";
+
+    $datosPersonasUsuario = $pdo->prepare($sql);
+    $datosPersonasUsuario->execute();
+
+    $rowPersonaUsuario = $datosPersonasUsuario->fetchAll(PDO::FETCH_ASSOC);
+    return $rowPersonaUsuario;
 }
 /*function ActulizarUser()
     {      

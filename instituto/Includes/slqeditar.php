@@ -136,11 +136,11 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
 
         // Asignar el valor adecuado a la columna "Inscripto" según la selección del usuario
 
-        
+        $inscripto = isset($inscripto) ? 1 : 0;
+
         $sql = "INSERT INTO Persona (DNI, Nombre, Apellido, Fechanacimiento, Telefono, Email, Domicilio, Inscripto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto]);
-        
 
         if ($stmt->rowCount() > 0) {
             $_SESSION['message'] = [
@@ -159,7 +159,6 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
     exit();
 }
 
-
 // Verificar si se ha enviado una solicitud de inserción
 if (isset($_POST['btnaltaPersona'])) {
     $dni = $_POST['dni'];
@@ -169,7 +168,7 @@ if (isset($_POST['btnaltaPersona'])) {
     $telefono = $_POST['telefono'];
     $mail = $_POST['mail'];
     $domicilio = $_POST['domicilio'];
-    $inscripto = isset($_POST['inscripto']) ? 1 : 0; // Verifica si se envió 'inscripto' y asigna 1 si se marcó, 0 si no se marcó
+    $inscripto = isset($_POST['inscripto']) ? 1 : 0; // Valor por defecto 0 si no está marcado
 
     AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
 
@@ -178,39 +177,72 @@ if (isset($_POST['btnaltaPersona'])) {
 }
 
 
-function insertarUsuario($dni, $idUsuario, $legajo, $user, $password, $libroMatriz, $plan, $rol) {
-    global $pdo; // Supongo que ya tienes una conexión PDO establecida
+print_r($DatosPersonas);
 
-    // Verificar si el DNI ya existe en la tabla Persona
-    $sql = "SELECT DNI FROM Persona WHERE DNI = :dni";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':dni', $dni, PDO::PARAM_INT);
-    $stmt->execute();
+function insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
+    session_start();
+    global $pdo;
 
-    if ($stmt->rowCount() == 0) {
-        // El DNI no existe en la tabla Persona, no se puede insertar el usuario
-        return false;
+    try {
+        // Asignar el valor adecuado a la columna "Inscripto" según la selección del usuario
+        $estadoUser = isset($estadoUser) ? $estadoUser : 0;
+
+        // Prepara la consulta SQL de inserción
+        $sql = "INSERT INTO Usuario (fk_DNI, Id_Usuario, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Prepara la declaración SQL
+        $stmt = $pdo->prepare($sql);
+
+        // Obtener el DNI del span
+        $dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
+
+        // Ejecuta la consulta SQL
+        $stmt->execute([$dniUser, $IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Datos de usuario insertados exitosamente'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+            ];
+        }
+
+        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        exit();
+    } catch (PDOException $e) {
+        // Si hay un error en la consulta, puedes manejarlo aquí
+        // Puedes registrar el error o mostrar un mensaje de error en la misma página
+        error_log('Error en la inserción de usuario: ' . $e->getMessage());
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+        ];
+        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        exit();
     }
-
-    // Insertar el usuario en la tabla Usuario
-    $sql = "INSERT INTO Usuario (id_usuario, fk_DNI, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol)
-            VALUES (:idUsuario, :dni, :legajo, :user, :password, :libroMatriz, :plan, :rol)";
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':idUsuario', $idUsuario, PDO::PARAM_INT);
-    $stmt->bindParam(':dni', $dni, PDO::PARAM_INT);
-    $stmt->bindParam(':legajo', $legajo, PDO::PARAM_STR);
-    $stmt->bindParam(':user', $user, PDO::PARAM_STR);
-    $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-    $stmt->bindParam(':libromatriz', $libroMatriz, PDO::PARAM_STR);
-    $stmt->bindParam(':plan', $plan, PDO::PARAM_STR);
-    $stmt->bindParam(':rol', $rol, PDO::PARAM_INT);
-
-    return $stmt->execute();
-
-    
 }
 
+if (isset($_POST['btnmCrearUser'])) {
+    $dniUser = $_POST['dniUser'];
+    $IdUser = $_POST['IdUser'];
+    $legajo = $_POST['legajo'];
+    $user = $_POST['user'];
+    $password = $_POST['password'];
+    $libromatriz = $_POST['libromatriz'];
+    $plan = $_POST['plan'];
+    $rol = $_POST['rol'];
+    $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
+
+    insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
+
+    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    exit();
+}
 
 
 ?>
