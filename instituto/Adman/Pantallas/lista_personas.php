@@ -38,8 +38,34 @@ if ($pdo) {
 
 
     </div>
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form id="busquedaForm" class="form-row align-items-end mx-auto">
+                        <div class="form-group col-md-4 mb-2">
+                            <label for="dni" class="text-center">DNI:</label>
+                            <input type="number" class="form-control mx-auto" id="dniBusqueda">
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                            <label for="nombreUser" class="text-center">Nombre:</label>
+                            <input type="text" class="form-control mx-auto" id="nombreUserBusqueda">
+                        </div>
+                        <div class="form-group col-md-4 mb-2">
+                            <label for="apellidoUser" class="text-center">Apellido:</label>
+                            <input type="text" class="form-control mx-auto" id="apellidoUserBusqueda">
+                        </div>
 
-    <div class="row">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row mt-4">
         <div class="col-lg-6 text-left">
             <!-- Divide la fila en 2 columnas y alinea a la izquierda -->
             <a id="generarPDFBtn" href="#" onclick="descargarMateriaPDF(); return false;" class="planpdf-button">
@@ -56,6 +82,8 @@ if ($pdo) {
             <button class="Usernalta-button" id="crearNuevaCarreraBtn" type="button" data-toggle="modal"
                 onclick="openModal()"><i class="fas fa-plus"></i> Nueva Persona</button>
         </div>
+
+
     </div>
     <div class="mt-4">
         <div class="row">
@@ -132,7 +160,7 @@ require_once '../includes/footer.php';
 
 <script>
 $(document).ready(function() {
-    var tableusuarios = $('#tableUsuarios').DataTable();
+   
 
     $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
@@ -172,3 +200,54 @@ function exportToExcel() {
     });
 }
 </script>
+
+<script>
+$(document).ready(function() {
+    var tableusuarios = $('#tableUsuarios').DataTable({
+    });
+
+  // Capturar eventos de cambio en los campos de búsqueda
+  $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {
+        // Obtener los valores de los campos de búsqueda
+        var dni = $('#dniBusqueda').val().toLowerCase();
+        var nombre = $('#nombreUserBusqueda').val().toLowerCase();
+        var apellido = $('#apellidoUserBusqueda').val().toLowerCase();
+
+        // Verificar si los campos de búsqueda están vacíos
+        var camposVacios = dni === '' && nombre === '' && apellido === '';
+
+        // Obtener todos los datos de la tabla (incluso los ocultos en otras páginas)
+        var allData = tableusuarios.rows().data().toArray();
+
+        // Filtrar los datos manualmente
+        var filteredData = allData.filter(function(rowData) {
+            var rowDni = rowData[0].toLowerCase(); // Cambia el índice según tu estructura de datos
+            var rowNombre = rowData[1].toLowerCase();
+            var rowApellido = rowData[2].toLowerCase();
+
+            // Comprobar si el DNI, Nombre y Apellido de la fila coinciden con los valores de búsqueda
+            return rowDni.includes(dni) && rowNombre.includes(nombre) && rowApellido.includes(apellido);
+        });
+
+        // Limpiar la tabla actual
+        tableusuarios.clear();
+
+        if (camposVacios) {
+            // Si los campos de búsqueda están vacíos, mostrar todos los resultados
+            tableusuarios.rows.add(allData);
+        } else {
+            // Agregar los datos filtrados a la tabla
+            tableusuarios.rows.add(filteredData);
+        }
+
+        // Dibujar la tabla nuevamente con los datos filtrados o todos los resultados
+        tableusuarios.draw();
+    });
+});
+</script>
+
+
+
+
+
+
