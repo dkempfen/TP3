@@ -11,10 +11,8 @@ $DatosPersonas = DatosPersonas();
 
 
 
-<?php foreach ($DatosUsuarios as $DatosUsuarios); foreach ($DatosPersonas as $DatosPersonas)  { ?>
-
-
-<div class="modal fade" id="modaleditarUsuario_<?php echo $DatosPersonas['DNI']; ?>" tabindex="-1" role="dialog"
+<?php foreach ($DatosUsuarios as $usuario) ;foreach ($DatosPersonas as $persona) { ?>
+<div class="modal fade" id="modaleditarUsuario_<?php echo $persona['DNI']; ?>" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -28,62 +26,66 @@ $DatosPersonas = DatosPersonas();
                 <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/slqeditar.php"
                     method="POST">
                     <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
-                        value="<?php  echo $DatosUsuarios['Id_Usuario']?>" required>
-                    <input type="hidden" name="dni_a_editar" id="dni_a_editar"
-                        value="<?php  echo $DatosPersonas['DNI']?>" required>
+                        value="<?php  echo $usuario['Id_Usuario']?>" required>
+                    <input type="hidden" name="dni_a_editar" id="dni_a_editar" value="<?php  echo $persona['DNI']?>"
+                        required>
 
                     <div class="form-group">
                         <label for="nuevoDNI">DNI:</label>
                         <input type="number" class="form-control" name="nuevoDNI" id="nuevoDNI"
-                            value="<?php  echo $DatosPersonas['DNI']?>" required>
+                            value="<?php  echo $persona['DNI']?>" required>
                     </div>
                     <div class="form-group">
                         <label for="nombreeditar">Nombre:</label>
                         <input type="text" class="form-control" name="nombreeditar" id="nombreeditar"
-                            value="<?php echo $DatosPersonas['Nombre']; ?>" required>
+                            value="<?php echo $persona['Nombre']; ?>" required>
 
                     </div>
 
                     <div class="form-group">
                         <label for="control-label">Apellido:</label>
                         <input type="text" class="form-control" name="apellidoeditar" id="apellidoeditar"
-                            value="<?php echo $DatosPersonas['Apellido']; ?>" required>
+                            value="<?php echo $persona['Apellido']; ?>" required>
 
                     </div>
 
                     <div class="form-group">
                         <label for="listRol">Fecha Nacimiento</label>
                         <input type="date" class="form-control" name="fechanacimientoeditar" id="fechanacimientoeditar"
-                            value="<?php echo $DatosPersonas['Fechanacimiento']; ?>" required>
+                            value="<?php echo $persona['Fechanacimiento']; ?>" required>
                     </div>
                     <div class="form-group">
                         <label for="control-label">Telefono:</label>
                         <input type="number" class="form-control" name="telefonoeditar" id="telefonoeditar"
-                            value="<?php echo $DatosPersonas['Telefono']; ?>" required>
+                            value="<?php echo $persona['Telefono']; ?>" required>
 
                     </div>
                     <div class="form-group">
                         <label for="control-label">Email:</label>
                         <input type="email" class="form-control" name="emailoeditar" id="emailoeditar"
-                            value="<?php echo $DatosPersonas['Email']; ?>" required>
+                            value="<?php echo $persona['Email']; ?>" required>
 
                     </div>
                     <div class="form-group">
                         <label for="control-label">Domicilio:</label>
                         <input type="text" class="form-control" name="domicilioeditar" id="domicilioeditar"
-                            value="<?php echo $DatosPersonas['Domicilio']; ?>" required>
+                            value="<?php echo $persona['Domicilio']; ?>" required>
 
                     </div>
                     <div class="form-group">
                         <label for="inscriptoeditar">Inscripto:</label>
                         <div class="custom-control custom-switch custom-control-lg">
-                            <input type="checkbox" class="custom-control-input" id="inscriptoeditar"
-                                name="inscriptoeditar" <?php echo $DatosPersonas['Inscripto'] ? 'checked' : ''; ?>>
-                            <label class="custom-control-label custom-control-label-lg" for="inscriptoeditar">
-                                <?php echo $DatosPersonas['Inscripto'] ? 'Sí, está inscrito' : 'No, no está inscrito'; ?>
+                            <input type="checkbox" class="custom-control-input"
+                                id="inscriptoeditar_<?php echo $persona['DNI']; ?>" name="inscriptoeditar"
+                                <?php echo $persona['Inscripto'] ? 'checked' : ''; ?>>
+                            <label class="custom-control-label custom-control-label-lg"
+                                for="inscriptoeditar_<?php echo $persona['DNI']; ?>">
+                                <?php echo $persona['Inscripto'] ? 'Sí, está inscrito' : 'No, no está inscrito'; ?>
                             </label>
                         </div>
                     </div>
+
+
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -98,7 +100,6 @@ $DatosPersonas = DatosPersonas();
     </div>
 </div>
 <?php } ?>
-
 
 <!-- Agrega SweetAlert2 y jQuery a tu página -->
 

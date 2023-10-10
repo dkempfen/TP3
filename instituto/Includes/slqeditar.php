@@ -177,72 +177,72 @@ if (isset($_POST['btnaltaPersona'])) {
 }
 
 
-print_r($DatosPersonas);
+                                                print_r($DatosPersonas);
 
-function insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
-    session_start();
-    global $pdo;
+                                                function insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
+                                                    session_start();
+                                                    global $pdo;
 
-    try {
-        // Asignar el valor adecuado a la columna "Inscripto" según la selección del usuario
-        $estadoUser = isset($estadoUser) ? $estadoUser : 0;
+                                                    try {
+                                                        // Asignar el valor adecuado a la columna "Inscripto" según la selección del usuario
+                                                        $estadoUser = isset($estadoUser) ? $estadoUser : 0;
 
-        // Prepara la consulta SQL de inserción
-        $sql = "INSERT INTO Usuario (fk_DNI, Id_Usuario, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                                        // Prepara la consulta SQL de inserción
+                                                        $sql = "INSERT INTO Usuario (fk_DNI, Id_Usuario, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
+                                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Prepara la declaración SQL
-        $stmt = $pdo->prepare($sql);
+                                                        // Prepara la declaración SQL
+                                                        $stmt = $pdo->prepare($sql);
 
-        // Obtener el DNI del span
-        $dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
+                                                        // Obtener el DNI del span
+                                                        $dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
 
-        // Ejecuta la consulta SQL
-        $stmt->execute([$dniUser, $IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
+                                                        // Ejecuta la consulta SQL
+                                                        $stmt->execute([$dniUser, $IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
 
-        if ($stmt->rowCount() > 0) {
-            $_SESSION['message'] = [
-                'type' => 'success',
-                'text' => 'Datos de usuario insertados exitosamente'
-            ];
-        } else {
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
-            ];
-        }
+                                                        if ($stmt->rowCount() > 0) {
+                                                            $_SESSION['message'] = [
+                                                                'type' => 'success',
+                                                                'text' => 'Datos de usuario insertados exitosamente'
+                                                            ];
+                                                        } else {
+                                                            $_SESSION['message'] = [
+                                                                'type' => 'error',
+                                                                'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+                                                            ];
+                                                        }
 
-        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-        exit();
-    } catch (PDOException $e) {
-        // Si hay un error en la consulta, puedes manejarlo aquí
-        // Puedes registrar el error o mostrar un mensaje de error en la misma página
-        error_log('Error en la inserción de usuario: ' . $e->getMessage());
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
-        ];
-        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-        exit();
-    }
-}
+                                                        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+                                                        exit();
+                                                    } catch (PDOException $e) {
+                                                        // Si hay un error en la consulta, puedes manejarlo aquí
+                                                        // Puedes registrar el error o mostrar un mensaje de error en la misma página
+                                                        error_log('Error en la inserción de usuario: ' . $e->getMessage());
+                                                        $_SESSION['message'] = [
+                                                            'type' => 'error',
+                                                            'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+                                                        ];
+                                                        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+                                                        exit();
+                                                    }
+                                                }
 
-if (isset($_POST['btnmCrearUser'])) {
-    $dniUser = $_POST['dniUser'];
-    $IdUser = $_POST['IdUser'];
-    $legajo = $_POST['legajo'];
-    $user = $_POST['user'];
-    $password = $_POST['password'];
-    $libromatriz = $_POST['libromatriz'];
-    $plan = $_POST['plan'];
-    $rol = $_POST['rol'];
-    $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
+                                                if (isset($_POST['btnmCrearUser'])) {
+                                                    $dniUser = $_POST['dniUser'];
+                                                    $IdUser = $_POST['IdUser'];
+                                                    $legajo = $_POST['legajo'];
+                                                    $user = $_POST['user'];
+                                                    $password = $_POST['password'];
+                                                    $libromatriz = $_POST['libromatriz'];
+                                                    $plan = $_POST['plan'];
+                                                    $rol = $_POST['rol'];
+                                                    $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
 
-    insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
+                                                    insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-    exit();
-}
+                                                    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+                                                    exit();
+                                                }
 
 
 ?>
