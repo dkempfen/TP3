@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/lista_personas.php';
+require_once '../Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
 $DatosPersonas = DatosPersonas();

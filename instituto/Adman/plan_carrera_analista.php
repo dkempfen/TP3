@@ -1,5 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/ModelsPlan/crearPlan.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 ?>
@@ -7,82 +6,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 
 
+
+
 <main class="app-content">
-
-    <div class="custom-menu">
-        <nav class="custom-nav">
-            <div class="menu-group">
-                <ul class="custom-menu-list">
-                    <!-- Carreras -->
-                    <li class="custom-menu-item">
-                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
-
-                    </li>
-                </ul>
-            </div>
-
-            <div class="menu-group">
-                <ul class="custom-menu-list">
-                    <!-- Planes de Estudio -->
-                    <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_planes.php">Planes de Estudio</a>
-
-                    </li>
-                </ul>
-            </div>
-
-            <div class="menu-group">
-                <ul class="custom-menu-list">
-                    <!-- Materias -->
-                    <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_materia.php">Materias</a>
-
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-    <div id="menu-container" class="container">
-
-
+    <div class="container">
 
         <div class="row espaciado-entre-filas align-items-center">
-
-            <form id="busquedaForm" class="form-inline mb-5">
-                <div class="form-group mb-2">
-                    <label for="carrera" class="label-spacing">Carrera:</label>
-                    <input type="text" class="form-control  " id="carrera">
-                    </select>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="nombrePlan" class="label-spacing">Nombre del Plan:</label>
-                    <input type="text" class="form-control" id="nombrePlan">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="fechaInicio" class="label-spacing">Fecha de Inicio:</label>
-                    <input type="date" class="form-control" id="fechaInicio">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="fechaFinal" class="label-spacing">Fecha de Finalización:</label>
-                    <input type="date" class="form-control" id="fechaFinal">
-                </div>
-            </form>
             <div class="col-lg-6">
             </div>
             <div class="col-lg-6 text-right">
                 <!-- Divide la fila en 2 columnas y alinea a la derecha -->
                 <a id="generarPDFBtn" href="#" onclick="mostrarSeleccionTarjetasPDF(); return false;"
-                    class="planpdf-button">
+                    class="highlighted-button">
                     <i class="fas fa-file-pdf"></i> Descargar PDF
                 </a>
-                <button data-toggle="modal"  class="planalta-button"  id="crearNuevoPlanBtn" type="button" onclick="mostrarCrearNuevoPlan()"><i class="fas fa-plus"></i> Crear Nuevo Plan</button>
-
-               <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
-                    onclick="mostrarCrearNuevoPlan(); return false;">
-                    <i class="fas fa-plus"></i> Crear Nuevo Plan
-                </a>-->
             </div>
-
         </div>
 
 
@@ -151,7 +89,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-primary btn-sm mr-2" onclick="mostrarEditarTarjeta()">Editar</button>
                             <button class="btn btn-info btn-sm">Más Información</button>
-
+                            
                         </div>
                     </div>
                 </div>
@@ -874,4 +812,3 @@ function actualizarTextoSiguiente(encabezado, nuevoTexto) {
     }
 }
 </script>
-

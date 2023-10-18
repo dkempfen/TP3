@@ -1,8 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/lista_personas.php';
-
+require_once '../Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
 $DatosPersonas = DatosPersonas();
@@ -162,7 +161,7 @@ function isValidInput(value) {
     return value.trim() !== '';
 }
 
-function openModalsCrearUser  (usuario_id) {
+function openModalsCrearUser(usuario_id) {
     document.getElementById('idusuariocrear').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
     document.getElementById('btnActionAltaUserForm').classList.replace("btn-info", "btn-open-modal");

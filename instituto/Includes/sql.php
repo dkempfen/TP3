@@ -46,38 +46,6 @@ function count_id($table)
   return 0; 
 }
 
-/*-----------Define las constantes de los roles-----------------------------*/
-
-// Define las constantes de los roles seleccionados
-$showAdmins = true; // Mostrar tarjeta de Administrativos
-$showAlumnos = true; // Mostrar tarjeta de Alumnos
-$showProfesores = true; // Mostrar tarjeta de Profesores
-
-define('ROL_ADMINISTRATIVO', 3);
-define('ROL_ALUMNO', 1);
-define('ROL_PROFESOR', 2);
-
-// Función para contar usuarios por rol
-function countUsersByRole($rol_id) {
-    global $pdo;
-    $sql = "SELECT COUNT(*) AS total FROM Usuario WHERE fk_Rol = :rol_id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':rol_id', $rol_id, PDO::PARAM_INT);
-    $stmt->execute();
-
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row) {
-        return $row['total'];
-    }
-
-    return 0;
-}
-
-// Obtiene los totales de usuarios por rol
-$totalAdmins = countUsersByRole(ROL_ADMINISTRATIVO);
-$totalAlumnos = countUsersByRole(ROL_ALUMNO);
-$totalProfesores = countUsersByRole(ROL_PROFESOR);
-$totalUsuarios = countUsersByRole(ROL_ADMINISTRATIVO) + countUsersByRole(ROL_ALUMNO) + countUsersByRole(ROL_PROFESOR);
 
 /*--------------------------------------------------------------*/
 function cambiarFotoPerfil($table)
@@ -250,7 +218,7 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
 if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
   actualizarEstadoUsuario();
 
-  header("Location: /instituto/Adman/lista_usuarios.php");
+  header("Location: /instituto/Adman/Pantallas/lista_personas.php");
   exit();
 }
   /*function actualizarEstadoUsuario($pdo)
@@ -304,19 +272,7 @@ function DatosUsuarios()
     $rows = $datosUsuarios->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
 }
-function tableUsuarios()
-{
-    global $pdo;
 
-    $sql = "SELECT *
-    FROM Usuario";
-
-    $datostableUsuarios = $pdo->prepare($sql);
-    $datostableUsuarios->execute();
-
-    $rowTablapersonas = $datostableUsuarios->fetchAll(PDO::FETCH_ASSOC);
-    return $rowTablapersonas;
-}
 function DatosPersonas()
 {
     global $pdo;
@@ -347,39 +303,6 @@ function DatosPersonasUsuarios()
 
     $rowPersonaUsuario = $datosPersonasUsuario->fetchAll(PDO::FETCH_ASSOC);
     return $rowPersonaUsuario;
-}
-
-function DatosPlan()
-{
-    global $pdo;
-
-    $sql = "select Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
-    INNER JOIN Plan P ON P.Estado_Id_Estado=E.Id_Estado";
-
-    $datosPlam = $pdo->prepare($sql);
-    $datosPlam->execute();
-
-    $rowPlan = $datosPlam->fetchAll(PDO::FETCH_ASSOC);
-    return $rowPlan;
-}
-
-
-function ()
-{
-    global $pdo;
-
-    $sql = "SELECT *
-    FROM Materia m
-    LEFT JOIN Materia_Profesor mp ON m.id_Materia = mp.id_Materia
-    LEFT JOIN Usuario u ON mp.id_Profesor = u.Id_Usuario
-    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
-    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
-
-    $datosMateria = $pdo->prepare($sql);
-    $datosMateria->execute();
-
-    $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
-    return $rowMateria;
 }
 /*function ActulizarUser()
     {      

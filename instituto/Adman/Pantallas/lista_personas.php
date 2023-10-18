@@ -1,4 +1,3 @@
-
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modals.php';
@@ -6,9 +5,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/crearUsuario.p
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/edidtar_user.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
-?>
-
-<?php
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
     $sql = "SELECT p.*
@@ -28,9 +24,9 @@ if ($pdo) {
         showConfirmationMessages($message);
     }
 
-
-?>
-
+    
+    
+    ?>
 
 <main class="app-content">
     <div class="app-title">
@@ -114,7 +110,6 @@ if ($pdo) {
                                 </thead>
                                 <tbody id="message">
                                     <?php
-                                     
                                 // Comprueba si la consulta fue exitosa
                                 if ($result) {
                                     // Loop a través del resultado y generar filas de la tabla
@@ -160,12 +155,12 @@ if ($pdo) {
 }
 require_once '../includes/footer.php';
 ?>
-<!-- Otras referencias a bibliotecas y estilos -->
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 
 <script>
 $(document).ready(function() {
-
+   
 
     $('#tableUsuarios').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
@@ -195,49 +190,24 @@ $(document).ready(function() {
     });
 });
 
-function descargarMateriaPDF() {
-    var doc = new jsPDF();
-
-    // Configuración del título y el contenido del PDF
-    doc.text('Lista de Personas', 10, 10);
-    var options = {
-        margin: {
-            top: 20
-        }
-    };
-
-    // Generar el PDF a partir de la tabla HTML con la biblioteca TableExport
+function exportToExcel() {
+    // Utiliza la biblioteca TableExport para exportar la tabla a Excel
     TableExport(document.getElementById('tableUsuarios'), {
-        formats: ['PDF'],
-        pdfmake: {
-            enabled: true,
-            doc: doc,
-            options: options
-        }
-    });
-
-    // Guardar el PDF y abrirlo en una nueva ventana
-    doc.save('lista_personas.pdf');
-}
-
-function descargarMateriaEXCEL() {
-    // Utilizar la biblioteca TableExport para exportar la tabla a Excel
-    TableExport(document.getElementById('tableUsuarios'), {
+        headers: true,
+        footers: true,
         formats: ['xlsx'],
-        exportButtons: false
+        filename: 'listado_usuarios',
     });
 }
-
-document.getElementById('generarPDFBtn').addEventListener('click', descargarMateriaPDF);
-document.getElementById('generarEXCELBtn').addEventListener('click', descargarMateriaEXCEL);
 </script>
 
 <script>
 $(document).ready(function() {
-    var tableusuarios = $('#tableUsuarios').DataTable({});
+    var tableusuarios = $('#tableUsuarios').DataTable({
+    });
 
-    // Capturar eventos de cambio en los campos de búsqueda
-    $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {
+  // Capturar eventos de cambio en los campos de búsqueda
+  $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {
         // Obtener los valores de los campos de búsqueda
         var dni = $('#dniBusqueda').val().toLowerCase();
         var nombre = $('#nombreUserBusqueda').val().toLowerCase();
@@ -251,17 +221,33 @@ $(document).ready(function() {
 
         // Filtrar los datos manualmente
         var filteredData = allData.filter(function(rowData) {
-            var rowDni = rowData[0]
-                .toLowerCase(); // Cambia el índice según tu estructura de datos
+            var rowDni = rowData[0].toLowerCase(); // Cambia el índice según tu estructura de datos
             var rowNombre = rowData[1].toLowerCase();
             var rowApellido = rowData[2].toLowerCase();
 
             // Comprobar si el DNI, Nombre y Apellido de la fila coinciden con los valores de búsqueda
-            return rowDni.includes(dni) && rowNombre.includes(nombre) && rowApellido.includes(
-                apellido);
+            return rowDni.includes(dni) && rowNombre.includes(nombre) && rowApellido.includes(apellido);
         });
 
-       
+        // Limpiar la tabla actual
+        tableusuarios.clear();
+
+        if (camposVacios) {
+            // Si los campos de búsqueda están vacíos, mostrar todos los resultados
+            tableusuarios.rows.add(allData);
+        } else {
+            // Agregar los datos filtrados a la tabla
+            tableusuarios.rows.add(filteredData);
+        }
+
+        // Dibujar la tabla nuevamente con los datos filtrados o todos los resultados
+        tableusuarios.draw();
     });
 });
 </script>
+
+
+
+
+
+
