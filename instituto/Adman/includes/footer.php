@@ -15,6 +15,9 @@
     <script type="text/javascript" src="/instituto/Adman/js/funtion-alumno.js"></script>
     <script type="text/javascript" src="/instituto/Adman/js/funtion-carrera.js"></script>
     <script type="text/javascript" src="/instituto/Adman/js/funtion-materia.js"></script>
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>-->
 
 
 

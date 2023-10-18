@@ -1,8 +1,49 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/ModelsPlan/crearPlan.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/ModelsPlan/crearPlan.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_EditarPlan.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_carrera.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_CrearPlan.php';
+
 ?>
+
+<?php
+if ($pdo) {
+    // Query para obtener los datos de la tabla 'usuarios'
+    $sql = "SELECT pl.*
+    FROM Plan pl";
+    
+    $result = $pdo->query($sql);
+    // Check if there's a message in the session
+
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        unset($_SESSION['message']); // Clear the session variable after displaying the message
+        showConfirmationMessageUser($message);
+    }
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+        unset($_SESSION['message']); // Clear the session variable after displaying the message
+        showConfirmationMessages($message);
+    }
+
+    if (isset($_SESSION['messagePlan'])) {
+        $messagePlan = $_SESSION['messagePlan'];
+        unset($_SESSION['messagePlan']); // Clear the session variable after displaying the message
+        showConfirmationMessagePlan($messagePlan);
+    }
+
+    if (isset($_SESSION['messageEditarPlan'])) {
+        $messageEditarPlan = $_SESSION['messageEditarPlan'];
+        unset($_SESSION['messageEditarPlan']); // Clear the session variable after displaying the message
+        showConfirmationMessageEditarPlan($messageEditarPlan);
+    }
+
+
+
+?>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
@@ -15,7 +56,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
+                        <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -75,9 +116,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                     class="planpdf-button">
                     <i class="fas fa-file-pdf"></i> Descargar PDF
                 </a>
-                <button data-toggle="modal"  class="planalta-button"  id="crearNuevoPlanBtn" type="button" onclick="mostrarCrearNuevoPlan()"><i class="fas fa-plus"></i> Crear Nuevo Plan</button>
+                <button data-toggle="modal" class="planalta-button" id="crearNuevoPlanBtn" type="button"  data-toggle="modal"
+                    onclick="mostrarCrearNuevoPlan()"><i class="fas fa-plus"></i> Crear Nuevo Plan</button>
 
-               <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
+                <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
                     onclick="mostrarCrearNuevoPlan(); return false;">
                     <i class="fas fa-plus"></i> Crear Nuevo Plan
                 </a>-->
@@ -87,75 +129,50 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 
         <div class="row espaciado-entre-filas">
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Plan A1</h2>
-                        <label id="seleccionar-label">
-                            <input name="tarjetasSeleccionadas" type="checkbox" class="tarjeta-checkbox"
-                                value="tarjeta1">
-                        </label>
+            <?php
+                // Realiza una conexión a la base de datos (debes configurar tus propios detalles de conexión)
 
-                        <div class="card-divider"></div>
-                        <p><strong>Estado:</strong> Activo</p>
-                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
-                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm mr-2" type="button"
-                                onclick="mostrarEditarTarjeta()">Editar</button>
-                            <button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional()">Más
-                                Información</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                // Prepara y ejecuta una consulta SQL para obtener los datos de los planes
+                $sql = "SELECT cod_Plan, Carrera, Estado_Id_Estado, Fecha_Inicio, Fecha_Final FROM Plan";
+                $resultado = $pdo->query($sql);
 
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Plan A2023</h2>
-                        <label id="seleccionar-label">
-                            <input name="tarjetasSeleccionadas" type="checkbox" class="tarjeta-checkbox"
-                                value="tarjeta2">
-                        </label>
-                        <div class="card-divider"></div>
-                        <p><strong>Estado:</strong> Activo</p>
-                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
-                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm mr-2" onclick="mostrarEditarTarjeta()">Editar</button>
-                            <button class="btn btn-info btn-sm">Más Información</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                // Recorrer los resultados y generar la estructura HTML
+                foreach ($resultado as $fila) {
+                    echo '<div class="col-lg-4 margen-inferior">'; 
+                    echo '<div class="card">';
+                    echo '<div class="card-body">';
+                    echo '<h2 class="card-title">' . $fila['Carrera'] . '</h2>';
+                    echo '<label id="seleccionar-label">';
+                    echo '<input name="tarjetasSeleccionadas" type="checkbox" class="tarjeta-checkbox" value="' . $fila['Carrera'] . '">';
+                    echo '</label>';
+                    echo '<div class="card-divider"></div>';
+                    echo '<p><strong>Plan:</strong> ' . $fila['cod_Plan'] . '</p>';
+                    echo '<p><strong>Estado:</strong> ' . ($fila['Estado_Id_Estado'] == 1 ? 'Habilitado' : 'Inhabilitado') . '</p>';
+                    echo '<p><strong>Fecha Inicio:</strong> ' . $fila['Fecha_Inicio'] . '</p>';
+                    echo '<p><strong>Fecha Final:</strong> ' . $fila['Fecha_Final'] . '</p>';
+                    echo '</div>';
+                    echo '<div class="card-footer">';
+                    echo '<div class="d-flex justify-content-end">';
+                    
+                    // Establece la opción seleccionada en función del valor de la base de datos
+                    $estadoSeleccionado = ($fila['Estado_Id_Estado'] == 1) ? 'Habilitado' : 'Inhabilitado';
+                    
+                    // Genera el botón "Editar" y establece la opción seleccionada
+                    echo '<button class="btn btn-primary btn-sm mr-2" type="button" onclick="mostrarEditarTarjeta(this)"
+                    data-codigo-plan="' . $fila['cod_Plan'] . '" data-nombre-tarjeta="' . $fila['Carrera'] . '"
+                    data-estado-tarjeta="' . $fila['Estado_Id_Estado'] .'" data-fecha-inicio="' . $fila['Fecha_Inicio'] . '"
+                    data-fecha-final="' . $fila['Fecha_Final'] . '">Editar</button>';
+                    
+                    echo '<button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional()">Más Información</button>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
+                }
 
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="card-title">Plan XYZ</h2>
-                        <label id="seleccionar-label">
-                            <input name="tarjetasSeleccionadas" type="checkbox" class="tarjeta-checkbox"
-                                value="tarjeta3">
-                        </label>
-                        <div class="card-divider"></div>
-                        <p><strong>Estado:</strong> Activo</p>
-                        <p><strong>Fecha Inicio:</strong> 01/10/2023</p>
-                        <p><strong>Fecha Final:</strong> 01/10/2024</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary btn-sm mr-2" onclick="mostrarEditarTarjeta()">Editar</button>
-                            <button class="btn btn-info btn-sm">Más Información</button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+                // Cierra la conexión a la base de datos
+                $pdo = null;
+                ?>
         </div>
         <div class="row espaciado-entre-plames align-items-center">
             <div class="col-lg-6">
@@ -199,455 +216,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
         </div>
     </div>
 
-    <!-- Modal para editar la tarjeta -->
-    <div class="modal fade" id="editarTarjetaModal" tabindex="-1" role="dialog"
-        aria-labelledby="editarTarjetaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarTarjetaModalLabel">Editar Tarjeta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Agregar aquí los campos de edición -->
-                    <div class="form-group">
-                        <label for="nombreTarjeta">Nombre:</label>
-                        <input type="text" class="form-control" id="nombreTarjeta">
-                    </div>
-                    <div class="form-group">
-                        <label for="estadoTarjeta">Estado:</label>
-                        <select class="form-control" id="estadoTarjeta">
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaInicio">Fecha Inicio:</label>
-                        <input type="text" class="form-control" id="fechaInicio">
-                    </div>
-                    <div class="form-group">
-                        <label for="fechaFinal">Fecha Final:</label>
-                        <input type="text" class="form-control" id="fechaFinal">
-                    </div>
-                    <div class="form-group">
-                        <label for="adjunto">Adjuntar archivo del Plan:</label>
-                        <input type="file" class="form-control-file" id="adjunto">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
-
-    <!-- Modal para mostrar la tabla -->
-    <div class="modal fade" id="tablaModal" tabindex="-1" role="dialog" aria-labelledby="tablaModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tablaModalLabel">Información Adicional</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-responsive">
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center;" colspan="4" width="618">Plan A1</td>
-                            </tr>
-                            <tr>
-                                <td width="80">NIVEL</td>
-                                <td width="80">Nº</td>
-                                <td width="80">CÓDIGO</td>
-                                <td width="378">ASIGNATURA</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" rowspan="8" width="80">I</td>
-                                <td width="80">1</td>
-                                <td width="80">950702</td>
-                                <td>
-                                    Prácticas Profesionalizantes I
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-1">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-1">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Gustavo Orti
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">2</td>
-                                <td width="80">950701</td>
-                                <td>
-                                    Arquitectura de Computadores
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-2">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-2">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Silvia Rocchi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">3</td>
-                                <td width="80">951604</td>
-                                <td>
-                                    Sistemas y Organizaciones
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-3">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-3">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Gustavo Orti
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">4</td>
-                                <td width="80">951601</td>
-                                <td>
-                                    Algoritmos y Estructuras de Datos I
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-4">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-4">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Gaston Sebastian Barrionuevo
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">5</td>
-                                <td width="80">950605</td>
-                                <td width="378">
-                                    Algebra
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-5">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-5">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Giulana Fernanda Spoltore
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">6</td>
-                                <td width="80">951407</td>
-                                <td>
-                                    Análisis Matemático I
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-6">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-6">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Juan Alberto Ledesma
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">7</td>
-                                <td width="80">&nbsp;&nbsp;950520</td>
-                                <td>
-                                    Ciencia Tecnología y Sociedad
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-7">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-7">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Diego Alberto Benitez
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">8</td>
-                                <td width="80">950599</td>
-                                <td>
-                                    Inglés I
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-8">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-8">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Horacio R. Dal Dosso
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" rowspan="8" width="80">II</td>
-                                <td width="80">9</td>
-                                <td width="80">950600</td>
-                                <td>
-                                    Prácticas Profesionalizantes II
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-9">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-9">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Luisa María BravoBase de Datos
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">10</td>
-                                <td width="80">950601</td>
-                                <td>
-                                    Base de Datos
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-10">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-10">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Alejandro Martín Ferraris
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">11</td>
-                                <td width="80">950602</td>
-                                <td>
-                                    Sistemas Operativos
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-11">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-11">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Raul Lamas
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">12</td>
-                                <td width="80">950603</td>
-                                <td>
-                                    Algoritmos y Estructuras de Datos II
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-12">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-12">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Gaston Sebastian Barrionuevo
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">13</td>
-                                <td width="80">950605</td>
-                                <td>
-                                    Ingeniería de Software I
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-13">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-13">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Viviana Sanchez
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">14</td>
-                                <td width="80">951407</td>
-                                <td>
-                                    Estadística
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-14">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-14">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Carlos Evangelista
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">15</td>
-                                <td width="80">&nbsp;&nbsp;950520</td>
-                                <td>
-                                    Análisis Matemático II
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-15">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-15">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Laura Inés Besso
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">16</td>
-                                <td width="80">950599</td>
-                                <td>
-                                    Inglés II
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-16">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-16">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Horacio R. Dal Dosso
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center;" rowspan="8" width="80">III</td>
-                                <td width="80">17</td>
-                                <td width="80">950600</td>
-                                <td>
-                                    Prácticas Profesionalizantes III
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-17">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-17">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Gustavo Garcia
-                                    Teacher: Silvia Rocchi
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">18</td>
-                                <td width="80">950601</td>
-                                <td>
-                                    Algoritmos y Estructura de Datos III
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-18">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-18">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Rómulo Arceri
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">19</td>
-                                <td width="80">950602</td>
-                                <td>
-                                    Ingeniería de Software II
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-19">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-19">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Ignacio Castillo
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">20</td>
-                                <td width="80">950603</td>
-                                <td>
-                                    Redes y Comunicaciones
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-20">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-20">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Raul Lamas
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">21</td>
-                                <td width="80">950605</td>
-                                <td>
-                                    Seminario de Actualización
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-21">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-21">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Jorge Insfran
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">22</td>
-                                <td width="80">951407</td>
-                                <td>
-                                    Aspectos Legales de la Profesión
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-22">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-22">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Alejandro Mosti
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="80">23</td>
-                                <td width="80">950599</td>
-                                <td>
-                                    Inglés III
-                                    <span class="expansor" data-toggle="collapse"
-                                        data-target=".info-adicional-23">&#9660;</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse info-adicional-23">
-                                <td colspan="4">
-                                    <!-- Contenido adicional que deseas mostrar -->
-                                    Teacher: Lara Alarcón Cancelliere
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 </main>
 
 
-
 <?php
-require_once 'includes/footer.php';
+} else {
+    echo "Error: No se pudo establecer la conexión a la base de datos.";
+}
+require_once '../includes/footer.php';
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 
-<script>
-function mostrarInfoAdicional() {
-    $('#tablaModal').modal('show');
 
-    // Obtén el elemento con el id "infoAdicional"
-    var infoAdicional = document.getElementById("infoAdicional");
-
-    // Muestra la información adicional cambiando el estilo de display
-    infoAdicional.style.display = "block";
-}
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -668,6 +252,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
 </script>
 <script>
 function descargarPDF() {
@@ -731,6 +316,7 @@ function generarPDF() {
     doc.save('plan_personalizado.pdf');
 }
 </script>
+
 <script>
 function mostrarSeleccionTarjetasPDF() {
     // Obtener todas las tarjetas
@@ -779,99 +365,23 @@ $(document).ready(function() {
         $("#editarTarjeta1Modal").modal("show");
     });
 });
-</script>
 
-<script>
-// Función para mostrar el modal de edición
-function mostrarEditarTarjeta() {
-    // Obtener los datos de la tarjeta actual
-    var nombre = document.querySelector('.card-title').innerText;
-    var estadoElement = null;
-    var elementosP = document.querySelectorAll('.card-body p');
-    elementosP.forEach(function(p) {
-        var strongText = p.querySelector('strong');
-        if (strongText && strongText.innerText === 'Estado:') {
-            estadoElement = p;
-        }
-    });
-    var estado = estadoElement ? estadoElement.lastChild.textContent.trim() : '';
-    var fechaInicio = obtenerTextoSiguiente('Fecha Inicio:');
-    var fechaFinal = obtenerTextoSiguiente('Fecha Final:');
 
-    // Llenar el modal con los datos actuales
-    document.getElementById('nombreTarjeta').value = nombre;
-    document.getElementById('estadoTarjeta').value = estado;
-    document.getElementById('fechaInicio').value = fechaInicio;
-    document.getElementById('fechaFinal').value = fechaFinal;
-
-    // Mostrar el modal
-    $('#editarTarjetaModal').modal('show');
+function isValidInput(value) {
+    return value.trim() !== '';
 }
 
-// Función auxiliar para obtener el texto siguiente a un encabezado específico
-function obtenerTextoSiguiente(encabezado) {
-    var elementosP = document.querySelectorAll('.card-body p');
-    for (var i = 0; i < elementosP.length; i++) {
-        var strongText = elementosP[i].querySelector('strong');
-        if (strongText && strongText.innerText === encabezado) {
-            var textoSiguiente = elementosP[i].textContent.trim();
-            return textoSiguiente.replace(encabezado, '').trim();
-        }
-    }
-    return '';
-}
+function mostrarCrearNuevoPlan() {
+    console.log('Abrir modal'); // Agrega este log para verificar si se llama a la función
 
-// Función para guardar los cambios
-function guardarCambios() {
-    // Obtener los valores editados desde el modal
-    var nuevoNombre = document.getElementById('nombreTarjeta').value;
-    var nuevoEstado = document.getElementById('estadoTarjeta').value;
-    var nuevaFechaInicio = document.getElementById('fechaInicio').value;
-    var nuevaFechaFinal = document.getElementById('fechaFinal').value;
+    document.getElementById('idPlancrear').value = "";
+    document.querySelector('.modal-header').classList.replace("headerUpdate", "headerPlan");
+    document.getElementById('btnCrearPlan').classList.replace("btn-info", "btn-open-modal");
+    document.getElementById('btnCrearPlan').innerHTML = 'Guardar';
+    document.getElementById('tituloModalCrearPlan').innerHTML = 'Crear Plan';
+    document.getElementById('formCrearPlan').reset();
 
-    // Obtener el archivo adjunto seleccionado
-    var adjuntoInput = document.getElementById('adjunto');
-    var archivoAdjunto = adjuntoInput.files[0];
+    $('#modalCrearPlan').modal('show');
 
-    // Realizar la lógica de actualización de datos aquí
-
-    // Si se ha seleccionado un archivo adjunto, puedes subirlo al servidor
-    if (archivoAdjunto) {
-        // Aquí puedes usar JavaScript o una biblioteca como FormData para enviar el archivo al servidor
-        var formData = new FormData();
-        formData.append('archivo', archivoAdjunto);
-
-        // Ejemplo de uso de fetch para enviar el archivo al servidor
-        fetch('/ruta/del/servidor', {
-                method: 'POST',
-                body: formData
-            })
-            .then(function(response) {
-                // Manejar la respuesta del servidor aquí
-                if (response.status === 200) {
-                    console.log('Archivo subido exitosamente.');
-                } else {
-                    console.error('Error al subir el archivo.');
-                }
-            })
-            .catch(function(error) {
-                console.error('Error en la solicitud:', error);
-            });
-    }
-
-    // Cerrar el modal
-    $('#editarTarjetaModal').modal('hide');
-}
-
-// Función auxiliar para actualizar el texto siguiente a un encabezado específico
-function actualizarTextoSiguiente(encabezado, nuevoTexto) {
-    var elementosP = document.querySelectorAll('.card-body p');
-    for (var i = 0; i < elementosP.length; i++) {
-        var strongText = elementosP[i].querySelector('strong');
-        if (strongText && strongText.innerText === encabezado) {
-            elementosP[i].lastChild.textContent = encabezado + ' ' + nuevoTexto;
-        }
-    }
 }
 </script>
-
