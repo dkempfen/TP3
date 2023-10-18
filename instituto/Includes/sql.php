@@ -573,7 +573,8 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
 }*/
 /*-------------canbiar ckave-----------------------*/
  
-function cambioClave()
+
+/*function cambioClave()
     {   
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   
@@ -627,7 +628,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   if (isset($_POST["token"])) {
 
   cambioClave();
-}}
+}}*/
 
 
 
