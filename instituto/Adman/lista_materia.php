@@ -3,6 +3,25 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_materia.php';
 ?>
 
+<?php
+if ($pdo) {
+    // Query para obtener los datos de la tabla 'materia' filtrados por el código de plan
+    $sql = "SELECT *
+    FROM Materia m
+    /*LEFT JOIN Detalle_Plan dp ON m.id_Materia = dp.fk_Materia
+    LEFT JOIN Plan p ON dp.fk_Plan = p.cod_Plan*/
+    LEFT JOIN Materia_Profesor mp ON m.id_Materia = mp.id_Materia
+    LEFT JOIN Usuario u ON mp.id_Profesor = u.Id_Usuario
+    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
+    
+    $result = $pdo->query($sql);
+
+
+
+?>
+
+
 <main class="app-content">
 
     <div class="custom-menu">
@@ -113,16 +132,42 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_materia.
                                 <thead>
                                     <tr>
                                         <th>Acciones</th>
-                                        <th>ID</th>
                                         <th>Carrera</th>
-                                        <th>Plan</th>
                                         <th>Nivel</th>
                                         <th>Promocional</th>
-                                        <th>Acción</th>
+                                        <th>Profesor</th>
+                                        <th>Editar</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-
+                                <tbody id="message">
+                                    <?php
+                                     
+                                // Comprueba si la consulta fue exitosa
+                                if ($result) {
+                                    // Loop a través del resultado y generar filas de la tabla
+                                    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<tr>';
+                                        echo '<td class="">';
+                                        echo '<label class="switch">';
+                                       // Aquí agregamos un ternario para comprobar si el estado está activado o no
+                                        $checked = ($row['fk_Estado'] == 1) ? 'checked' : '';
+                                        echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['id_Materia'] . '">';
+                                        echo '<span class="slider"></span>';
+                                        echo '</label>';
+                                        echo '</td>';
+                                        echo '<td>' . $row['Descripcion'] . '</td>';
+                                        echo '<td>' . $row['Anio_Carrera'] . '</td>';
+                                        echo '<td>' . $row['Promocional'] . '</td>';
+                                        echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
+                                     
+                                        //echo '<td>' . ($row['Inscripto'] ? 'Inscrito' : 'No Inscrito') . '</td>';
+                                        echo '<td><button class="btn-icon" onclick="openModalsMateriaEdi(' . $row['id_Materia'] . ')"><i class="edit-btn"></i>✏️</button></td>';
+                                        echo '</tr>';
+                                    }
+                                } else { 
+                                    echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2]; // Acceder al mensaje de error usando errorInfo()
+                                }
+                                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -148,7 +193,42 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_materia.
         </div>
     </div>
 </main>
-
 <?php
-require_once 'includes/footer.php';
+} else {
+    echo "Error: No se pudo establecer la conexión a la base de datos.";
+}
+require_once '../includes/footer.php';
 ?>
+<script>
+$(document).ready(function() {
+    var tableusuarios = $('#tablemateria').DataTable({});
+
+    // Capturar eventos de cambio en los campos de búsqueda
+    $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {
+        // Obtener los valores de los campos de búsqueda
+        var dni = $('#dniBusqueda').val().toLowerCase();
+        var nombre = $('#nombreUserBusqueda').val().toLowerCase();
+        var apellido = $('#apellidoUserBusqueda').val().toLowerCase();
+
+        // Verificar si los campos de búsqueda están vacíos
+        var camposVacios = dni === '' && nombre === '' && apellido === '';
+
+        // Obtener todos los datos de la tabla (incluso los ocultos en otras páginas)
+        var allData = tableusuarios.rows().data().toArray();
+
+        // Filtrar los datos manualmente
+        var filteredData = allData.filter(function(rowData) {
+            var rowDni = rowData[0]
+                .toLowerCase(); // Cambia el índice según tu estructura de datos
+            var rowNombre = rowData[1].toLowerCase();
+            var rowApellido = rowData[2].toLowerCase();
+
+            // Comprobar si el DNI, Nombre y Apellido de la fila coinciden con los valores de búsqueda
+            return rowDni.includes(dni) && rowNombre.includes(nombre) && rowApellido.includes(
+                apellido);
+        });
+
+       
+    });
+});
+</script>

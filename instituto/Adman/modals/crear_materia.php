@@ -4,27 +4,24 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/lista_personas.php';
 
 
-$DatosUsuarios = DatosUsuarios();
-$DatosPersonas = DatosPersonas();
-$DatosPersonasUsuarios = DatosPersonasUsuarios();
+
+$DatosMateria = DatosMateria();
 
 
 ?>
 
 
-<?php foreach ($DatosUsuarios as $DatosUsuarios) {
-    // Code to process $DatosUsuario goes here
-}
+<?php
 
 
 
-foreach ($DatosPersonas as $DatosPersonas) {
+foreach ($DatosMateria as $DatosMateria) {
     // Code to process $DatosPersona goes here
  ?>
 
 
 
-<div class="modal fade" id="modalCrearUsuario_<?php echo $DatosPersonas['DNI']; ?>" tabindex="-1" role="dialog"
+<div class="modal fade" id="modalCrearUsuario_<?php echo $DatosMateria['id_Materia']; ?>" tabindex="-1" role="dialog"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -39,51 +36,14 @@ foreach ($DatosPersonas as $DatosPersonas) {
                 <form id="formCrearUsuario" name="formCrearUsuario" action="/instituto/Includes/slqeditar.php"
                     method="POST">
 
-                    <!-- Mostrar información adicional si el usuario ya existe -->
-                    <div class="modal-body">
-                        <!-- Mostrar información adicional del usuario correspondiente -->
-                        <div class="user-info">
-                            <h4>Detalles del Usuario Registrado:</h4>
-
-                            <?php $firstUser = true; ?>
-                            <?php foreach ($DatosPersonasUsuarios as $DatosUsuarioss): ?>
-                            <?php if ($DatosUsuarioss['fk_DNI'] == $DatosPersonas['DNI']): ?>
-                            <?php if (!$firstUser): ?>
-                            <hr> <!-- Agrega una línea horizontal -->
-                            <?php else:
-                                  $firstUser = false;
-                            endif; ?>
-
-                            <li>
-                                <strong>Usuario:</strong> <?php echo $DatosUsuarioss['User']; ?>
-                            </li>
-                            <li>
-                                <strong>Rol:</strong> <?php echo $DatosUsuarioss['descripcion']; ?>
-                            </li>
-                            <li>
-                                <strong>Plan:</strong> <?php echo $DatosUsuarioss['fk_Plan']; ?>
-                            </li>
-                            <li>
-                                <strong>Libro Matriz:</strong> <?php echo $DatosUsuarioss['Libromatriz']; ?>
-                            </li>
-                            <li>
-                                <strong>Legajo:</strong> <?php echo $DatosUsuarioss['Legajo']; ?>
-                            </li>
-
-                            <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    <input type="hidden" name="idusuariocrear" id="idusuariocrear"
-                        value="<?php  echo $DatosUsuarios['Id_Usuario']?>">
-                    <input type="hidden" name="dniCrear" id="dniCrear" value="<?php  echo $DatosPersonas['DNI']?>">
+                    <input type="hidden" name="dniCrear" id="dniCrear" value="<?php  echo $DatosMateria['id_Materia']?>">
 
 
                     <div class="form-group">
-                        <label for="control-label">DNI:</label>
+                        <label for="control-label">Carrera:</label>
                          <!-- <input type="number" class="form-control" name="dniUser" id="dniUser" required>-->
 
-                         <input type="number" class="form-control" name="dniUser" id="dniUser" value="<?php echo $DatosPersonas['DNI']; ?>" readonly>
+                         <input type="number" class="form-control" name="carreraMateria" id="carreraMateria" required>
 
                     </div>
                     <div class="form-group">
@@ -162,7 +122,7 @@ function isValidInput(value) {
     return value.trim() !== '';
 }
 
-function openModalsCrearUser  (usuario_id) {
+function openModalsMateriaEdi  (usuario_id) {
     document.getElementById('idusuariocrear').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
     document.getElementById('btnActionAltaUserForm').classList.replace("btn-info", "btn-open-modal");
@@ -181,7 +141,7 @@ $(document).ready(function() {
     $('#formCrearUsuario').on('submit', function(event) {
         event.preventDefault(); //
         console.log('Botón Guardar clickeado');
-        var dniUser = $("#dniUser").text(); // Usar "dniUser" en lugar de "dni"
+        var carreraMateria = $("#carreraMateria").text(); // Usar "dniUser" en lugar de "dni"
         var IdUser = $("#IdUser").val();
         var legajo = $("#legajo").val();
         var user = $("#user").val();
@@ -200,7 +160,7 @@ $(document).ready(function() {
             type: "POST",
             data: {
                 idusuariocrear: idusuariocrear,
-                dniUser: dniUser,
+                carreraMateria: carreraMateria,
                 IdUser: IdUser,
                 legajo: legajo,
                 user: user,
