@@ -362,7 +362,40 @@ function DatosPlan()
     $rowPlan = $datosPlam->fetchAll(PDO::FETCH_ASSOC);
     return $rowPlan;
 }
+function DatosMateriaProfesor()
+{
+    global $pdo;
 
+    $sql = "SELECT *
+    FROM Materia_Profesor mp
+    LEFT JOIN Materia m ON m.id_Materia = mp.id_Materia
+    LEFT JOIN Usuario u ON mp.id_Profesor = u.Id_Usuario
+    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
+
+    $datosMateriaProf = $pdo->prepare($sql);
+    $datosMateriaProf->execute();
+
+    $rowMateriaProf= $datosMateriaProf->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateriaProf;
+}
+
+
+function DatosMateria()
+{
+    global $pdo;
+
+    $sql = "select  *
+    FROM Materia m
+    
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
+
+    $datosMateria = $pdo->prepare($sql);
+    $datosMateria->execute();
+
+    $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateria;
+}
 
 function ()
 {

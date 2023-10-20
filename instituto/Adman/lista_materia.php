@@ -1,24 +1,38 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/editar_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/confirmacionCambioProfesor.php';
+
 ?>
 
 <?php
+
+   
+
 if ($pdo) {
-    // Query para obtener los datos de la tabla 'materia' filtrados por el código de plan
-    $sql = "SELECT *
+    // Query para obtener todas las materias y los profesores asociados si los tienen
+    $sql = "SELECT * 
     FROM Materia m
-    /*LEFT JOIN Detalle_Plan dp ON m.id_Materia = dp.fk_Materia
-    LEFT JOIN Plan p ON dp.fk_Plan = p.cod_Plan*/
-    LEFT JOIN Materia_Profesor mp ON m.id_Materia = mp.id_Materia
-    LEFT JOIN Usuario u ON mp.id_Profesor = u.Id_Usuario
-    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
     LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
     
     $result = $pdo->query($sql);
 
+    $sqlProfesores = "SELECT *
+    FROM Usuario u 
+    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
+    LEFT JOIN Estado es ON u.fk_Estado_Usuario = es.Id_Estado
+    LEFT JOIN Materia_Profesor mp ON mp.id_Profesor = u.Id_Usuario
+    LEFT JOIN Materia m ON m.id_Materia = mp.id_Materia
+    WHERE u.fk_Rol = 2 and u.fk_Estado_Usuario=1";
 
+    $profesores = $pdo->query($sqlProfesores);
 
+  if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']); // Clear the session variable after displaying the message
+    showConfirmationMessagesMateria($message);
+}
 ?>
 
 
@@ -30,7 +44,7 @@ if ($pdo) {
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                    <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
+                        <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -143,29 +157,85 @@ if ($pdo) {
                                     <?php
                                      
                                 // Comprueba si la consulta fue exitosa
-                                if ($result) {
-                                    // Loop a través del resultado y generar filas de la tabla
+                                // Comprueba si la consulta de profesores fue exitosa
+                                if ($profesores) {
+                                    $profesoresList = $profesores->fetchAll(PDO::FETCH_ASSOC);
+
                                     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                                        echo '<tr>';
+                                        echo '<tr data-materia-id="' . $row['id_Materia'] . '">';
                                         echo '<td class="">';
                                         echo '<label class="switch">';
-                                       // Aquí agregamos un ternario para comprobar si el estado está activado o no
                                         $checked = ($row['fk_Estado'] == 1) ? 'checked' : '';
                                         echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['id_Materia'] . '">';
                                         echo '<span class="slider"></span>';
                                         echo '</label>';
                                         echo '</td>';
                                         echo '<td>' . $row['Descripcion'] . '</td>';
-                                        echo '<td>' . $row['Anio_Carrera'] . '</td>';
-                                        echo '<td>' . $row['Promocional'] . '</td>';
-                                        echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
+                                        echo '<td>';
+                                        if ($row['Anio_Carrera'] == 1) {
+                                            echo 'Nivel 1';
+                                        } elseif ($row['Anio_Carrera'] == 2) {
+                                            echo 'Nivel 2';
+                                        } elseif ($row['Anio_Carrera'] == 3) {
+                                            echo 'Nivel 3';
+                                        } 
+                                        echo '</td>';
+
+                                        echo '<td>';
+                                        if ($row['Promocional'] == 1) {
+                                            echo 'Promocional';
+                                        } elseif ($row['Promocional'] == 0) {
+                                            echo 'No Promocional';
+                                        }
+                                        echo '</td>';
+                                        // Añadir la lista desplegable de profesores
+                                        echo '<td>';
+                                        echo '<div class="form-group">';
+                                        
+                                        $selectName = 'ProfCarrera_' . $row['id_Materia'];
+                                        echo '<select class="form-control" name="' . $selectName . '" id="' . $selectName . '" required onchange="mostrarModalConfirmacion(this)">';
+                                        
+                                        // Consulta SQL para obtener el profesor asignado a la materia actual
+                                        $sqlProfesorMateria = "SELECT u.Id_Usuario, pr.Nombre, pr.Apellido
+                                                               FROM Usuario u 
+                                                               LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
+                                                               LEFT JOIN Materia_Profesor mp ON u.Id_Usuario = mp.id_Profesor
+                                                               WHERE mp.id_Materia = :materia_id";
+                                
+                                        $stmt = $pdo->prepare($sqlProfesorMateria);
+                                        $stmt->execute(['materia_id' => $row['id_Materia']]);
+                                        $profesorAsignado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                        echo '<option value="">Seleccionar Profesor</option>';
+
+                                
+                                        foreach ($profesoresList as $profesor) {
+                                            $selected = '';
+                                            
+                                            // Comprobar si este profesor está asignado a la materia actual
+                                            if ($profesorAsignado && $profesor['Id_Usuario'] == $profesorAsignado['Id_Usuario']) {
+                                                $selected = 'selected';
+                                                $_SESSION['ProfesorSeleccionado_' . $profesor['id_Materia']] = $profesor['Nombre'] . ' ' . $profesor['Apellido'];
+
+                                            }
+
+                                            
+                                
+                                            echo '<option value="' . $profesor['Id_Usuario'] . '" ' . $selected . '>';
+                                            echo $profesor['Nombre'] . ' ' . $profesor['Apellido'];
+                                            echo '</option>';
+                                        }
+                                
+                                        echo '</select>';
+                                        echo '</div>';
+                                        echo '</td>';
                                      
-                                        //echo '<td>' . ($row['Inscripto'] ? 'Inscrito' : 'No Inscrito') . '</td>';
+                                        
                                         echo '<td><button class="btn-icon" onclick="openModalsMateriaEdi(' . $row['id_Materia'] . ')"><i class="edit-btn"></i>✏️</button></td>';
                                         echo '</tr>';
                                     }
                                 } else { 
-                                    echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2]; // Acceder al mensaje de error usando errorInfo()
+                                    echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2];
                                 }
                                 ?>
                                 </tbody>
@@ -193,6 +263,7 @@ if ($pdo) {
         </div>
     </div>
 </main>
+
 <?php
 } else {
     echo "Error: No se pudo establecer la conexión a la base de datos.";
@@ -228,7 +299,19 @@ $(document).ready(function() {
                 apellido);
         });
 
-       
+
     });
 });
 </script>
+
+<script>
+function mostrarModalConfirmacion(selectElement) {
+    if (selectElement.value !== '') {
+        $('#confirmModal').modal('show');
+    }
+}
+
+
+
+</script>
+

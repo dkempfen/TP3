@@ -19,7 +19,18 @@ function showConfirmationMessages($message) {
         });
     </script>";
 }       
-
+function showConfirmationMessagesMateria($message) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $message['type'] . "',
+            title: '" . $message['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {                                  
+            window.location.href = '/instituto/Adman/lista_materia.php';
+        });
+    </script>";
+}  
 
 
 
@@ -235,8 +246,59 @@ insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $
 header("Location: /instituto/Adman/Pantallas/lista_personas.php");
 exit();
 }
-///////////////Actuañ Datos Pantalla User///////////////////////
+///////////////Actualizar Datos Materia///////////////////////
 
+function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarrera, $materiaeditar) {
+    session_start();
+    global $pdo;
 
+    $sql = "UPDATE Materia SET Descripcion = ?, Promocional = ?, Anio_Carrera = ? WHERE id_Materia = ?";
+    $stmt = $pdo->prepare($sql);
+
+    try {
+        // Verifica si los valores son nulos antes de ejecutar la consulta
+        $stmt->execute([$nombreMateriaeditar, $promocionaleditar, $nivelCarrera, $materiaeditar]);
+        
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Datos de materia actualizados exitosamente'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'No se encontraron registros actualizados en la base de datos.'
+            ];
+        }
+    } catch (PDOException $e) {
+        // Registra el mensaje de error en un archivo de registro
+        $error_message = 'Error en la base de datos: ' . $e->getMessage();
+        error_log($error_message, 3, '/instituto/archivo_de_registro.log'); // Reemplaza '/ruta/al/archivo_de_registro.log' con la ruta correcta
+        
+        // Configura un mensaje de error genérico para mostrar al usuario
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al actualizar los datos de la materia. Por favor, inténtelo nuevamente más tarde.'
+        ];
+    }
+}
+
+if (isset($_POST['btnmodificarMateria'])) {
+    $nombreMateriaeditar = $_POST['nombreMateriaeditar'];
+    $promocionaleditar = $_POST['promocionaleditar'];
+    $nivelCarrera = $_POST['nivelCarrera'];
+    $materiaeditar = $_POST['materiaeditar'];
+
+    // Llamar a la función de actualización
+    actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarrera, $materiaeditar);
+
+    // Redirige a la página de éxito o error según la sesión 'message'
+    if ($_SESSION['message']['type'] === 'success') {
+        header("Location: /instituto/Adman/lista_materia.php");
+    } else {
+        header("Location: /instituto/Adman/lista_materia.php");
+    }
+    exit();
+}
 
 ?>
