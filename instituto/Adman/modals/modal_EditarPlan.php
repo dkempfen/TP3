@@ -184,7 +184,13 @@ $(document).ready(function() {
                 btnmodificarPlan: 1
             },
             success: function(response) {
-                if (response.success) {
+                if (response.error) { // Verifica si hay un error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al actualizar los datos',
+                        text: response.message
+                    });
+                } else {
                     Swal.fire({
                         icon: 'success',
                         title: 'Datos actualizados exitosamente',
@@ -192,27 +198,21 @@ $(document).ready(function() {
                         timer: 1500
                     }).then(function() {
                         // Cierra la modal
-                        $('#editarTarjetaModal_' + cod_Plan).modal('hide');
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al actualizar los datos',
-                        text: response.message
+                        console.log("Cerrando modal"); // Agrega esto para verificar si se ejecuta
+                        
+                        $('#editarTarjetaModal_').modal('hide');
+                        // Recarga la página
+                        location.reload();
                     });
                 }
             },
             error: function(error) {
                 console.log("Error en la solicitud AJAX:", error);
             }
+
+
         });
     });
-
-
-
-
-
 
 
 });

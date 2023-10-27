@@ -37,8 +37,27 @@ if ($pdo) {
 
     if (isset($_SESSION['message'])) {
         $message = $_SESSION['message'];
-        unset($_SESSION['message']); // Clear the session variable after displaying the message
-        showConfirmationMessageUser($message);
+        unset($_SESSION['message']); // Borrar la variable de sesión después de mostrar el mensaje
+        
+        // Identificar el rol del usuario desde la variable de sesión (ajusta esto según tu lógica real)
+        if (isset($_SESSION['rol'])) {
+            $rolUsuario = $_SESSION['rol'];
+        } else {
+            $rolUsuario = 0; // Valor predeterminado si el rol no se encuentra en la sesión
+        }
+        
+        // Asignar el valor apropiado a $rolUserEditar según el rol del usuario
+        if ($rolUsuario == 3) {
+            $rolUserEditar = 3;
+        } elseif ($rolUsuario == 2) {
+            $rolUserEditar = 2;
+        } elseif ($rolUsuario == 1) {
+            $rolUserEditar = 1;
+        } else {
+            $rolUserEditar = 0; // Otra opción predeterminada si el rol no se encuentra
+        }
+        
+        showConfirmationMessageUser($message, $rolUserEditar);
     }
     if (isset($_SESSION['message'])) {
         $message = $_SESSION['message'];

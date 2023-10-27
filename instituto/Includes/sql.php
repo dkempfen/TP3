@@ -192,7 +192,7 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
     header("Location: /instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
-  /////////////////////Actulizar Estado//////////////////////////////
+  /////////////////////Actulizar Estado Usuario//////////////////////////////
 
   function actualizarEstadoUsuario()
 {
@@ -381,6 +381,7 @@ function DatosMateriaProfesor()
 }
 
 
+
 function DatosMateria()
 {
     global $pdo;
@@ -395,6 +396,58 @@ function DatosMateria()
 
     $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateria;
+}
+
+function DatosAlumnoNota()
+{
+    global $pdo;
+
+    $sql = "select * from Usuario u INNER JOIN Persona p ON u.fk_DNI=p.DNI
+    WHERE u.fk_Rol=1";
+
+    $datosAlumnoNota = $pdo->prepare($sql);
+    $datosAlumnoNota->execute();
+
+    $rowNota = $datosAlumnoNota->fetchAll(PDO::FETCH_ASSOC);
+    return $rowNota;
+}
+
+function DatosMateriaNota()
+{
+    global $pdo;
+
+    $sql = "SELECT *
+    FROM Materia mp
+    LEFT JOIN Materia m ON m.id_Materia = mp.id_Materia
+    LEFT JOIN Usuario u ON mp.id_Profesor = u.Id_Usuario
+    LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
+
+    $datosMateriaNota = $pdo->prepare($sql);
+    $datosMateriaNota->execute();
+
+    $rowMateriaNota= $datosMateriaNota->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateriaNota;
+}
+
+
+function DatosMateriaDetalle()
+{
+    global $pdo;
+
+    $sql = "SELECT dc.id_Cursada,u.fk_DNI,p.Nombre,p.Apellido, dc.fk_Usuario, dc.fk_Legajo, dc.fk_Materia,m.Descripcion,dc.fk_Estado, dc.Primer_Parcial, 
+    dc.Recuperatio_Parcial_1, dc.Primer_TP, dc.Recuperatio_TP_1, dc.Segundo_Parcial,dc.Recuperatio_Parcial_2, dc.Segundo_TP,
+     dc.Recuperatio_TP_2, dc.Promedio, dc.Anio, pn.cod_Plan, pn.Carrera, Final
+     from DetalleCursada dc INNER JOIN Usuario u ON dc.fk_Usuario=u.Id_Usuario
+     INNER JOIN Persona p ON p.DNI=u.fk_DNI 
+     INNER JOIN Materia m ON m.id_Materia=dc.fk_Materia  
+     INNER JOIN Plan pn  ON pn.cod_Plan=u.fk_Plan";
+
+    $datosMateriaDetalle= $pdo->prepare($sql);
+    $datosMateriaDetalle->execute();
+
+    $rowMateriaDetalle= $datosMateriaDetalle->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateriaDetalle;
 }
 
 function ()
@@ -414,6 +467,9 @@ function ()
     $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateria;
 }
+
+
+
 /*function ActulizarUser()
     {      
 

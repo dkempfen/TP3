@@ -7,19 +7,28 @@
 
 require_once('load.php');
 
-function showConfirmationMessageUser($message) {
+function showConfirmationMessageUser($message, $rolUserEditar) {
     echo "<script>
         Swal.fire({
             icon: '" . $message['type'] . "',
             title: '" . $message['text'] . "',
             showConfirmButton: false,
             timer: 1500
-        }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_usuarios.php';
-        });
-    </script>";
-}      
+        }).then(function() {";
 
+    if ($rolUserEditar == 3) {
+        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=3';";
+    } elseif ($rolUserEditar == 2) {
+        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=2';";
+    } elseif ($rolUserEditar == 1) {
+        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=1';";
+    } else {
+        echo "window.location.href = '/instituto/Adman/lista_usuarios.php';";
+    }
+
+    echo "});
+    </script>";
+}
 
 function showConfirmationMessagePlan($messagePlan) {
     echo "<script>
@@ -35,6 +44,7 @@ function showConfirmationMessagePlan($messagePlan) {
     </script>";
 }       
 
+ 
 function showConfirmationMessageEditarPlan($messageEditarPlan) {
     echo "<script>
         Swal.fire({
@@ -47,22 +57,22 @@ function showConfirmationMessageEditarPlan($messageEditarPlan) {
 
         });
     </script>";
-}      
+}     
+
+
 
 
 
 ///////////////Actuañ Datos Pantalla User///////////////////////
-
-function editarUsuarios($legajoUser, $claveeditaruser,$libromatrizEditar ,$planUserEditar, $rolUserEditar,$UserId) {
+function editarUsuarios($legajoUser, $claveeditaruser, $libromatrizEditar, $planUserEditar, $rolUserEditar, $UserId) {
     session_start();
     global $pdo;
-    
 
     $sql = "UPDATE Usuario SET Legajo = ?, Password = ?, Libromatriz = ?, fk_Plan = ?, fk_Rol = ? WHERE Id_Usuario = ?";
     $stmt = $pdo->prepare($sql);
 
     // Verifica si los valores son nulos antes de ejecutar la consulta
-    $stmt->execute([$legajoUser, $claveeditaruser,$libromatrizEditar ,$planUserEditar, $rolUserEditar,$UserId]);
+    $stmt->execute([$legajoUser, $claveeditaruser, $libromatrizEditar, $planUserEditar, $rolUserEditar, $UserId]);
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['message'] = [
@@ -76,7 +86,7 @@ function editarUsuarios($legajoUser, $claveeditaruser,$libromatrizEditar ,$planU
         ];
     }
 
-     // Redirige según el rol
+    // Redirige según el rol
     if ($rolUserEditar == 3) {
         header("Location: /instituto/Adman/lista_usuarios.php?rol=3");
     } elseif ($rolUserEditar == 2) {
@@ -98,23 +108,9 @@ if (isset($_POST['btnmodificarUsuario'])) {
     $libromatrizEditar = $_POST['libromatrizEditar'];
     $planUserEditar = $_POST['planUserEditar'];
     $rolUserEditar = $_POST['rolUserEditar'];
-   
 
-    // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
-    editarUsuarios($legajoUser, $claveeditaruser,$libromatrizEditar ,$planUserEditar, $rolUserEditar,$UserId);
-
-
-
-    if ($rolUserEditar == 3) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=3");
-    } elseif ($rolUserEditar == 2) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=2");
-    } elseif ($rolUserEditar == 1) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=1");
-    } else {
-        header("Location: /instituto/Adman/lista_usuarios.php");
-    }
-    exit();
+    // Llamar a la función editarUsuarios solo si los campos requeridos no están vacíos
+    editarUsuarios($legajoUser, $claveeditaruser, $libromatrizEditar, $planUserEditar, $rolUserEditar, $UserId);
 }
 
 ///////////////Actuañ Datos Pantalla User///////////////////////

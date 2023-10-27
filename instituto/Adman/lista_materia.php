@@ -3,6 +3,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_materia.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/editar_materia.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/confirmacionCambioProfesor.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+
 
 ?>
 
@@ -32,6 +34,12 @@ if ($pdo) {
     $message = $_SESSION['message'];
     unset($_SESSION['message']); // Clear the session variable after displaying the message
     showConfirmationMessagesMateria($message);
+}
+
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']); // Clear the session variable after displaying the message
+    showConfirmationMessagesMateriaEstado($message);
 }
 ?>
 
@@ -166,7 +174,7 @@ if ($pdo) {
                                         echo '<td class="">';
                                         echo '<label class="switch">';
                                         $checked = ($row['fk_Estado'] == 1) ? 'checked' : '';
-                                        echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . ' data-usuario-id="' . $row['id_Materia'] . '">';
+                                        echo '<input class="onoffswitch-checkbox" type="checkbox" name="onoffswitch" value="true" ' . $checked . '  data-materia-id="' . $row['id_Materia'] . '">';
                                         echo '<span class="slider"></span>';
                                         echo '</label>';
                                         echo '</td>';
@@ -193,6 +201,7 @@ if ($pdo) {
                                         echo '<div class="form-group">';
                                         
                                         $selectName = 'ProfCarrera_' . $row['id_Materia'];
+                                        
                                         echo '<select class="form-control" name="' . $selectName . '" id="' . $selectName . '" required onchange="mostrarModalConfirmacion(this)">';
                                         
                                         // Consulta SQL para obtener el profesor asignado a la materia actual
@@ -215,13 +224,9 @@ if ($pdo) {
                                             // Comprobar si este profesor está asignado a la materia actual
                                             if ($profesorAsignado && $profesor['Id_Usuario'] == $profesorAsignado['Id_Usuario']) {
                                                 $selected = 'selected';
-                                                $_SESSION['ProfesorSeleccionado_' . $profesor['id_Materia']] = $profesor['Nombre'] . ' ' . $profesor['Apellido'];
-
+                                                $_SESSION['ProfesorSeleccionado_' . $row['id_Materia']] = $profesor['Nombre'] . ' ' . $profesor['Apellido'];
                                             }
-
-                                            
-                                
-                                            echo '<option value="' . $profesor['Id_Usuario'] . '" ' . $selected . '>';
+                                            echo '<option value="' . $profesor['Id_Usuario'] . '" ' . $selected . ' data-materia-id="' . $row['id_Materia'] . '">';
                                             echo $profesor['Nombre'] . ' ' . $profesor['Apellido'];
                                             echo '</option>';
                                         }
@@ -307,11 +312,55 @@ $(document).ready(function() {
 <script>
 function mostrarModalConfirmacion(selectElement) {
     if (selectElement.value !== '') {
+        // Obtener el nombre del profesor seleccionado
+        var selectedProfessorName = selectElement.options[selectElement.selectedIndex].text;
+        var idMateria = selectElement.options[selectElement.selectedIndex].getAttribute('data-materia-id');
+        var idUsuario = selectElement.value;
+
+        // Actualizar los campos ocultos con los valores seleccionados
+        document.getElementById('materiaId').value = idMateria;
+        document.getElementById('profesorId').value = idUsuario;
+
+        // Actualizar el contenido del modal de confirmación
+        document.querySelector('#confirmModal .modal-body').innerHTML = '¿Desea cambiar el profesor seleccionado a este nuevo valor?<br>Profesor seleccionado: ' + selectedProfessorName;
+
+        // Mostrar el modal de confirmación
         $('#confirmModal').modal('show');
     }
 }
-
-
-
 </script>
 
+
+
+<script>
+$(document).ready(function() {
+    var tableMateria = $('#tablemateria').DataTable();
+
+    $('#tablemateria').on("change", ".onoffswitch-checkbox", function() {
+        var self = this;
+        var Id_materia = $(this).data("materia-id");
+        var fk_Estado = this.checked ? 1 : 2;
+
+        $.ajax({
+            url: "/instituto/Includes/sqlaltauser.php",
+            type: "POST",
+            data: {
+                Id_materia: Id_materia,
+                fk_Estado: fk_Estado
+            },
+
+            success: function(response) {
+                var messageMater = $('#message'); // Elemento donde se mostrará el mensaje
+                messageMater.html(response); // Coloca el mensaje en el elemento
+                setTimeout(function() {
+                    messageMater.html(''); // Borra el mensaje después de un tiempo
+                    // Realiza otras operaciones si es necesario, pero no vuelvas a inicializar DataTable
+                }, 2000);
+            },
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+});
+</script> 
