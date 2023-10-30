@@ -19,17 +19,16 @@ if (!empty($_POST)) {
         $pass = $_POST['pass'];
         
         
-        $sql="SELECT *, Fechanacimiento,
-        TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS edad FROM Usuario u INNER JOIN Rol  r on u.fk_Rol=r.id_rol
+        $sql = "SELECT *, Fechanacimiento,
+        TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS edad FROM Usuario u INNER JOIN Rol r on u.fk_Rol=r.id_rol
         left JOIN Persona p on p.DNI= u.fk_DNI
         INNER JOIN Estado e on e.Id_Estado= u.fk_Estado_Usuario
-         /*left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id*/
+        /left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id/
         left JOIN Plan pn on pn.cod_Plan=u.fk_Plan
-         WHERE User='$login' AND Password='$pass'";
+        WHERE User = ? AND Password = ?";
         $query = $pdo->prepare($sql);
         $query->execute([$login, $pass]);
         $result = $query->fetch(PDO::FETCH_ASSOC);
-
        
         
 

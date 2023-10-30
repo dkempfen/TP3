@@ -17,13 +17,13 @@ function showConfirmationMessageUser($message, $rolUserEditar) {
         }).then(function() {";
 
     if ($rolUserEditar == 3) {
-        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=3';";
+        echo "window.location.href = '/sistemas/instituto/Adman/lista_usuarios.php?rol=3';";
     } elseif ($rolUserEditar == 2) {
-        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=2';";
+        echo "window.location.href = '/sistemas/instituto/Adman/lista_usuarios.php?rol=2';";
     } elseif ($rolUserEditar == 1) {
-        echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=1';";
+        echo "window.location.href = '/sistemas/instituto/Adman/lista_usuarios.php?rol=1';";
     } else {
-        echo "window.location.href = '/instituto/Adman/lista_usuarios.php';";
+        echo "window.location.href = '/sistemas/instituto/Adman/lista_usuarios.php';";
     }
 
     echo "});
@@ -38,7 +38,7 @@ function showConfirmationMessagePlan($messagePlan) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_planes.php';
+            window.location.href = '/sistemas/instituto/Adman/lista_planes.php';
 
         });
     </script>";
@@ -53,7 +53,7 @@ function showConfirmationMessageEditarPlan($messageEditarPlan) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_planes.php';
+            window.location.href = '/sistemas/instituto/Adman/lista_planes.php';
 
         });
     </script>";
@@ -101,13 +101,13 @@ function editarUsuarios($legajoUser, $claveeditaruser, $libromatrizEditar, $plan
 
     // Redirige según el rol
     if ($rolUserEditar == 3) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=3");
+        header("Location:/sistemas/instituto/Adman/lista_usuarios.php?rol=3");
     } elseif ($rolUserEditar == 2) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=2");
+        header("Location:/sistemas/instituto/Adman/lista_usuarios.php?rol=2");
     } elseif ($rolUserEditar == 1) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=1");
+        header("Location:/sistemas/instituto/Adman/lista_usuarios.php?rol=1");
     } else {
-        header("Location: /instituto/Adman/lista_usuarios.php");
+        header("Location:/sistemas/instituto/Adman/lista_usuarios.php");
     }
     exit();
 }
@@ -151,7 +151,7 @@ function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFina
         ];
     }
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location:/sistemas/instituto/Adman/lista_planes.php");
     exit();
 }
 
@@ -168,7 +168,7 @@ if (isset($_POST['btnmodificarPlan'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan);
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location:/sistemas/instituto/Adman/lista_planes.php");
     exit();
 }
 
@@ -199,7 +199,7 @@ function InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fe
         ];
     }
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location:/sistemas/instituto/Adman/lista_planes.php");
     exit();
 }
 
@@ -216,7 +216,7 @@ if (isset($_POST['btnmCrearPlan'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fechaFinalCrear, $estadoPlanCrear);
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location:/sistemas/instituto/Adman/lista_planes.php");
     exit();
 }
 

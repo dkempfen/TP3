@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/edidtar_user.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/modals/modals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
 
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
@@ -104,7 +104,7 @@ require_once '../includes/footer.php';
             var fk_Estado_Usuario = this.checked ? 1 : 2;
 
             $.ajax({
-                url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+                url: "/sistemas/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
                 type: "POST",
                 data: {
                     Id_Usuario: Id_Usuario,

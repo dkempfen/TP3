@@ -46,4 +46,4 @@
       </ul>
     </header>
 
-<?php require_once 'nav.php'; ?>
+<?php require_once 'nav_alumno.php'; ?>

@@ -1,10 +1,10 @@
 <?php
-//require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/ModelsPlan/crearPlan.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_EditarPlan.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_carrera.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_CrearPlan.php';
+//require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/ModelsPlan/crearPlan.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/modals/modal_EditarPlan.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/modals/modal_carrera.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/modals/modal_CrearPlan.php';
 
 ?>
 
@@ -56,7 +56,7 @@ if ($pdo) {
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
+                        <a class="custom-menu-link" href="/sistemas/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -66,7 +66,7 @@ if ($pdo) {
                 <ul class="custom-menu-list">
                     <!-- Planes de Estudio -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_planes.php">Planes de Estudio</a>
+                        <a class="custom-menu-link" href="/sistemas/instituto/Adman/lista_planes.php">Planes de Estudio</a>
 
                     </li>
                 </ul>
@@ -76,7 +76,7 @@ if ($pdo) {
                 <ul class="custom-menu-list">
                     <!-- Materias -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_materia.php">Materias</a>
+                        <a class="custom-menu-link" href="/sistemas/instituto/Adman/lista_materia.php">Materias</a>
 
                     </li>
                 </ul>
@@ -178,7 +178,7 @@ if ($pdo) {
             <div class="col-lg-6">
                 <!-- Divide la fila en 2 columnas -->
                 <div class="custom-link">
-                    <a href="/instituto/Adman/Pantallas/carreras.php" title="">
+                    <a href="/sistemas/instituto/Adman/Pantallas/carreras.php" title="">
                         <span class="buttonIcon" aria-hidden="true">
                             <i class="fas fa-chevron-left"></i>
                         </span>
