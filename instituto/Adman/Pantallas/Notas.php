@@ -11,6 +11,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/altaNota.php';
 <?php
 
    
+if (isset($_SESSION['messageNota'])) {
+    $messageNota = $_SESSION['messageNota'];
+    unset($_SESSION['messageNota']); // Clear the session variable after displaying the message
+    showConfirmationMessagesNotas($messageNota);
+}
 
 if ($pdo) {
   
@@ -21,29 +26,11 @@ if ($pdo) {
      from DetalleCursada dc INNER JOIN Usuario u ON dc.fk_Usuario=u.Id_Usuario
      INNER JOIN Persona p ON p.DNI=u.fk_DNI 
      INNER JOIN Materia m ON m.id_Materia=dc.fk_Materia  
-     INNER JOIN Plan pn  ON pn.cod_Plan=u.fk_Plan;
-    ";
+     INNER JOIN Plan pn  ON pn.cod_Plan=u.fk_Plan";
 
     $materianota = $pdo->query($sqlmaterianota);
 
-  if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    unset($_SESSION['message']); // Clear the session variable after displaying the message
-    showConfirmationMessagesMateria($message);
-}
 
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    unset($_SESSION['message']); // Clear the session variable after displaying the message
-    showConfirmationMessagesMateriaEstado($message);
-}
-
-
-if (isset($_SESSION['message'])) {
-    $message = $_SESSION['message'];
-    unset($_SESSION['message']); // Clear the session variable after displaying the message
-    showConfirmationMessagesNotas($message);
-}
 
     // Inicializar $alumnoData
     $alumnoData = null;
@@ -197,8 +184,8 @@ if (isset($_SESSION['message'])) {
             </tr>
             <?php endwhile; ?>
 
-            </tbody>
-            </table>
+         
+       
         </div>
     </div>
 </main>

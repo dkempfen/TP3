@@ -106,7 +106,7 @@ $(document).ready(function() {
         var fechaInicioCrear = $("#fechaInicioCrear").val();
         var fechaFinalCrear = $("#fechaFinalCrear").val();
        
-    .val(); // En lugar de "estadoUser", usar "estadoUser" si es un campo de selección
+        .val(); // En lugar de "estadoUser", usar "estadoUser" si es un campo de selección
 
         console.log('Estado del campo de selección "estadoUser":', estadoPlanCrear);
 

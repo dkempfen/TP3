@@ -98,8 +98,7 @@ if ($pdo) {
                     <div class="tile-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered" id="tableUsuarios">
-                                <thead>
-                                    <tr>
+                                        <tr>
                                         <th>DNI</th>
                                         <th>NOMBRE</th>
                                         <th>Apellido</th>
@@ -145,7 +144,8 @@ if ($pdo) {
                                 }
                                 ?>
                                 </tbody>
-                            </table>
+                            </table><thead>
+                            
                         </div>
                     </div>
                 </div>

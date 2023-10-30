@@ -60,6 +60,19 @@ function showConfirmationMessageEditarPlan($messageEditarPlan) {
 }     
 
 
+function showConfirmationMessagesNotas($messageNota) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $messageNota['type'] . "',
+            title: '" . $messageNota['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {                                  
+            window.location.href = '/instituto/Adman/Pantallas/Notas.php';
+        });
+    </script>";
+}  
+
 
 
 
@@ -208,6 +221,52 @@ if (isset($_POST['btnmCrearPlan'])) {
 }
 
 
+
+function insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) {
+    session_start();
+    global $pdo;
+
+    $sql = "INSERT INTO DetalleCursada 
+            (fk_Usuario, fk_Legajo, fk_Materia, Anio, fk_Estado, Primer_Parcial, Recuperatio_Parcial_1, 
+            Segundo_Parcial, Recuperatio_Parcial_2, Final)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota]);
+
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['messageNota'] = [
+            'type' => 'success',
+            'text' => 'Nota insertada exitosamente.'
+        ];
+    } else {
+        $_SESSION['messageNota'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al insertar la nota.'
+        ];
+    }
+
+    header("Location: /instituto/Adman/Pantallas/Notas.php");
+    exit();
+}
+
+// Verificar si se ha enviado una solicitud de inserción
+if (isset($_POST['btnmCrearNota'])) {
+    $alumnoNota = $_POST['alumnoNota'];
+    $LegajoNota = $_POST['LegajoNota'];
+    $materia = $_POST['materia'];
+    $anioMateria = $_POST['anioMateria'];
+    $estadoMateria = $_POST['estadoMateria'];
+    $parcial1 = $_POST['parcial1'];
+    $recuperatorio1 = $_POST['recuperatorio1'];
+    $parcial2 = $_POST['parcial2'];
+    $recuperatorio2 = $_POST['recuperatorio2'];
+    $finalnota = $_POST['finalnota'];
+
+    insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota);
+    header("Location: /instituto/Adman/Pantallas/Notas.php");
+    exit();
+}
 
 
 

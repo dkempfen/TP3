@@ -3,131 +3,210 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/Notas.php';
 
-
-
 $DatosAlumnoNota = DatosAlumnoNota();
-$DatosMateria =DatosMateria();
+$DatosMateria = DatosMateria();
+
 
 ?>
-
-
-<?php 
-
-
- ?>
 <!-- Agregar jQuery y Select2 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Modal de Alta de Nota -->
-<?php foreach ($DatosAlumnoNota as $alumnos); foreach ($DatosMateria as $materia)  { ?>
 
-<div class="modal fade" id="modalAltaNota" tabindex="-1" role="dialog" aria-labelledby="modalAltaNotaLabel"
-    aria-hidden="true">
+<?php foreach ($DatosAlumnoNota as $alumno) : ?>
+<?php foreach ($DatosMateria as $materia) : ?>
+<div class="modal fade" id="modalCrearNota" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header headerRegisterNota">
-                <h5 class="modal-title" id="modalAltaNota">Alta de Nota</h5>
+            <div class="modal-header headerNota">
+                <h5 class="modal-title" id="tituloModalCrearNota">Alta de Nota</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Agrega aquí los campos para ingresar los datos de la nota -->
-                <form id="formAltaNota" name="formAltaNota" action="/instituto/Includes/slqeditar.php" method="POST">
-                    <!-- Campos para la alta de nota -->
+                <form id="formCrearNota" name="formCrearNota" action="/instituto/Includes/sqluser.php" method="POST">
 
-                    <input type="hidden" name="id_Cursada" id="id_Cursada"
-                        value="<?php  echo $DatosAlumnoNota['id_Cursada']?>">
+                    <input type="hidden" name="idPlancrearNota" id="idPlancrearNota"
+                        value="<?php  echo $materia['id_Cursada']?>">
+
 
                     <div class="form-group">
                         <label for="alumnoNota">Alumno</label>
                         <select id="alumnoNota" name="alumnoNota" class="form-control">
                             <option value="">--Seleccione--</option>
-
-                            <?php
-                            $alumnos = DatosAlumnoNota(); // Obtén la lista de alumnos desde tu función
-
-                            foreach ($alumnos as $alumnos) {
-                                echo '<option value="' . $alumnos['Id_Usuario'] . '">' . $alumnos['Nombre'] . ' ' . $alumnos['Apellido'] . '</option>';
-                            }
-                            ?>
+                            <?php foreach ($DatosAlumnoNota as $alumno) : ?>
+                            <option value="<?= $alumno['Id_Usuario'] ?>">
+                                <?= $alumno['Nombre'] . ' ' . $alumno['Apellido'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
-                    <div class="form-group">
+
+                    <div class="form-group" style="display: none;">
                         <label for="LegajoNota">Legajo</label>
                         <input type="text" id="LegajoNota" name="LegajoNota" class="form-control" readonly>
                     </div>
+
                     <div class="form-group">
                         <label for="materia">Materia</label>
                         <select id="materia" name="materia" class="form-control">
                             <option value="">--Seleccione--</option>
-
-                            <?php
-                            $materia = DatosMateria(); // Obtén la lista de alumnos desde tu función
-
-                            foreach ($materia as $materia) {
-                                echo '<option value="' . $materia['id_Materia'] . '">' . $materia['Descripcion'] . ' ' . $materia[''] . '</option>';
-                            }
-                            ?>
+                            <?php foreach ($DatosMateria as $materia) : ?>
+                            <option value="<?= $materia['id_Materia'] ?>"><?= $materia['Descripcion'] ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label for="anioMateria">Año Materia</label>
                         <input type="text" id="anioMateria" name="anioMateria" class="form-control" readonly>
                     </div>
-                    <div class="form-group">
+
+
+
+
+                    <div class="form-group" style="display: none;">
                         <label for="estadoMateria">Estado Materia</label>
                         <input type="text" id="estadoMateria" name="estadoMateria" class="form-control" readonly>
                     </div>
+
                     <div class="form-group">
                         <label for="parcial1">1er Parcial</label>
-                        <input type="number" class="form-control" id="parcial1" name="parcial1" required>
+                        <input type="number" class="form-control" id="parcial1" name="parcial1">
                     </div>
+
                     <div class="form-group">
                         <label for="recuperatorio1">1 Recuperatorio</label>
-                        <input type="number" class="form-control" id="recuperatorio1" name="recuperatorio1" required>
+                        <input type="number" class="form-control" id="recuperatorio1" name="recuperatorio1">
                     </div>
+
                     <div class="form-group">
                         <label for="parcial2">2 Parcial</label>
-                        <input type="number" class="form-control" id="parcial2" name="parcial2" required>
+                        <input type="number" class="form-control" id="parcial2" name="parcial2">
                     </div>
+
                     <div class="form-group">
                         <label for="recuperatorio2">2 Recuperatorio</label>
-                        <input type="number" class="form-control" id="recuperatorio2" name="recuperatorio2" required>
+                        <input type="number" class="form-control" id="recuperatorio2" name="recuperatorio2">
                     </div>
 
                     <div class="form-group">
                         <label for="finalnota">Final</label>
-                        <input type="number" class="form-control" id="finalnota" name="finalnota" required>
+                        <input type="number" class="form-control" id="finalnota" name="finalnota">
                     </div>
 
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button id="btnActionAltaPlan" class="btn btn-primary btn-open-modal" type="submit"
+                            name="btnmCrearNota">
+                            <span id="btnCrearNota">Guardar</span>
+                        </button>
+                    </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="btnAbrirModalAltaNota" class="btn btn-primary" name="btnaltaNota">Guardar</button>
             </div>
         </div>
     </div>
 </div>
-<?php } ?>
+<?php endforeach; ?>
+<?php endforeach; ?>
+
 <script>
 function isValidInput(value) {
     return value.trim() !== '';
 }
 
+// Función para abrir el modal de Alta de Nota
 function openModalNota() {
+    console.log('Abrir modal');
+
+    document.getElementById('idPlancrearNota').value = "";
+    document.querySelector('.modal-header').classList.replace("headerUpdate", "headerNota");
+    document.getElementById('btnCrearNota').classList.replace("btn-info", "btn-open-modal");
+    document.getElementById('btnCrearNota').innerHTML = 'Guardar';
+    document.getElementById('tituloModalCrearNota').innerHTML = 'Alta de Nota';
+    document.getElementById('formCrearNota').reset();
+
+    $('#modalCrearNota').modal('show');
 
 
-    console.log('Abrir modal'); // Agrega este log para verificar si se llama a la función
-
-    // Abre el modal "Alta de Nota"
-    $('#modalAltaNota').modal('show');
-
-    // Resetea el formulario de alta de nota si es necesario
-    document.getElementById('formAltaNota').reset();
 }
+(document).ready(function() {
+
+    $('#formCrearNota').on('submit', function(event) {
+        event.preventDefault(); //
+        console.log('Botón Guardar clickeado');
+        var idPlancrearNota = $("#idPlancrearNota").text(); // Usar "dniUser" en lugar de "dni"
+        var materia = $("#materia").val();
+        var anioMateria = $("#anioMateria").val();
+        var estadoMateria = $("#estadoMateria").val();
+        var parcial1 = $("#parcial1").val();
+        var recuperatorio1 = $("#recuperatorio1").val();
+        var parcial2 = $("#parcial2").val();
+        var recuperatorio2 = $("#recuperatorio2").val();
+        var finalnota = $("#finalnota").val();
+
+
+        // Realizar la petición AJAX para insertar o actualizar datos
+        $.ajax({
+            url: "/instituto/Include/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            type: "POST",
+            data: {
+                alumnoNota: alumnoNota,
+                LegajoNota: LegajoNota,
+                materia: materia,
+                anioMateria: anioMateria,
+                estadoMateria: estadoMateria,
+                parcial1: parcial1,
+                recuperatorio1: recuperatorio1,
+                parcial2: parcial2,
+                recuperatorio2: recuperatorio2,
+                finalnota: finalnota,
+
+                btnmCrearNota: 0
+            },
+
+            success: function(response) {
+                // Verificar la respuesta del servidor
+                if (response.success) {
+                    // Cerrar el modal
+                    $('#modalNotaCrear').modal('hide');
+
+                    // Mostrar mensaje de éxito
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos guardados exitosamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    // Mostrar mensaje de error
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al guardar los datos',
+                        text: response.message
+                    });
+                }
+            },
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+
+
+
+
+});
 </script>
+
+
+
+
+
+
 
 <script>
 $(document).ready(function() {
@@ -151,8 +230,10 @@ $(document).ready(function() {
                 accion: 'legajo' // Agrega un parámetro de acción para obtener el legajo
             },
             success: function(response) {
+                var legajoSinEspacios = response.trim();
+
                 // Llena el campo "LegajoNota" con la respuesta del servidor
-                $('#LegajoNota').val(response);
+                $('#LegajoNota').val(legajoSinEspacios);
             },
             error: function(error) {
                 console.log('Error al obtener el legajo: ' + error);
@@ -198,8 +279,10 @@ $(document).ready(function() {
                 accion: 'anio' // Agrega un parámetro de acción para obtener el año de la carrera
             },
             success: function(response) {
+                var anioSinEspacios = response.trim();
+
                 // Llena el campo "anioMateria" con la respuesta del servidor
-                $('#anioMateria').val(response);
+                $('#anioMateria').val(anioSinEspacios);
             },
             error: function(error) {
                 console.log('Error al obtener el año de la materia: ' + error);
@@ -223,82 +306,19 @@ $(document).ready(function() {
             url: '/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
-                idAnio: estadoId, // El ID de la materia que deseas consultar
+                idEstado: estadoId, // El ID de la materia que deseas consultar
                 accion: 'estado' // Agrega un parámetro de acción para obtener el año de la carrera
             },
             success: function(response) {
+                var estadoSinEspacios = response.trim();
+
                 // Llena el campo "anioMateria" con la respuesta del servidor
-                $('#estadoMateria').val(response);
+                $('#estadoMateria').val(estadoSinEspacios);
             },
             error: function(error) {
                 console.log('Error al obtener el estado de la materia: ' + error);
             }
         });
     }
-});
-</script>
-
-
-
-<script>
-$(document).ready(function() {
-    $('#btnAbrirModalAltaNota').on('click', function() {
-        var alumnoNota = $("#alumnoNota").val();
-        var LegajoNota = $("#LegajoNota").val();
-        var materia = $("#materia").val();
-        var anioMateria = $("#anioMateria").val()
-        var estadoMateria = $("#estadoMateria").val()
-        var parcial1 = $("#parcial1").val();
-        var recuperatorio1 = $("#recuperatorio1").val();
-        var parcial2 = $("#parcial2").val();
-        var recuperatorio2 = $("#recuperatorio2").val();
-        var finalnota = $("#finalnota").val();
-        var id_Cursada = $("#id_Cursada").val();
-
-        $.ajax({
-            url: '/instituto/Includes/slqeditar.php',
-            type: 'POST',
-            data: {
-                alumnoNota: alumnoNota,
-                LegajoNota: LegajoNota,
-                materia: materia,
-                anioMateria: anioMateria,
-                estadoMateria: estadoMateria,
-                parcial1: parcial1,
-                recuperatorio1: recuperatorio1,
-                parcial2: parcial2,
-                recuperatorio2: recuperatorio2,
-                finalnota: finalnota,
-                id_Cursada: id_Cursada,
-                btnaltaNota: 0
-            },
-            success: function(response) {
-                if (response === 'success') {
-                    $('#modalAltaNota').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Datos guardados exitosamente',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(function() {
-                        window.location.reload();
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al guardar las notas',
-                        text: response.message
-
-                    });
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log('Error en la solicitud AJAX:');
-                console.log('jqXHR:', jqXHR);
-                console.log('Status:', textStatus);
-                console.log('Error:', errorThrown);
-            }
-        });
-    });
 });
 </script>

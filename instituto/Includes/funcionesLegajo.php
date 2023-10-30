@@ -101,9 +101,9 @@ if (isset($_POST['accion'])) {
         }
     } elseif ($accion === 'estado') {
         // Lógica para obtener el estado de la materia
-        if (isset($_POST['idAnio'])) { // Asegúrate de que el nombre de la variable coincida con el formulario
-            $materiaId = $_POST['idAnio'];
-            $estadoMateria = obtenerEstadoMateria($materiaId);
+        if (isset($_POST['idEstado'])) { // Asegúrate de que el nombre de la variable coincida con el formulario
+            $estadoId = $_POST['idEstado'];
+            $estadoMateria = obtenerEstadoMateria($estadoId);
             echo $estadoMateria;
         } else {
             echo 'ID del estado no proporcionado';

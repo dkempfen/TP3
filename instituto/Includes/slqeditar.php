@@ -31,18 +31,7 @@ function showConfirmationMessagesMateria($message) {
         });
     </script>";
 }  
-function showConfirmationMessagesNotas($message) {
-    echo "<script>
-        Swal.fire({
-            icon: '" . $message['type'] . "',
-            title: '" . $message['text'] . "',
-            showConfirmButton: false,
-            timer: 1500
-        }).then(function() {                                  
-            window.location.href = '/instituto/Adman/Pantallas/Notas.php';
-        });
-    </script>";
-}  
+
 
 
 
@@ -200,11 +189,11 @@ if (isset($_POST['btnaltaPersona'])) {
 }
 
 
-if (isset($DatosPersonas)) {
+/*if (isset($DatosPersonas)) {
     print_r($DatosPersonas);
 } else {
     echo "La variable \$DatosPersonas no está definida.";
-}
+}*/
 function insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
  session_start();
 global $pdo;
@@ -293,6 +282,8 @@ function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarre
             'text' => 'Ha ocurrido un error al actualizar los datos de la materia. Por favor, inténtelo nuevamente más tarde.'
         ];
     }
+
+    
 }
 
 if (isset($_POST['btnmodificarMateria'])) {
@@ -322,7 +313,7 @@ if (isset($_POST['btnmodificarMateria'])) {
 
 
 
-function insertarNuevoProfesor($materiaId,$profesorId) {
+/*function insertarNuevoProfesor($materiaId,$profesorId) {
     global $pdo;
     session_start();
 
@@ -365,57 +356,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header("Location: /instituto/Adman/lista_materia.php");
     exit();
-}
+}*/
 
 
 
 ////Insertar nota
 
-function insertarNuevaNota($alumnoNota,$LegajoNota, $materia,$anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) {
-    global $pdo;
-    session_start();
 
 
-    $sql = "INSERT INTO DetalleCursada 
-    (fk_Usuario, fk_Legajo, fk_Materia,Anio, fk_Estado, Primer_Parcial, Recuperatio_Parcial_1, 
-    Segundo_Parcial, Recuperatio_Parcial_2,Final)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-    $stmt = $pdo->prepare($sql);
-
-    if ($stmt->execute([$alumnoNota,$LegajoNota, $materia, $anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota])) {
-        $_SESSION['message'] = [
-            'type' => 'success',
-            'text' => 'Nota insertada exitosamente.'
-        ];
-    } else {
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Ha ocurrido un error al insertar la nota.'
-        ];
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recuperar los valores del formulario
-    $alumnoNota = $_POST['alumnoNota'];
-    $LegajoNota= $_POST['LegajoNota'];
-    $materia = $_POST['materia'];
-    $anioMateria = $_POST['anioMateria'];
-    $estadoMateria = $_POST['estadoMateria'];
-    $parcial1 = $_POST['parcial1'];
-    $recuperatorio1 = $_POST['recuperatorio1'];
-    $parcial2 = $_POST['parcial2'];
-    $recuperatorio2 = $_POST['recuperatorio2'];
-    $finalnota = $_POST['finalnota'];
-
-    // Llama a la función para insertar la nota
-    insertarNuevaNota($alumnoNota,$LegajoNota, $materia,$anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) ;
-
-
-    // Redirige a la página deseada
-    header("Location: /instituto/Adman/Pantallas/Notas.php");
-    exit();
-}
-
+// Devolver la respuesta como JSON
 
 ?>
