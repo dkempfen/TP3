@@ -102,7 +102,7 @@ include '../Includes/header.php';
                             <input id="continuar" name="continuar" type="button" class="bgenerar" value="Generar
                             Inscripción">
                             <input type="button" name="volver" value="Volver" class="bvolver"
-                                onclick="window.location.href='/instituto/Login/index.php'">
+                                onclick="window.location.href='/sistemas/instituto/Login/index.php'">
                         </div>
 
                     </form>
@@ -115,8 +115,8 @@ include '../Includes/header.php';
 
 </div>
 </header>
-<script src="/instituto/js/jquery-3.3.1.min.js"></script>
-<script src="/instituto/js/plugins/login.js"></script>
+<script src="/sistemas/instituto/js/jquery-3.3.1.min.js"></script>
+<script src="/sistemas/instituto/js/plugins/login.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">

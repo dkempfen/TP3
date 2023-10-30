@@ -1,7 +1,7 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/lista_personas.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/Pantallas/lista_personas.php';
 
 
 $DatosUsuarios = DatosUsuarios();
@@ -36,7 +36,7 @@ foreach ($DatosPersonas as $DatosPersonas) {
             </div>
 
             <div class="modal-body">
-                <form id="formCrearUsuario" name="formCrearUsuario" action="/instituto/Includes/slqeditar.php"
+                <form id="formCrearUsuario" name="formCrearUsuario" action="/sistemas/instituto/Includes/slqeditar.php"
                     method="POST">
 
                     <!-- Mostrar información adicional si el usuario ya existe -->
@@ -196,7 +196,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/instituto/Includes/slqeditar.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/sistemas/instituto/Includes/slqeditar.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 idusuariocrear: idusuariocrear,

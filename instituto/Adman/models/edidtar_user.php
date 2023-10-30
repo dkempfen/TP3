@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
 require_once '../Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
@@ -23,7 +23,7 @@ $DatosPersonas = DatosPersonas();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formEditarUsuario" name="formEditarUsuario" action="/instituto/Includes/slqeditar.php"
+                <form id="formEditarUsuario" name="formEditarUsuario" action="/sistemas/instituto/Includes/slqeditar.php"
                     method="POST">
                     <input type="hidden" name="idusuarioeditar" id="idusuarioeditar"
                         value="<?php  echo $usuario['Id_Usuario']?>" required>
@@ -150,7 +150,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para actualizar el usuario
         $.ajax({
-            url: "/instituto/Includes/slqeditar.php",
+            url: "/sistemas/instituto/Includes/slqeditar.php",
             type: "POST",
             data: {
                 idusuarioeditar: idusuarioeditar,

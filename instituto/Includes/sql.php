@@ -189,7 +189,7 @@ isset($_POST['domicilio']) && isset($_POST['usuario']) && isset($_POST['clave'])
 isset($_POST['legajo']) && isset($_POST['matriz'])) {
     insertarNuevoUsuario();
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
   /////////////////////Actulizar Estado Usuario//////////////////////////////
@@ -250,7 +250,7 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
 if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
   actualizarEstadoUsuario();
 
-  header("Location: /instituto/Adman/lista_usuarios.php");
+  header("Location:/sistemas/instituto/Adman/lista_usuarios.php");
   exit();
 }
   /*function actualizarEstadoUsuario($pdo)
@@ -523,7 +523,7 @@ function ()
 if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
   ActulizarUser();
 
-  header("Location: /instituto/Adman/lista_usuarios.php");
+  header("Location:/sistemas/instituto/Adman/lista_usuarios.php");
   exit();
 }*/
 /*function ActualizarUser()
@@ -586,7 +586,7 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
 if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['dni_a_editar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
     ActualizarUser();
 
-    header("Location: /instituto/Adman/lista_usuarios.php");
+    header("Location:/sistemas/instituto/Adman/lista_usuarios.php");
     exit();
 }
 */
@@ -657,7 +657,7 @@ if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($
     isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
         ActualizarUsers();
 
-    header("Location: /instituto/Adman/lista_usuarios.php");
+    header("Location:/sistemas/instituto/Adman/lista_usuarios.php");
     exit();
 }*/
 /*-------------canbiar ckave-----------------------*/
@@ -703,7 +703,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }    
 
 
-  header("Location: /instituto/Adman/Pantallas/profile.php");
+  header("Location:/sistemas/instituto/Adman/Pantallas/profile.php");
   exit();
 }
 if (isset($_SESSION['password_message'])) {

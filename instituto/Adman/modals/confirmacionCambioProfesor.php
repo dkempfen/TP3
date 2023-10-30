@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/lista_materia.php';
 
 
 ?>
@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_materia.php';
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="formMateriaProfesor" name="formMateriaProfesor" action="/instituto/Includes/slqeditar.php" method="POST">
+            <form id="formMateriaProfesor" name="formMateriaProfesor" action="/sistemas/instituto/Includes/slqeditar.php" method="POST">
                 <input type="hidden" name="profesorId" id="profesorId" value="-1">
                 <input type="hidden" name="materiaId" id="materiaId" value="-1">
                 <div class="modal-header">

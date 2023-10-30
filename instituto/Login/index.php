@@ -17,7 +17,7 @@ include '../Includes/header.php';
     <header class="main-header">
         <div class="main-cont">
             <div class="desc-header">
-                <img src="/instituto/Imagenes/lOGO.gif" alt="image instituto">
+                <img src="/sistemas/instituto/Imagenes/lOGO.gif" alt="image instituto">
                 <p>Instituto Nuestra Señora De Lujan Del Buen Viaje</p>
             </div>
         </div>
@@ -40,7 +40,7 @@ include '../Includes/header.php';
                         <div class="view">
                             <div class="fas fa-eye verPassword" onclick="vista()" id="verPassword"></div>
                         </div>
-                        <button class="clave" type="button" onclick="location.href='/instituto/Login/RecuperoClave.php'">
+                        <button class="clave" type="button" onclick="location.href='/sistemas/instituto/Login/RecuperoClave.php'">
                             ¿Olvidaste la clave?</button>
                         <!--<input name="btningresar" id="btningresar" type="submit" class="btn" value="Iniciar Sesión">-->
                         <button id="loginUsuario" type="submit" name="btningresar">Iniciar Sesión</button>
@@ -49,7 +49,7 @@ include '../Includes/header.php';
                 <div class="text-center">
                     <h6>¿Desea inscribirse a una carrea?</h6>
                     <a class="buttons button-large button-rounded botonfooter" id=""
-                        href="/instituto/Login/registro.php">Inscripción</a>
+                        href="/sistemas/instituto/Login/registro.php">Inscripción</a>
                 </div>
             </div>
         </div>

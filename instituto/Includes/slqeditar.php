@@ -15,7 +15,7 @@ function showConfirmationMessages($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/Pantallas/lista_personas.php';
+            window.location.href = '/sistemas/instituto/Adman/Pantallas/lista_personas.php';
         });
     </script>";
 }       
@@ -27,11 +27,22 @@ function showConfirmationMessagesMateria($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_materia.php';
+            window.location.href = '/sistemas/instituto/Adman/lista_materia.php';
         });
     </script>";
 }  
-
+function showConfirmationMessagesNotas($message) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $message['type'] . "',
+            title: '" . $message['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {                                  
+            window.location.href = '/sistemas/instituto/Adman/Pantallas/Notas.php';
+        });
+    </script>";
+}  
 
 
 
@@ -58,7 +69,7 @@ function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $
         ];
     }
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -77,7 +88,7 @@ if (isset($_POST['btnmodificar'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto);
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 /*function cambioDNI() {
@@ -122,7 +133,7 @@ if (isset($_POST['btnmodificar'])) {
             }
         }
 
-        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
         exit();
     }
 }*/
@@ -167,7 +178,7 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
         }
     }
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -184,7 +195,7 @@ if (isset($_POST['btnaltaPersona'])) {
 
     AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
 
-    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -218,7 +229,7 @@ $_SESSION['message'] = [
 ];
 }
 
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 } catch (PDOException $e) {
 error_log('Error en la inserción de usuario: ' . $e->getMessage());
@@ -226,7 +237,7 @@ $_SESSION['message'] = [
 'type' => 'error',
 'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
 ];
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 }
 }
@@ -244,7 +255,7 @@ $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no 
 
 insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
 
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 }
 ///////////////Actualizar Datos Materia///////////////////////
@@ -274,7 +285,7 @@ function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarre
     } catch (PDOException $e) {
         // Registra el mensaje de error en un archivo de registro
         $error_message = 'Error en la base de datos: ' . $e->getMessage();
-        error_log($error_message, 3, '/instituto/archivo_de_registro.log'); // Reemplaza '/ruta/al/archivo_de_registro.log' con la ruta correcta
+        error_log($error_message, 3, '/sistemas/instituto/archivo_de_registro.log'); // Reemplaza '/ruta/al/archivo_de_registro.log' con la ruta correcta
         
         // Configura un mensaje de error genérico para mostrar al usuario
         $_SESSION['message'] = [
@@ -304,9 +315,9 @@ if (isset($_POST['btnmodificarMateria'])) {
 
     // Redirige a la página de éxito o error según la sesión 'message'
     if ($_SESSION['message']['type'] === 'success') {
-        header("Location: /instituto/Adman/lista_materia.php");
+        header("Location:/sistemas/instituto/Adman/lista_materia.php");
     } else {
-        header("Location: /instituto/Adman/lista_materia.php");
+        header("Location:/sistemas/instituto/Adman/lista_materia.php");
     }
     exit();
 }
@@ -354,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Llama a la función para insertar al profesor en la materia
     insertarNuevoProfesor($materiaId,$profesorId);
 
-    header("Location: /instituto/Adman/lista_materia.php");
+    header("Location:/sistemas/instituto/Adman/lista_materia.php");
     exit();
 }*/
 
@@ -362,8 +373,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ////Insertar nota
 
+function insertarNuevaNota($alumnoNota,$LegajoNota, $materia,$anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) {
+    global $pdo;
+    session_start();
 
 
-// Devolver la respuesta como JSON
+    $sql = "INSERT INTO DetalleCursada 
+    (fk_Usuario, fk_Legajo, fk_Materia,Anio, fk_Estado, Primer_Parcial, Recuperatio_Parcial_1, 
+    Segundo_Parcial, Recuperatio_Parcial_2,Final)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+    $stmt = $pdo->prepare($sql);
+
+    if ($stmt->execute([$alumnoNota,$LegajoNota, $materia, $anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota])) {
+        $_SESSION['message'] = [
+            'type' => 'success',
+            'text' => 'Nota insertada exitosamente.'
+        ];
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al insertar la nota.'
+        ];
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Recuperar los valores del formulario
+    $alumnoNota = $_POST['alumnoNota'];
+    $LegajoNota= $_POST['LegajoNota'];
+    $materia = $_POST['materia'];
+    $anioMateria = $_POST['anioMateria'];
+    $estadoMateria = $_POST['estadoMateria'];
+    $parcial1 = $_POST['parcial1'];
+    $recuperatorio1 = $_POST['recuperatorio1'];
+    $parcial2 = $_POST['parcial2'];
+    $recuperatorio2 = $_POST['recuperatorio2'];
+    $finalnota = $_POST['finalnota'];
+
+    // Llama a la función para insertar la nota
+    insertarNuevaNota($alumnoNota,$LegajoNota, $materia,$anioMateria, $estadoMateria,$parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) ;
+
+
+    // Redirige a la página deseada
+    header("Location:/sistemas/instituto/Adman/Pantallas/Notas.php");
+    exit();
+}
+
 
 ?>

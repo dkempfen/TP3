@@ -1,7 +1,7 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_planes.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/lista_planes.php';
 
 
 $DatosPlan = DatosPlan();
@@ -32,7 +32,7 @@ foreach ($DatosPlan as $DatosPlan) {
             </div>
 
             <div class="modal-body">
-                <form id="formCrearPlan" name="formCrearPlan" action="/instituto/Includes/sqluser.php" method="POST">
+                <form id="formCrearPlan" name="formCrearPlan" action="/sistemas/instituto/Includes/sqluser.php" method="POST">
 
 
 
@@ -112,7 +112,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/instituto/Includes/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/sistemas/instituto/Includes/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 idPlancrear: idPlancrear,

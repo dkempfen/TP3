@@ -1,7 +1,9 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/Notas.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/Pantallas/Notas.php';
+
+
 
 $DatosAlumnoNota = DatosAlumnoNota();
 $DatosMateria = DatosMateria();
@@ -24,7 +26,9 @@ $DatosMateria = DatosMateria();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formCrearNota" name="formCrearNota" action="/instituto/Includes/sqluser.php" method="POST">
+                <!-- Agrega aquí los campos para ingresar los datos de la nota -->
+                <form id="formAltaNota" name="formAltaNota" action="/sistemas/instituto/Includes/slqeditar.php" method="POST">
+                    <!-- Campos para la alta de nota -->
 
                     <input type="hidden" name="idPlancrearNota" id="idPlancrearNota"
                         value="<?php  echo $materia['id_Cursada']?>">
@@ -223,7 +227,7 @@ $(document).ready(function() {
 
     function obtenerLegajoPorAlumno(alumnoId) {
         $.ajax({
-            url: '/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 id: alumnoId, // El ID del alumno que deseas consultar
@@ -272,7 +276,7 @@ $(document).ready(function() {
 
     function obtenerAnioMateria(materiaId) {
         $.ajax({
-            url: '/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 idAnio: materiaId, // El ID de la materia que deseas consultar
@@ -303,7 +307,7 @@ $(document).ready(function() {
 
     function obtenerEstadoMateria(estadoId) {
         $.ajax({
-            url: '/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 idEstado: estadoId, // El ID de la materia que deseas consultar
@@ -320,5 +324,70 @@ $(document).ready(function() {
             }
         });
     }
+});
+</script>
+
+
+
+<script>
+$(document).ready(function() {
+    $('#btnAbrirModalAltaNota').on('click', function() {
+        var alumnoNota = $("#alumnoNota").val();
+        var LegajoNota = $("#LegajoNota").val();
+        var materia = $("#materia").val();
+        var anioMateria = $("#anioMateria").val()
+        var estadoMateria = $("#estadoMateria").val()
+        var parcial1 = $("#parcial1").val();
+        var recuperatorio1 = $("#recuperatorio1").val();
+        var parcial2 = $("#parcial2").val();
+        var recuperatorio2 = $("#recuperatorio2").val();
+        var finalnota = $("#finalnota").val();
+        var id_Cursada = $("#id_Cursada").val();
+
+        $.ajax({
+            url: '/sistemas/instituto/Includes/slqeditar.php',
+            type: 'POST',
+            data: {
+                alumnoNota: alumnoNota,
+                LegajoNota: LegajoNota,
+                materia: materia,
+                anioMateria: anioMateria,
+                estadoMateria: estadoMateria,
+                parcial1: parcial1,
+                recuperatorio1: recuperatorio1,
+                parcial2: parcial2,
+                recuperatorio2: recuperatorio2,
+                finalnota: finalnota,
+                id_Cursada: id_Cursada,
+                btnaltaNota: 0
+            },
+            success: function(response) {
+                if (response === 'success') {
+                    $('#modalAltaNota').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Datos guardados exitosamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al guardar las notas',
+                        text: response.message
+
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log('Error en la solicitud AJAX:');
+                console.log('jqXHR:', jqXHR);
+                console.log('Status:', textStatus);
+                console.log('Error:', errorThrown);
+            }
+        });
+    });
 });
 </script>
