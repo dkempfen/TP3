@@ -1207,3 +1207,26 @@ Usernalta-button:hover,
     top: 10px;
     right: 10px;
 }
+
+/* Clase CSS para achicar los inputs en modo de edición */
+.editable-input {
+    width: 50px; /* Ajusta el ancho según tus necesidades */
+    padding: 5px; /* Añade relleno para que los inputs no se vean demasiado pequeños */
+}
+
+/* Clase CSS para los botones de guardar y editar */
+.edit-button, .guardar-button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.guardar-button {
+    background-color: #007BFF; /* Color celeste */
+    color: #fff; /* Texto en color blanco */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}

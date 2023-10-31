@@ -270,4 +270,51 @@ if (isset($_POST['btnmCrearNota'])) {
 
 
 
+function ActualizarNuevaNota($alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada) {
+    session_start();
+    global $pdo;
+
+    $sql = "UPDATE DetalleCursada SET
+         fk_Usuario = ?, fk_Legajo = ?, fk_Materia = ?, Anio = ?, fk_Estado = ?, Primer_Parcial = ?, Recuperatio_Parcial_1 = ?, 
+            Segundo_Parcial = ?, Recuperatio_Parcial_2 = ?, Final = ? WHERE id_Cursada = ?";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada]);
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['messageNota'] = [
+            'type' => 'success',
+            'text' => 'Nota actualizada exitosamente.'
+        ];
+    } else {
+        $_SESSION['messageNota'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al actualizar la nota.'
+        ];
+    }
+
+    header("Location: /instituto/Adman/Pantallas/Notas.php");
+    exit();
+}
+
+// Verificar si se ha enviado una solicitud de actualización
+if (isset($_POST['alumnoNotaEditar'])) {
+    $alumnoNotaEditar = $_POST['alumnoNotaEditar'];
+    $LegajoNotaEditar = 0; // Asegúrate de obtener este valor adecuadamente
+    $materiaEditar = $_POST['materiaEditar'];
+    $anioMateriaEditar = $_POST['anioMateriaEditar'];
+    $estadoMateriaEditar = 0; // Asegúrate de obtener este valor adecuadamente
+    $parcial1Editar = $_POST['parcial1Editar'];
+    $recuperatorio1Editar = $_POST['recuperatorio1Editar'];
+    $parcial2Editar = $_POST['parcial2Editar'];
+    $recuperatorio2Editar = $_POST['recuperatorio2Editar'];
+    $finalnotaEditar = $_POST['finalnotaEditar'];
+    $idCursada = $_POST['idCursada'];
+
+    ActualizarNuevaNota($alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada);
+    header("Location: /instituto/Adman/Pantallas/Notas.php");
+
+    exit();
+}
+
 ?>

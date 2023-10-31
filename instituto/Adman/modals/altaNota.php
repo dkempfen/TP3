@@ -149,7 +149,7 @@ function openModalNota() {
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/instituto/Include/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/instituto/Includes/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 alumnoNota: alumnoNota,
