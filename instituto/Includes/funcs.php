@@ -4,9 +4,9 @@
 	use PHPMailer\PHPMailer\SMTP;
 	
   //Valida si los  campos son nulo
-	function isNull($apellido,$nombre, $usuario, $email,$nacionalidad,$telefono,$fecha_nacimiento){
+	function isNull($apellido,$nombre, $usuario, $email,$nacionalidad,$telefono,$fecha_nacimiento,$plan){
 		if(strlen(trim($apellido)) < 1 || strlen(trim($nombre)) < 1 || strlen(trim($usuario)) < 1  || strlen(trim($email))
-		|| strlen(trim($nacionalidad)) < 1 || strlen(trim($telefono)) < 1|| strlen(trim($fecha_nacimiento)) < 1)
+		|| strlen(trim($nacionalidad)) < 1 || strlen(trim($telefono)) < 1|| strlen(trim($fecha_nacimiento)) < 1 || strlen(trim($plan)) < 1)
 		{
 			return true;
 			} else {
@@ -87,26 +87,51 @@
 			echo "</div>";
 		}
 	}
-	function registraUsuario($usuario, $nombre, $apellido, $email, $telefono,$nacionalidad,$fecha_nacimiento,$token,$activo) {
+	function registraUsuario($usuario, $nombre, $apellido, $email, $telefono, $nacionalidad, $fecha_nacimiento, $token, $plan) {
 		global $pdo;
 	
-		$stmt = $pdo->prepare("INSERT INTO Persona (DNI,Apellido, Nombre, Email, Telefono,Nacionalidad,Fechanacimiento,token,Inscripto)
-		 VALUES (:usuario,:apellido, :nombre, :email, :telefono, :nacionalidad,:fecha_nacimiento,:token,:activo)");
-		$stmt->bindParam(':usuario', $usuario, PDO::PARAM_STR);
-		$stmt->bindParam(':apellido', $apellido, PDO::PARAM_STR);
-		$stmt->bindParam(':nombre', $nombre, PDO::PARAM_STR);
-		$stmt->bindParam(':email', $email, PDO::PARAM_STR); 
-		$stmt->bindParam(':telefono', $telefono, PDO::PARAM_STR); 
-		$stmt->bindParam(':nacionalidad', $nacionalidad, PDO::PARAM_STR); 
-		$stmt->bindParam(':fecha_nacimiento', $fecha_nacimiento, PDO::PARAM_STR); 
-		$stmt->bindParam(':token', $token, PDO::PARAM_STR); 
-		$stmt->bindParam(':activo', $activo, PDO::PARAM_INT);
+		// Aquí insertamos los datos en la tabla 'Persona'
+		$stmtPersona = $pdo->prepare("INSERT INTO Persona (DNI, Apellido, Nombre, Email, Telefono, Nacionalidad, Fechanacimiento, token, Inscripto)
+			VALUES (:usuario, :apellido, :nombre, :email, :telefono, :nacionalidad, :fecha_nacimiento, :token, 1 )");
+		$stmtPersona->bindParam(':usuario', $usuario, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':apellido', $apellido, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':nombre', $nombre, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':email', $email, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':nacionalidad', $nacionalidad, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':fecha_nacimiento', $fecha_nacimiento, PDO::PARAM_STR);
+		$stmtPersona->bindParam(':token', $token, PDO::PARAM_STR);
+		
 	
-		if ($stmt->execute()) {
-			return $pdo->lastInsertId();
+		if ($stmtPersona->execute()) {
+			$idPersona = $pdo->lastInsertId();
+	
+			// Aquí insertamos los datos en la tabla 'Usuario'
+			$legajo = $usuario; // Asigna el valor del DNI al legajo
+			$password = password_hash('tu_contrasena_generica', PASSWORD_DEFAULT);
+			$estadoUsuario = 2; // Reemplaza con el estado deseado (por ejemplo, activo)
+			$rol = 1; // Reemplaza con el rol deseado
+			$documento = $usuario;
+	
+			$stmtUsuario = $pdo->prepare("INSERT INTO Usuario (Legajo, User, Password, fk_Plan, fk_Estado_Usuario, fk_Rol, fk_DNI)
+				VALUES (:legajo, :usuario, :password, :plan, :estado, :rol, :dni)");
+	
+			$stmtUsuario->bindParam(':legajo', $legajo);
+			$stmtUsuario->bindParam(':usuario', $usuario);
+			$stmtUsuario->bindParam(':password', $password);
+			$stmtUsuario->bindParam(':plan', $plan);
+			$stmtUsuario->bindParam(':estado', $estadoUsuario);
+			$stmtUsuario->bindParam(':rol', $rol);
+			$stmtUsuario->bindParam(':dni', $documento);
+	
+			if ($stmtUsuario->execute()) {
+				return $idPersona; // Devuelve el ID de la persona registrada
+			} else {
+				echo "Error al insertar datos en la tabla 'Usuario': " . implode(", ", $stmtUsuario->errorInfo());
+				return 0;
+			}
 		} else {
-			// Agrega un mensaje de error para la depuración
-			echo "Error en la ejecución de la consulta: " . implode(", ", $stmt->errorInfo());
+			echo "Error al insertar datos en la tabla 'Persona': " . implode(", ", $stmtPersona->errorInfo());
 			return 0;
 		}
 	}

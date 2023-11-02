@@ -11,6 +11,7 @@ if (!empty($_POST))
     $nacionalidad = $_POST['nacionalidad'];
     $fecha_nacimiento = $_POST['fecha_nacimiento'];
     $fecha_nacimiento_formateada = date("Y-m-d", strtotime($fecha_nacimiento));
+    $plan = $_POST['plan'];
 
     $captcha = $_POST['g-recaptcha-response'];
 
@@ -28,7 +29,8 @@ if (!empty($_POST))
         $errors[] = "Por favor, verifica el captcha";
     }
     
-    if (empty($apellido) || empty($nombre) || empty($usuario) ||  empty($telefono) || empty($email) || empty($nacionalidad) || empty($fecha_nacimiento)  ) {
+    if (empty($apellido) || empty($nombre) || empty($usuario) ||  empty($telefono) || empty($email) || empty($nacionalidad) || empty($fecha_nacimiento) 
+    || empty($plan) ) {
         $errors[] = "Por favor, complete todos los campos";
     }
     
@@ -54,7 +56,7 @@ if (!empty($_POST))
     
         if ($arr['success']) {
             $token = generateToken();
-            $registro = registraUsuario($usuario, $nombre, $apellido, $email, $telefono, $nacionalidad, $fecha_nacimiento, $token, $activo);
+            $registro = registraUsuario($usuario, $nombre, $apellido, $email, $telefono, $nacionalidad, $fecha_nacimiento, $token,$plan);
         
             if ($registro > 0) {
                 // Registro exitoso
