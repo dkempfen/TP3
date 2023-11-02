@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
 ?>
 
 <main class="app-content">

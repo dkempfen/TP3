@@ -1,6 +1,6 @@
   <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
 
   ?>
   <?php
@@ -37,7 +37,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                           <div class="col-md-4">
                               <div class="image foto-perfil view-first">
                                   <img class="perfil-image" style="width: 120%; display: block;"
-                                      src="/sistemas/instituto/Imagenes/profiles/<?php echo $nueva_foto; ?>" alt="image">
+                                      src="/sistema/instituto/Imagenes/profiles/<?php echo $nueva_foto; ?>" alt="image">
                               </div>
 
                               <span class="">
@@ -64,7 +64,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                                   <div class="x_content">
                                       <form id="cambiarClaveForm" name="cambiarClaveForm" data-parsley-validate
                                           class="form-horizontal form-label-left"
-                                          action="/sistemas/instituto/Includes/sql.php" method="post">
+                                          action="/sistema/instituto/Includes/sql.php" method="post">
                                           <input type="hidden" name="idusuarioDatos" id="idusuarioDatos"
                                               value="<?php  echo $_SESSION['Id_Usuario']?>" required>
 
@@ -190,7 +190,7 @@ require_once '../includes/footer.php';
 $(function() {
     $("input[name='file']").on("change", function() {
         var formData = new FormData($("#formulario")[0]);
-        var ruta = "/sistemas/instituto/Includes/cambiofoto.php";
+        var ruta = "/sistema/instituto/Includes/cambiofoto.php";
 
         $.ajax({
             url: ruta,
@@ -225,7 +225,7 @@ $(document).ready(function() {
         // Realizar la solicitud AJAX para cambiar la contraseña
         $.ajax({
             type: "POST",
-            url: "/sistemas/instituto/Includes/sql.php",
+            url: "/sistema/instituto/Includes/sql.php",
             data: { old_password: oldPassword, new_password: newPassword },
             success: function(response) {
                 console.log(response);

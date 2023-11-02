@@ -20,7 +20,7 @@ function loginUsuario(){
    
 
     $.ajax({
-        URL: '/sistemas/instituto/Includes/loginAdman.php',
+        URL: '/sistema/instituto/Includes/loginAdman.php',
         method:'POST',
         data: {
             login:login,
@@ -32,7 +32,7 @@ function loginUsuario(){
             $('#messageUsuario').html(data);
 
             if(data.indexOf('Redirecting') >= 0){
-                window.location = '/sistemas/instituto';
+                window.location = '/sistema/instituto';
             }
         }
     })

@@ -15,7 +15,7 @@ function showConfirmationMessages($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/sistemas/instituto/Adman/Pantallas/lista_personas.php';
+            window.location.href = '/sistema/instituto/Adman/Pantallas/lista_personas.php';
         });
     </script>";
 }       
@@ -27,7 +27,7 @@ function showConfirmationMessagesMateria($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/sistemas/instituto/Adman/lista_materia.php';
+            window.location.href = '/sistema/instituto/Adman/lista_materia.php';
         });
     </script>";
 }  
@@ -39,7 +39,7 @@ function showConfirmationMessagesNotas($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/sistemas/instituto/Adman/Pantallas/Notas.php';
+            window.location.href = '/sistema/instituto/Adman/Pantallas/Notas.php';
         });
     </script>";
 }  
@@ -69,7 +69,7 @@ function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $
         ];
     }
 
-    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -88,7 +88,7 @@ if (isset($_POST['btnmodificar'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto);
 
-    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 /*function cambioDNI() {
@@ -133,7 +133,7 @@ if (isset($_POST['btnmodificar'])) {
             }
         }
 
-        header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+        header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
         exit();
     }
 }*/
@@ -178,7 +178,7 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
         }
     }
 
-    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -195,7 +195,7 @@ if (isset($_POST['btnaltaPersona'])) {
 
     AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
 
-    header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+    header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
     exit();
 }
 
@@ -229,7 +229,7 @@ $_SESSION['message'] = [
 ];
 }
 
-header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 } catch (PDOException $e) {
 error_log('Error en la inserción de usuario: ' . $e->getMessage());
@@ -237,7 +237,7 @@ $_SESSION['message'] = [
 'type' => 'error',
 'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
 ];
-header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 }
 }
@@ -255,7 +255,7 @@ $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no 
 
 insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
 
-header("Location:/sistemas/instituto/Adman/Pantallas/lista_personas.php");
+header("Location:/sistema/instituto/Adman/Pantallas/lista_personas.php");
 exit();
 }
 ///////////////Actualizar Datos Materia///////////////////////
@@ -285,7 +285,7 @@ function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarre
     } catch (PDOException $e) {
         // Registra el mensaje de error en un archivo de registro
         $error_message = 'Error en la base de datos: ' . $e->getMessage();
-        error_log($error_message, 3, '/sistemas/instituto/archivo_de_registro.log'); // Reemplaza '/ruta/al/archivo_de_registro.log' con la ruta correcta
+        error_log($error_message, 3, '/sistema/instituto/archivo_de_registro.log'); // Reemplaza '/ruta/al/archivo_de_registro.log' con la ruta correcta
         
         // Configura un mensaje de error genérico para mostrar al usuario
         $_SESSION['message'] = [
@@ -315,9 +315,9 @@ if (isset($_POST['btnmodificarMateria'])) {
 
     // Redirige a la página de éxito o error según la sesión 'message'
     if ($_SESSION['message']['type'] === 'success') {
-        header("Location:/sistemas/instituto/Adman/lista_materia.php");
+        header("Location:/sistema/instituto/Adman/lista_materia.php");
     } else {
-        header("Location:/sistemas/instituto/Adman/lista_materia.php");
+        header("Location:/sistema/instituto/Adman/lista_materia.php");
     }
     exit();
 }
@@ -365,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Llama a la función para insertar al profesor en la materia
     insertarNuevoProfesor($materiaId,$profesorId);
 
-    header("Location:/sistemas/instituto/Adman/lista_materia.php");
+    header("Location:/sistema/instituto/Adman/lista_materia.php");
     exit();
 }*/
 
@@ -415,7 +415,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Redirige a la página deseada
-    header("Location:/sistemas/instituto/Adman/Pantallas/Notas.php");
+    header("Location:/sistema/instituto/Adman/Pantallas/Notas.php");
     exit();
 }
 

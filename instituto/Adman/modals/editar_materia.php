@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/lista_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/lista_materia.php';
 
 
 
@@ -26,7 +26,7 @@ foreach ($DatosMateria as $DatosMateria) { ?>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="formEditarMateria" name="formEditarMateria" action="/sistemas/instituto/Includes/slqeditar.php"
+                <form id="formEditarMateria" name="formEditarMateria" action="/sistema/instituto/Includes/slqeditar.php"
                     method="POST">
 
 
@@ -130,7 +130,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para actualizar el usuario
         $.ajax({
-            url: "/sistemas/instituto/Includes/slqeditar.php",
+            url: "/sistema/instituto/Includes/slqeditar.php",
             type: "POST",
             data: {
                 materiaeditar: materiaeditar,

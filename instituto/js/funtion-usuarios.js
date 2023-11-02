@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
         "url": "//cdn.datatables.net/plug-ins/1.10.20./i18n/Spanish.json"
     },
     "ajax": {
-        "url": "/sistemas/instituto/Adman/includes/modals/es.php",
-        "url": "/sistemas/instituto/Adman/includes/modals/profesores/table_profesores.php",
+        "url": "/sistema/instituto/Adman/includes/modals/es.php",
+        "url": "/sistema/instituto/Adman/includes/modals/profesores/table_profesores.php",
         "dataSrc": ""
     },
     "columns": [
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return false;
     }
     var request = (window.XMLHttpRequest) ? new XMLHttpRequest : new ActiveXObject('Microsoft.XMLHTTP');
-    var url ='/sistemas/instituto/Adman/models/usuarios/ajax_usuarios.php'
+    var url ='/sistema/instituto/Adman/models/usuarios/ajax_usuarios.php'
     var from = new FormData(formUsuario)
     request.open('POST',URL,true);
     request.send(form);//envia formularios
@@ -87,7 +87,7 @@ function editarUsuario(id){
         document.querySelector('#tituloModal').innerHTML ='Actualizar Uusario';
         document.querySelector('#action').innerHTML ='Actualizar';
         var request = (window.XMLHttpRequest) ? new XMLHttpRequest : new ActiveXObject('Microsoft.XMLHTTP');
-        var url ='/sistemas/instituto/Adman/models/usuarios/edit_usuarios.php?'+idusuario;
+        var url ='/sistema/instituto/Adman/models/usuarios/edit_usuarios.php?'+idusuario;
         request.open('GET',URL,true);
         request.send();
         request.onreadystatechange=function(){

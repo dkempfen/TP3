@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/Pantallas/lista_personas.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/Pantallas/lista_personas.php';
 
 $DatosUsuarios = DatosUsuarios();
 $DatosPersonas = DatosPersonas();
@@ -35,7 +35,7 @@ $DatosPersonas = DatosPersonas();
                 <div class="tab-content">
                     <!-- Datos -->
                     <div class="tab-pane active" id="datos" role="tabpanel">
-                        <form id="formUsuario" name="formUsuario" action="/sistemas/instituto/Includes/slqeditar.php"
+                        <form id="formUsuario" name="formUsuario" action="/sistema/instituto/Includes/slqeditar.php"
                             method="POST">
                             <input type="hidden" name="action" value="insert">
                             <input type="hidden" name="idusuario" id="idusuario" value="">
@@ -147,7 +147,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
-            url: "/sistemas/instituto/Includes/slqeditar.php",
+            url: "/sistema/instituto/Includes/slqeditar.php",
             type: "POST",
             data: {
                 idusuario: idusuario,

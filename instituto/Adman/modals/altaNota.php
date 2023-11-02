@@ -1,7 +1,7 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/Pantallas/Notas.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/Pantallas/Notas.php';
 
 
 
@@ -27,7 +27,7 @@ $DatosMateria = DatosMateria();
             </div>
             <div class="modal-body">
                 <!-- Agrega aquí los campos para ingresar los datos de la nota -->
-                <form id="formAltaNota" name="formAltaNota" action="/sistemas/instituto/Includes/slqeditar.php" method="POST">
+                <form id="formAltaNota" name="formAltaNota" action="/sistema/instituto/Includes/slqeditar.php" method="POST">
                     <!-- Campos para la alta de nota -->
 
                     <input type="hidden" name="idPlancrearNota" id="idPlancrearNota"
@@ -227,7 +227,7 @@ $(document).ready(function() {
 
     function obtenerLegajoPorAlumno(alumnoId) {
         $.ajax({
-            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistema/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 id: alumnoId, // El ID del alumno que deseas consultar
@@ -276,7 +276,7 @@ $(document).ready(function() {
 
     function obtenerAnioMateria(materiaId) {
         $.ajax({
-            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistema/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 idAnio: materiaId, // El ID de la materia que deseas consultar
@@ -307,7 +307,7 @@ $(document).ready(function() {
 
     function obtenerEstadoMateria(estadoId) {
         $.ajax({
-            url: '/sistemas/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
+            url: '/sistema/instituto/Includes/funcionesLegajo.php', // Ruta correcta al archivo PHP
             type: 'POST',
             data: {
                 idEstado: estadoId, // El ID de la materia que deseas consultar
@@ -345,7 +345,7 @@ $(document).ready(function() {
         var id_Cursada = $("#id_Cursada").val();
 
         $.ajax({
-            url: '/sistemas/instituto/Includes/slqeditar.php',
+            url: '/sistema/instituto/Includes/slqeditar.php',
             type: 'POST',
             data: {
                 alumnoNota: alumnoNota,

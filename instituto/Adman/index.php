@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
 ?>
 <?php
 
@@ -22,7 +22,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
           <i class="fas fa-users fa-2x ml-auto"></i>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-          <a href="<?php echo '/sistemas/instituto/Adman/lista_usuarios.php';?>" class="text-white">Ver detalle</a>
+          <a href="<?php echo '/sistema/instituto/Adman/lista_usuarios.php';?>" class="text-white">Ver detalle</a>
           <span class="text-white"><?php  echo $c_user?></span>
         </div>
       </div>
@@ -34,7 +34,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
           <i class="fas fa-user-graduate fa-2x ml-auto"></i>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-          <a href="<?php echo '/sistemas/instituto/Adman//lista_alumnos.php';?>" class="text-white">Ver detalle</a>
+          <a href="<?php echo '/sistema/instituto/Adman//lista_alumnos.php';?>" class="text-white">Ver detalle</a>
           <span class="text-white"><?php  echo $c_alum?></span>
         </div>
       </div>
@@ -46,7 +46,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
           <i class="fas fa-chalkboard-teacher fa-2x ml-auto"></i>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-          <a href="<?php echo '/sistemas/instituto/Adman/lista_profesores.php';?>" class="text-white">Ver detalle</a>
+          <a href="<?php echo '/sistema/instituto/Adman/lista_profesores.php';?>" class="text-white">Ver detalle</a>
           <span class="text-white"><?php  echo $c_prof?></span>
         </div>
       </div>
@@ -58,7 +58,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
           <i class="fas fa-list-alt fa-2x ml-auto"></i>
         </div>
         <div class="card-footer d-flex align-items-center justify-content-between">
-          <a href="<?php echo '/sistemas/instituto/Adman/lista_materia.php';?>" class="text-white">Ver detalle</a>
+          <a href="<?php echo '/sistema/instituto/Adman/lista_materia.php';?>" class="text-white">Ver detalle</a>
           <span class="text-white"><?php  echo $c_materias?></span>
         </div>
       </div>

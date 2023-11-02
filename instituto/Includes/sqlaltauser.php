@@ -17,7 +17,7 @@ function showConfirmationMessagesMateriaEstado($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/sistemas/instituto/Adman/lista_materia.php';
+            window.location.href = '/sistema/instituto/Adman/lista_materia.php';
         });
     </script>";
 }  
@@ -80,7 +80,7 @@ function actualizarEstadoMateria()
 if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
     actualizarEstadoMateria();
 
-  header("Location:/sistemas/instituto/Adman/lista_materia.php");
+  header("Location:/sistema/instituto/Adman/lista_materia.php");
   exit();
 }
 

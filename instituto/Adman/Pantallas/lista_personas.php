@@ -1,10 +1,10 @@
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/modals/modals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/models/crearUsuario.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/models/edidtar_user.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/modals/modals.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/models/crearUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
 
 ?>
 
@@ -173,7 +173,7 @@ $(document).ready(function() {
         var fk_Estado_Usuario = this.checked ? 1 : 2;
 
         $.ajax({
-            url: "/sistemas/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/sistema/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 Id_Usuario: Id_Usuario,

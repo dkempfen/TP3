@@ -16,7 +16,7 @@ function loginUsuario(){
     var pass = $('#pass').val();
 
     $.ajax({
-        URL: '/sistemas/instituto/Includes/loginAdman.php',
+        URL: '/sistema/instituto/Includes/loginAdman.php',
         method:'POST',
         data:{
             login:login,
@@ -26,7 +26,7 @@ function loginUsuario(){
             $('#messageUsuario').html(data);
 
             if(data.indexOf('Redirecting')>=0){
-                window.location ='/sistemas/instituto/Adman/';
+                window.location ='/sistema/instituto/Adman/';
             }
         }
     })
@@ -37,7 +37,7 @@ function loginProf(){
     var pass = $('#passProfesor').val();
 
     $.ajax({
-        URL: '/sistemas/instituto/Includes/loginProf.php',
+        URL: '/sistema/instituto/Includes/loginProf.php',
         method: 'POST',
         data:{
             login:login,
@@ -58,7 +58,7 @@ function loginAlumn(){
     var pass = $('#passAlumno').val();
 
     $.ajax({
-        URL: '/sistemas/instituto/Includes/loginAlumn.php',
+        URL: '/sistema/instituto/Includes/loginAlumn.php',
         method: 'POST',
         data:{
             login:login,

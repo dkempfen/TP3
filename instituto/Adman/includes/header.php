@@ -1,7 +1,7 @@
 <?php
   session_start();
   if(empty($_SESSION['active'])){
-    header('Location:/sistemas/instituto/Adman/index.php');
+    header('Location:/sistema/instituto/Adman/index.php');
   }
 ?> 
 <!DOCTYPE html>
@@ -13,9 +13,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Main CSS-->
-    <link rel="stylesheet" tipe ="text/css" href="/sistemas/instituto/css/style.css">
-    <link rel="stylesheet" tipe ="text/css" href="/sistemas/instituto/css/main.css">
-    <link rel="stylesheet" tipe ="text/css" href="/sistemas/instituto/css/perfile.css">
+    <link rel="stylesheet" tipe ="text/css" href="/sistema/instituto/css/style.css">
+    <link rel="stylesheet" tipe ="text/css" href="/sistema/instituto/css/main.css">
+    <link rel="stylesheet" tipe ="text/css" href="/sistema/instituto/css/perfile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css">
 
@@ -27,7 +27,7 @@
   </head>
   <body class="app sidebar-mini">
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="/sistemas/instituto/Adman/Pantallas/home.php">Instituto Lujan</a>
+    <header class="app-header"><a class="app-header__logo" href="/sistema/instituto/Adman/Pantallas/home.php">Instituto Lujan</a>
       <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"><i class="fas fa-bars"></i></a>
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
@@ -39,8 +39,8 @@
         <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu"><i class="fa fa-user fa-lg"></i></a>
           <ul class="dropdown-menu settings-menu dropdown-menu-right">
             <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-cog fa-lg"></i> Settings</a></li>
-            <li><a class="dropdown-item" href="/sistemas/instituto/Adman//Pantallas/profile.php"><i class="fa fa-user fa-lg"></i> Profile</a></li>
-            <li><a class="dropdown-item" href="/sistemas/instituto/Login/logout.php"><i class="fas fa-sign-out-alt fa-lg"></i> Logout</a></li>
+            <li><a class="dropdown-item" href="/sistema/instituto/Adman//Pantallas/profile.php"><i class="fa fa-user fa-lg"></i> Profile</a></li>
+            <li><a class="dropdown-item" href="/sistema/instituto/Login/logout.php"><i class="fas fa-sign-out-alt fa-lg"></i> Logout</a></li>
           </ul>
         </li>
       </ul>

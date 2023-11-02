@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/includes/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
 ?>
 
 
@@ -12,7 +12,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                 <ul class="custom-menu-list">
                     <!-- Carreras -->
                     <li class="custom-menu-item">
-                    <a class="custom-menu-link" href="/sistemas/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
+                    <a class="custom-menu-link" href="/sistema/instituto/Adman/Pantallas/carreras.php">Nuestras Carreras</a>
 
                     </li>
                 </ul>
@@ -22,7 +22,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                 <ul class="custom-menu-list">
                     <!-- Planes de Estudio -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/sistemas/instituto/Adman/lista_planes.php">Planes de Estudio</a>
+                        <a class="custom-menu-link" href="/sistema/instituto/Adman/lista_planes.php">Planes de Estudio</a>
                        
                     </li>
                 </ul>
@@ -32,7 +32,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                 <ul class="custom-menu-list">
                     <!-- Materias -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/sistemas/instituto/Adman/lista_materia.php">Materias</a>
+                        <a class="custom-menu-link" href="/sistema/instituto/Adman/lista_materia.php">Materias</a>
                         
                     </li>
                 </ul>
@@ -44,8 +44,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
         <div class="container-carrera">
             <div class="row">
                 <div class="col-md-6" id="columna1">
-                    <a href="/sistemas/instituto/Adman/plan_carrera_analista.php" class="card">
-                        <img src="/sistemas/instituto/Imagenes/analista.jpeg" alt="Analista de Sistemas" />
+                    <a href="/sistema/instituto/Adman/plan_carrera_analista.php" class="card">
+                        <img src="/sistema/instituto/Imagenes/analista.jpeg" alt="Analista de Sistemas" />
                         <div class="centrado">
                             <h3>Analista de Sistemas</h3> <!-- Título centrado -->
                             <span class="button button__secundary">Ver más</span>
@@ -53,8 +53,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php'
                     </a>
                 </div>
                 <div class="col-md-6" id="columna2">
-                    <a href="/sistemas/instituto/Imagenes/redes.jpeg" class="card" target="_blank">
-                        <img src="/sistemas/instituto/Imagenes/redes.jpeg" alt="Redes Informáticas" />
+                    <a href="/sistema/instituto/Imagenes/redes.jpeg" class="card" target="_blank">
+                        <img src="/sistema/instituto/Imagenes/redes.jpeg" alt="Redes Informáticas" />
                         <div class="centrado">
                             <h3>Redes Informáticas</h3> <!-- Título centrado -->
                             <span class="button button__secundary">Ver más</span>

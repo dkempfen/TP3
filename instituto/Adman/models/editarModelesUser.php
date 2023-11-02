@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/lista_usuarios.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/lista_usuarios.php';
 
 $tableUsuarios = tableUsuarios();
 
@@ -22,7 +22,7 @@ $tableUsuarios = tableUsuarios();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="ModalsEditarUsuario" name="ModalsEditarUsuario" action="/sistemas/instituto/Includes/sqluser.php"
+                <form id="ModalsEditarUsuario" name="ModalsEditarUsuario" action="/sistema/instituto/Includes/sqluser.php"
                     method="POST">
                    
                     <input type="hidden" name="UserId" id="UserId"
@@ -139,7 +139,7 @@ $(document).ready(function() {
 
         // Realizar la petición AJAX para actualizar el usuario
         $.ajax({
-            url: "/sistemas/instituto/Includes/sqluser.php",
+            url: "/sistema/instituto/Includes/sqluser.php",
             type: "POST",
             data: {
                 UserId: UserId,

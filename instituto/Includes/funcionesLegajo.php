@@ -1,6 +1,6 @@
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/conexion.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/conexion.php';
 
 
 

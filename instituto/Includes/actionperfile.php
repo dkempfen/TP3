@@ -1,7 +1,7 @@
 <?php
 
 if (!isset($_SESSION['id_usuario']) && $_SESSION['id_usuario']==null) {
-	header("Location:/sistemas/instituto/Adman/profile.php");
+	header("Location:/sistema/instituto/Adman/profile.php");
 }
 require_once './Includes/load.php';
 
@@ -14,7 +14,7 @@ if (isset($_POST['token'])) {
 	$sql = "UPDATE Persona SET Email='$email' WHERE DNI='$login'";
 	if ($sql) {
 		$success = sha1(md5("datos actualizados"));
-		header("location:/sistemas/instituto/Adman/profile.php?success=$success");
+		header("location:/sistema/instituto/Adman/profile.php?success=$success");
 	} else {
 		// echo "error";
 	}
@@ -42,15 +42,15 @@ if (isset($_POST['token'])) {
 				}
 			} else {
 				$invalid = sha1(md5("la contraseña no coincide la contraseña con la anterior"));
-				header("location:/sistemas/instituto/Adman/profile.php?invalid=$invalid");
+				header("location:/sistema/instituto/Adman/profile.php?invalid=$invalid");
 			}
 		} else {
 			$error = sha1(md5("las nuevas contraseñas no coinciden"));
-			header("location:/sistemas/instituto/Adman/profile.php?error=$error");
+			header("location:/sistema/instituto/Adman/profile.php?error=$error");
 		}
 	}
 } else {
-	header("Location:/sistemas/instituto/Adman/profile.php");
+	header("Location:/sistema/instituto/Adman/profile.php");
 }
 
 ?>

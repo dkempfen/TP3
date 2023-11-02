@@ -1,5 +1,5 @@
 <?php
-require_once '/sistemas/instituto/Adman/includes/header.php';
+require_once '/sistema/instituto/Adman/includes/header.php';
 ?>
     <main class="app-content">
       <div class="app-title">
@@ -22,5 +22,5 @@ require_once '/sistemas/instituto/Adman/includes/header.php';
     </main>
 
 <?php
-require_once '/sistemas/instituto/Adman/includes/footer.php';
+require_once '/sistema/instituto/Adman/includes/footer.php';
 ?>

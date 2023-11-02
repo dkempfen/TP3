@@ -31,7 +31,7 @@ include '../Includes/header.php';
 
                         <div style="margin-top:10px" class="form-group">
                             <div class="col-sm-12 controls">
-                                <button id="btn-login" type="submit" onclick="location.href='/sistemas/instituto/Login/clave_nueva.php'" class="btn-enviar-recupero">Enviar
+                                <button id="btn-login" type="submit" onclick="location.href='/sistema/instituto/Login/clave_nueva.php'" class="btn-enviar-recupero">Enviar
                                 </button>
                             </div>
                         </div>

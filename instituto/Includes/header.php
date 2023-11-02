@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/sistemas/instituto/css/main.css">
-    <link rel="stylesheet" href="/sistemas/instituto/css/style.css">
-    <link rel="stylesheet" href="/sistemas/instituto/css/styleregistro.css">
+    <link rel="stylesheet" href="/sistema/instituto/css/main.css">
+    <link rel="stylesheet" href="/sistema/instituto/css/style.css">
+    <link rel="stylesheet" href="/sistema/instituto/css/styleregistro.css">
     <link href="toggle-switchy.css" rel="stylesheet" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">

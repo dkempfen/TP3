@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/sistemas/instituto/Adman/lista_planes.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Includes/load.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/sistema/instituto/Adman/lista_planes.php';
 
 if (isset($fila) && is_array($fila)) {
     $estadoTarjeta = ($fila['Estado_Id_Estado'] == 1) ? 'Habilitado' : 'Inhabilitado';
@@ -23,7 +23,7 @@ $DatosPlan = DatosPlan();
                 </button>
             </div>
             <div class="modal-body">
-                <form id="ModalsEditarPlan" name="ModalsEditarPlan" action="/sistemas/instituto/Includes/sqluser.php"
+                <form id="ModalsEditarPlan" name="ModalsEditarPlan" action="/sistema/instituto/Includes/sqluser.php"
                     method="POST">
                     <input type="hidden" name="cod_Plan" id="cod_Plan" value="<?php  echo $DatosPlan['cod_Plan'] ?>">
 
@@ -173,7 +173,7 @@ $(document).ready(function() {
         var fechaFinal = $("#fechaFinal").val();
 
         $.ajax({
-            url: "/sistemas/instituto/Includes/sqluser.php",
+            url: "/sistema/instituto/Includes/sqluser.php",
             type: "POST",
             data: {
                 cod_Plan: cod_Plan,
