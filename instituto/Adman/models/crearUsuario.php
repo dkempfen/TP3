@@ -86,10 +86,7 @@ foreach ($DatosPersonas as $DatosPersonas) {
                          <input type="number" class="form-control" name="dniUser" id="dniUser" value="<?php echo $DatosPersonas['DNI']; ?>" readonly>
 
                     </div>
-                    <div class="form-group">
-                        <label for="control-label">Id_Usuario:</label>
-                        <input type="text" class="form-control" name="IdUser" id="IdUser" required>
-                    </div>
+                   
                     <div class="form-group">
                         <label for="control-label">Legajo:</label>
                         <input type="text" class="form-control" name="legajo" id="legajo" required>

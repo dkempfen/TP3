@@ -194,17 +194,17 @@ if (isset($_POST['btnaltaPersona'])) {
 } else {
     echo "La variable \$DatosPersonas no está definida.";
 }*/
-function insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
+function insertarUsuario( $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
  session_start();
 global $pdo;
 
 try {
 $estadoUser = isset($estadoUser) ? $estadoUser : 0;
-$sql = "INSERT INTO Usuario (fk_DNI, Id_Usuario, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$sql = "INSERT INTO Usuario (fk_DNI, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
+VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $pdo->prepare($sql);
 $dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
-$stmt->execute([$dniUser, $IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
+$stmt->execute([$dniUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
 
 if ($stmt->rowCount() > 0) {
 $_SESSION['message'] = [
@@ -233,7 +233,6 @@ exit();
 
 if (isset($_POST['btnmCrearUser'])) {
 $dniUser = $_POST['dniUser'];
-$IdUser = $_POST['IdUser'];
 $legajo = $_POST['legajo'];
 $user = $_POST['user'];
 $password = $_POST['password'];
@@ -242,7 +241,7 @@ $plan = $_POST['plan'];
 $rol = $_POST['rol'];
 $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
 
-insertarUsuario($IdUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
+insertarUsuario($legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
 
 header("Location: /instituto/Adman/Pantallas/lista_personas.php");
 exit();
