@@ -200,7 +200,8 @@ require_once '../includes/footer.php';
 <script>
 $(document).ready(function() {
 
-
+    var tableUsuariosRol = $('#tableUsuariosRol').DataTable({
+    });
     $('#tableUsuariosRol').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
         var Id_Usuario = $(this).data("usuario-id");
