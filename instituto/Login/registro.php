@@ -1,6 +1,4 @@
 <?php
-
-
 $pageTitle = "Registro Instituto"; // Define el título de la página
 include '../Includes/header.php';
 include '../Includes/load.php';

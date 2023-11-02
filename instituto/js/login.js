@@ -6,7 +6,7 @@
         loginProfesor();
     });
 })
-*/
+
 jQuery(function(){
     $('#loginUsuario').on('click',function(){
         loginUsuario();
@@ -37,5 +37,5 @@ function loginUsuario(){
         }
     })
 
-}
+}*/
 

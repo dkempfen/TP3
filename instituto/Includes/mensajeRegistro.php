@@ -1,5 +1,4 @@
 <?php
-include '../Includes/load.php';
 $errors = array();
 
 if (!empty($_POST)) 
