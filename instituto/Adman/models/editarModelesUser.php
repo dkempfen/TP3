@@ -43,7 +43,7 @@ $tableUsuarios = tableUsuarios();
                     <div class="form-group">
                         <label for="nombreeditar">Libro Matriz:</label>
                         <input type="text" class="form-control" name="libromatrizEditar" id="libromatrizEditar"
-                            value="<?php echo $tableUsuarios['Libromatriz']; ?>">
+                            value="<?php echo $tableUsuarios['Libromatriz']; ?>" required>
 
                     </div>
 

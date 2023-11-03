@@ -193,59 +193,73 @@ if (isset($_POST['btnaltaPersona'])) {
     print_r($DatosPersonas);
 } else {
     echo "La variable \$DatosPersonas no está definida.";
-}*/
-function insertarUsuario( $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
- session_start();
-global $pdo;
+}*/function insertarUsuario($legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser) {
+    session_start();
+    global $pdo;
 
-try {
-$estadoUser = isset($estadoUser) ? $estadoUser : 0;
-$sql = "INSERT INTO Usuario (fk_DNI, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario)
-VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
-$stmt = $pdo->prepare($sql);
-$dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
-$stmt->execute([$dniUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
+    try {
+        $estadoUser = isset($estadoUser) ? $estadoUser : 0;
 
-if ($stmt->rowCount() > 0) {
-$_SESSION['message'] = [
-'type' => 'success',
-'text' => 'Datos de usuario insertados exitosamente'
-];
-} else {
-$_SESSION['message'] = [
-'type' => 'error',
-'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
-];
-}
+        // Comprobar si el rol seleccionado ya tiene el mismo plan para el usuario actual
+        $dniUser = $_POST['dniUser'];
+        $sqlComprobarPlan = "SELECT COUNT(*) FROM Usuario WHERE fk_Rol = ? AND fk_Plan = ? AND fk_DNI = ?";
+        $stmtComprobarPlan = $pdo->prepare($sqlComprobarPlan);
+        $stmtComprobarPlan->execute([$rol, $plan, $dniUser]);
 
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-exit();
-} catch (PDOException $e) {
-error_log('Error en la inserción de usuario: ' . $e->getMessage());
-$_SESSION['message'] = [
-'type' => 'error',
-'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
-];
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-exit();
-}
+        if ($stmtComprobarPlan->fetchColumn() > 0) {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'El rol seleccionado ya tiene asignado el mismo plan para este usuario. Por favor, elija otro plan.'
+            ];
+        } else {
+            // Si la comprobación pasa, procedemos con la inserción
+            $sqlInsert = "INSERT INTO Usuario (fk_DNI, Legajo, User, Password, Libromatriz, fk_Plan, fk_Rol, fk_Estado_Usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmtInsert = $pdo->prepare($sqlInsert);
+            $dniUser = $_POST['dniUser']; // Asegúrate de que el campo esté presente en el formulario
+            $stmtInsert->execute([$dniUser, $legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser]);
+
+            if ($stmtInsert->rowCount() > 0) {
+                $_SESSION['message'] = [
+                    'type' => 'success',
+                    'text' => 'Datos de usuario insertados exitosamente'
+                ];
+            } else {
+                $_SESSION['message'] = [
+                    'type' => 'error',
+                    'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+                ];
+            }
+        }
+
+        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        exit();
+    } catch (PDOException $e) {
+        error_log('Error en la inserción de usuario: ' . $e->getMessage());
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al insertar los datos de usuario.'
+        ];
+        header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+        exit();
+    }
 }
 
 if (isset($_POST['btnmCrearUser'])) {
-$dniUser = $_POST['dniUser'];
-$legajo = $_POST['legajo'];
-$user = $_POST['user'];
-$password = $_POST['password'];
-$libromatriz = $_POST['libromatriz'];
-$plan = $_POST['plan'];
-$rol = $_POST['rol'];
-$estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
+    $dniUser = $_POST['dniUser'];
+    $legajo = $_POST['legajo'];
+    $user = $_POST['user'];
+    $password = $_POST['password'];
+    $libromatriz = $_POST['libromatriz'];
+    $plan = $_POST['plan'];
+    $rol = $_POST['rol'];
+    $estadoUser = isset($_POST['estadoUser']) ? 1 : 0; // Valor por defecto 0 si no está marcado
 
-insertarUsuario($legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
+    insertarUsuario($legajo, $user, $password, $libromatriz, $plan, $rol, $estadoUser);
 
-header("Location: /instituto/Adman/Pantallas/lista_personas.php");
-exit();
+    header("Location: /instituto/Adman/Pantallas/lista_personas.php");
+    exit();
 }
+
 ///////////////Actualizar Datos Materia///////////////////////
 
 function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarrera, $materiaeditar) {

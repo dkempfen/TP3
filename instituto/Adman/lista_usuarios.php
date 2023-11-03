@@ -199,9 +199,8 @@ require_once '../includes/footer.php';
 
 <script>
 $(document).ready(function() {
-
-    var tableUsuariosRol = $('#tableUsuariosRol').DataTable({
-    });
+    var tableUsuariosRol = $('#tableUsuariosRol').DataTable();
+    
     $('#tableUsuariosRol').on("change", ".onoffswitch-checkbox", function() {
         var self = this;
         var Id_Usuario = $(this).data("usuario-id");
@@ -214,13 +213,12 @@ $(document).ready(function() {
                 Id_Usuario: Id_Usuario,
                 fk_Estado_Usuario: fk_Estado_Usuario
             },
-
             success: function(response) {
                 var messageDiv = $('#message'); // Elemento donde se mostrará el mensaje
                 messageDiv.html(response); // Coloca el mensaje en el elemento
                 setTimeout(function() {
                     messageDiv.html(''); // Borra el mensaje después de un tiempo
-                    window.location.reload(); // Recarga la página si es necesario
+                    // Actualiza los datos de la tabla según tus necesidades
                 }, 2000);
             },
             error: function(error) {
