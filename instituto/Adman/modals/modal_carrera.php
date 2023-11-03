@@ -50,20 +50,25 @@ $result = $pdo->query($sql);
                         </thead>
                         <tbody id="message">
                             <?php
-                            // Comprueba si la consulta fue exitosa
-                            if ($result) {
-                                // Loop a través del resultado y generar filas de la tabla
-                                foreach ($result as $row) {
-                                    echo '<tr>';
-                                    echo '<td>' . $row['Anio_Carrera'] . '</td>';
-                                    echo '<td>' . $row['cod_Plan'] . '</td>';
-                                    echo '<td>' . $row['Promocional'] . '</td>';
-                                    echo '<td>' . $row['id_Materia'] . '</td>';
-                                    echo '<td>' . $row['Descripcion'] . '</td>';
-                                    echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
-                                    echo '</tr>';
+                                    if ($result) {
+                                // La consulta se ejecutó con éxito, ahora verifica si hay resultados
+                                if ($result->rowCount() > 0) {
+                                    // Hay resultados, muestra los datos
+                                    foreach ($result as $row) {
+                                        echo '<tr>';
+                                        echo '<td>' . $row['Anio_Carrera'] . '</td>';
+                                        echo '<td>' . $row['cod_Plan'] . '</td>';
+                                        echo '<td>' . $row['Promocional'] . '</td>';
+                                        echo '<td>' . $row['id_Materia'] . '</td>';
+                                        echo '<td>' . $row['Descripcion'] . '</td>';
+                                        echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo "No se encontraron resultados para la consulta.";
                                 }
                             } else {
+                                // Hubo un error en la consulta, muestra un mensaje de error
                                 echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2];
                             }
                             ?>
@@ -79,13 +84,33 @@ $result = $pdo->query($sql);
 </div>
 
 <script>
-function mostrarInfoAdicional() {
+function mostrarInfoAdicional(codPlan) {
     $('#tablaModal').modal('show');
+    
+    console.log("Clic en Más Información con codPlan: " + codPlan);
 
-    // Obtén el elemento con el id "infoAdicional"
-    var infoAdicional = document.getElementById("infoAdicional");
+    // Convertir codPlan en un número entero
+    codPlan = parseInt(codPlan);
 
-    // Muestra la información adicional cambiando el estilo de display
-    infoAdicional.style.display = "block";
+    // Ocultar todas las filas de la tabla
+    $('#message tr').hide();
+
+    var filasMostradas = 0;
+
+    // Mostrar solo las filas que coinciden con el codPlan
+    $('#message tr').each(function() {
+        var codPlanEnFila = $(this).find('td:eq(1)').text();
+        console.log("codPlanEnFila: " + codPlanEnFila);
+
+        // Convertir codPlanEnFila en un número entero
+        codPlanEnFila = parseInt(codPlanEnFila);
+
+        if (codPlanEnFila === codPlan) {
+            $(this).show();
+            filasMostradas++;
+        }
+    });
+
+    console.log("Filas mostradas: " + filasMostradas);
 }
 </script>

@@ -134,7 +134,7 @@ if (isset($_SESSION['message'])) {
 
 
                 <button data-toggle="modal" class="planalta-button" id="crearNuevoPlanBtn" type="button"
-                    onclick="openModalM()"><i class="fas fa-plus"></i> Crear Nuevo Materia</button>
+                    onclick="openModalMateria()"><i class="fas fa-plus"></i> Crear Nuevo Materia</button>
 
                 <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
                     onclick="mostrarCrearNuevoPlan(); return false;">

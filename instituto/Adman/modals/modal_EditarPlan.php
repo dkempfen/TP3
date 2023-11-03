@@ -24,7 +24,7 @@ $DatosPlan = DatosPlan();
             </div>
             <div class="modal-body">
                 <form id="ModalsEditarPlan" name="ModalsEditarPlan" action="/instituto/Includes/sqluser.php"
-                    method="POST">
+                    method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="cod_Plan" id="cod_Plan" value="<?php  echo $DatosPlan['cod_Plan'] ?>">
 
                     <!-- Agregar aquí los campos de edición -->
@@ -51,10 +51,19 @@ $DatosPlan = DatosPlan();
                     </div>
 
                     <div class="form-group">
-                        <label for="adjunto">Adjuntar archivo del Plan:</label>
-                        <input type="file" class="form-control-file" id="adjunto">
+                        <label for="adjunto" style="font-size: 16px;">Adjuntar archivo del Plan:</label>
+                        <div id="archivoActual_<?php echo $DatosPlan['cod_Plan']; ?>">
+                            <?php
+                            if (!empty($DatosPlan['Descripcion'])) {
+                                echo '<span style="color: #000; font-size: 18px;">Archivo actual: ' . $DatosPlan['Descripcion'] . '</span>';
+                            }
+                            ?>
+                        </div>
+                        <input type="file" class="form-control-file" name="archivoPlan" id="archivoPlan">
                     </div>
                 </form>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -80,6 +89,7 @@ function mostrarEditarTarjeta(boton) {
     var estadoTarjeta = boton.getAttribute('data-estado-tarjeta');
     var fechaInicio = boton.getAttribute('data-fecha-inicio');
     var fechaFinal = boton.getAttribute('data-fecha-final');
+    var archivoPlan = boton.getAttribute('archivoPlan');
 
     document.getElementById('cod_Plan').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerRegister");
@@ -88,18 +98,32 @@ function mostrarEditarTarjeta(boton) {
     document.getElementById('tituloModalEditarPlan').innerHTML = 'Modificar Plan';
     document.getElementById('ModalsEditarPlan').reset();
 
-
-
     $('#cod_Plan').val(cod_Plan);
     $('#nombreTarjeta').val(nombreTarjeta);
     $('#estadoTarjeta').val(estadoTarjeta);
     $('#fechaInicio').val(fechaInicio);
     $('#fechaFinal').val(fechaFinal);
 
+   
+
     $('#tituloModalEditarPlan').html('Modificar Plan');
     $('#btnEditarPlan').html('Guardar');
     $('#btnActionEditarPlan').removeClass('btn-info').addClass('btn-open-modal');
     $('#ModalsEditarPlan_').modal('show');
+
+    // Agregar el código para mostrar y ocultar la información adicional aquí
+    var celdasExpandibles = document.querySelectorAll("td");
+
+    celdasExpandibles.forEach(function(celda) {
+        celda.addEventListener("click", function() {
+            var infoAdicional = this.querySelector(".info-adicional");
+            if (infoAdicional.style.display === "none" || infoAdicional.style.display === "") {
+                infoAdicional.style.display = "block";
+            } else {
+                infoAdicional.style.display = "none";
+            }
+        });
+    });
 }
 
 $(document).ready(function() {
@@ -198,8 +222,10 @@ $(document).ready(function() {
                         timer: 1500
                     }).then(function() {
                         // Cierra la modal
-                        console.log("Cerrando modal"); // Agrega esto para verificar si se ejecuta
-                        
+                        console.log(
+                            "Cerrando modal"
+                        ); // Agrega esto para verificar si se ejecuta
+
                         $('#editarTarjetaModal_').modal('hide');
                         // Recarga la página
                         location.reload();

@@ -132,14 +132,17 @@ if ($pdo) {
             <?php
                 // Realiza una conexión a la base de datos (debes configurar tus propios detalles de conexión)
 
-                // Prepara y ejecuta una consulta SQL para obtener los datos de los planes
-                $sql = "SELECT cod_Plan, Carrera, Estado_Id_Estado, Fecha_Inicio, Fecha_Final FROM Plan";
+                $sql = "SELECT P.cod_Plan, P.Carrera, P.Estado_Id_Estado, P.Fecha_Inicio, P.Fecha_Final, D.Descripcion
+                     FROM Plan AS P
+                     LEFT JOIN Documentacion AS D ON P.cod_Plan = D.fk_Plan";
                 $resultado = $pdo->query($sql);
 
                 // Recorrer los resultados y generar la estructura HTML
                 foreach ($resultado as $fila) {
                     echo '<div class="col-lg-4 margen-inferior">'; 
                     echo '<div class="card">';
+                    echo '<input type="hidden" class="codigo-plan" value="' . $fila['cod_Plan'] . '">';
+
                     echo '<div class="card-body">';
                     echo '<h2 class="card-title">' . $fila['Carrera'] . '</h2>';
                     echo '<label id="seleccionar-label">';
@@ -150,20 +153,26 @@ if ($pdo) {
                     echo '<p><strong>Estado:</strong> ' . ($fila['Estado_Id_Estado'] == 1 ? 'Habilitado' : 'Inhabilitado') . '</p>';
                     echo '<p><strong>Fecha Inicio:</strong> ' . $fila['Fecha_Inicio'] . '</p>';
                     echo '<p><strong>Fecha Final:</strong> ' . $fila['Fecha_Final'] . '</p>';
+                    
+                    // Verificar si hay una descripción de archivo
+                    if ($fila['Descripcion'] !== null) {
+                        echo '<p><strong>Archivo del Plan:</strong> ' . $fila['Descripcion'] . '</p>';
+                    } else {
+                        echo '<p><strong>Archivo del Plan:</strong> No se ha adjuntado archivo</p>';
+                    }
+                
                     echo '</div>';
                     echo '<div class="card-footer">';
                     echo '<div class="d-flex justify-content-end">';
                     
-                    // Establece la opción seleccionada en función del valor de la base de datos
                     $estadoSeleccionado = ($fila['Estado_Id_Estado'] == 1) ? 'Habilitado' : 'Inhabilitado';
                     
-                    // Genera el botón "Editar" y establece la opción seleccionada
                     echo '<button class="btn btn-primary btn-sm mr-2" type="button" onclick="mostrarEditarTarjeta(this)"
                     data-codigo-plan="' . $fila['cod_Plan'] . '" data-nombre-tarjeta="' . $fila['Carrera'] . '"
                     data-estado-tarjeta="' . $fila['Estado_Id_Estado'] .'" data-fecha-inicio="' . $fila['Fecha_Inicio'] . '"
                     data-fecha-final="' . $fila['Fecha_Final'] . '">Editar</button>';
                     
-                    echo '<button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional()">Más Información</button>';
+                    echo '<button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional(' . $fila['cod_Plan'] . ')">Más Información</button>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
@@ -383,5 +392,6 @@ function mostrarCrearNuevoPlan() {
 
     $('#modalCrearPlan').modal('show');
 
+    
 }
 </script>

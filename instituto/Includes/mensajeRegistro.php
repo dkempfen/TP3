@@ -3,19 +3,20 @@ $errors = array();
 
 if (!empty($_POST)) 
  {   //Permite que el formulario sea mas seguro
-    $apellido = $_POST['apellido'];
-    $nombre = $_POST['nombre'];
-    $usuario = $_POST['usuario'];
-    $telefono = $_POST['telefono'];
-    $email = $_POST['email'];
-    $nacionalidad = $_POST['nacionalidad'];
-    $fecha_nacimiento = $_POST['fecha_nacimiento'];
+    $apellido = isset($_POST['apellido']) ? $_POST['apellido'] : "";
+    $nombre = isset($_POST['nombre']) ? $_POST['nombre'] : "";
+    $usuario = isset($_POST['usuario']) ? $_POST['usuario'] : "";
+    $telefono = isset($_POST['telefono']) ? $_POST['telefono'] : "";
+    $email = isset($_POST['email']) ? $_POST['email'] : "";
+    $nacionalidad = isset($_POST['nacionalidad']) ? $_POST['nacionalidad'] : "";
+
+    $fecha_nacimiento = isset($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : "";
     $fecha_nacimiento_formateada = date("Y-m-d", strtotime($fecha_nacimiento));
-    $plan = $_POST['plan'];
 
-    $captcha = $_POST['g-recaptcha-response'];
+    $plan = isset($_POST['plan']) ? $_POST['plan'] : "";
 
-    
+    $captcha = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : "";
+        
 
 
     $activo = 0; //Cuando se registra el usuario siempre está desactivado

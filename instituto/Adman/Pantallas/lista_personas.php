@@ -172,7 +172,7 @@ $(document).ready(function() {
         var fk_Estado_Usuario = this.checked ? 1 : 2;
 
         $.ajax({
-            url: "/sistema/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
             type: "POST",
             data: {
                 Id_Usuario: Id_Usuario,

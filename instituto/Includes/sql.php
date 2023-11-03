@@ -78,6 +78,26 @@ $totalAdmins = countUsersByRole(ROL_ADMINISTRATIVO);
 $totalAlumnos = countUsersByRole(ROL_ALUMNO);
 $totalProfesores = countUsersByRole(ROL_PROFESOR);
 $totalUsuarios = countUsersByRole(ROL_ADMINISTRATIVO) + countUsersByRole(ROL_ALUMNO) + countUsersByRole(ROL_PROFESOR);
+/////////////////////////////
+
+
+
+function nuevo_archivo($table)
+{
+  global $pdo;
+
+  $sql = "SELECT Descripcion FROM " . $table;
+  $archivoPlan = $pdo->prepare($sql);
+  $archivoPlan->execute();
+
+  $rowp = $archivoPlan->fetch(PDO::FETCH_ASSOC);
+  if ($rowp) {
+    return $rowp['nuevo_archivo'];
+  }
+
+  return ""; 
+}
+
 
 /*--------------------------------------------------------------*/
 function cambiarFotoPerfil($table)
@@ -95,6 +115,7 @@ function cambiarFotoPerfil($table)
 
   return ""; 
 }
+
 
 
 function obtenerFotoPerfilActual()
@@ -353,8 +374,10 @@ function DatosPlan()
 {
     global $pdo;
 
-    $sql = "select Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
-    INNER JOIN Plan P ON P.Estado_Id_Estado=E.Id_Estado";
+    $sql = "select Descripcion, Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
+    INNER JOIN Plan P ON P.Estado_Id_Estado=E.Id_Estado
+    INNER JOIN Documentacion AS d
+    ON P.cod_Plan = d.fk_Plan";
 
     $datosPlam = $pdo->prepare($sql);
     $datosPlam->execute();
@@ -721,4 +744,49 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 
 
+?>
+
+<?php
+// Conexión a la base de datos (debes configurar tus propios detalles de conexión)
+
+// Verifica si se recibió el código del plan como parámetro POST
+if (isset($_POST['codPlan'])) {
+    $codPlan = $_POST['codPlan'];
+
+    // Consulta SQL para obtener los detalles del plan
+    $sql = "SELECT dp.Id_Detalle_Plan, m.Anio_Carrera, m.Promocional, m.id_Materia, m.Descripcion, pr.Nombre, pr.Apellido
+            FROM Detalle_Plan dp
+            LEFT JOIN Materia m ON dp.fk_Materia = m.id_Materia
+            LEFT JOIN Materia_Profesor mp ON dp.fk_Materia = mp.id_Materia
+            LEFT JOIN Usuario u ON u.Id_Usuario = mp.id_Profesor
+            LEFT JOIN Persona pr ON pr.DNI = u.fk_DNI
+            WHERE dp.fk_Plan = :codPlan";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':codPlan', $codPlan, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Genera el HTML de la tabla con los detalles del plan
+    $html = '';
+
+    if ($stmt->rowCount() > 0) {
+        foreach ($stmt as $row) {
+            $html .= '<tr>';
+            $html .= '<td>' . $row['Anio_Carrera'] . '</td>';
+            $html .= '<td>' . $codPlan . '</td>';
+            $html .= '<td>' . $row['Promocional'] . '</td>';
+            $html .= '<td>' . $row['id_Materia'] . '</td>';
+            $html .= '<td>' . $row['Descripcion'] . '</td>';
+            $html .= '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
+            $html .= '</tr>';
+        }
+    } else {
+        $html = 'No se encontraron detalles para este plan.';
+    }
+
+    // Devuelve el HTML de los detalles del plan como respuesta
+    echo $html;
+} else {
+    echo 'Código de plan no proporcionado.';
+}
 ?>

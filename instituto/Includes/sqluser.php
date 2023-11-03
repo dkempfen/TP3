@@ -127,11 +127,44 @@ if (isset($_POST['btnmodificarUsuario'])) {
 }
 
 ///////////////Actuañ Datos Pantalla User///////////////////////
+if (isset($_POST['btnmodificarPlan'])) {
+    $cod_Plan = $_POST['cod_Plan'];
+    $nombreTarjeta = $_POST['nombreTarjeta'];
+    $estadoTarjeta = $_POST['estadoTarjeta'];
+    $fechaInicio = $_POST['fechaInicio'];
+    $fechaFinal = $_POST['fechaFinal'];
 
-function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan) {
+    // Nombre del archivo adjunto
+    $nombreArchivo = $_FILES["archivoPlan"]["name"];
+    $archivoTemporal = $_FILES["archivoPlan"]["tmp_name"];
+    $type = $_FILES["archivoPlan"]["type"];
+    $size = $_FILES["archivoPlan"]["size"];
+    $folder = $_SERVER['DOCUMENT_ROOT'] . '/instituto/documentos/plan/'; // Ruta donde deseas almacenar los documentos
+    $rutaArchivo = $folder . $nombreArchivo;
+
+    // Verifica si los campos requeridos no están vacíos
+    if (!empty($nombreTarjeta) && !empty($estadoTarjeta) && !empty($fechaInicio) && !empty($fechaFinal)) {
+        // Llama a la función guardarCambios
+        guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan, $rutaArchivo, $nombreArchivo);
+
+        // Mueve el archivo desde la ubicación temporal a la carpeta de destino
+        if (move_uploaded_file($archivoTemporal, $rutaArchivo)) {
+            // El archivo se ha movido correctamente
+        } else {
+            // Error al mover el archivo
+            echo "Error al subir el archivo.";
+        }
+
+        header("Location: /instituto/Adman/lista_planes.php");
+        exit();
+    } else {
+        echo "Los campos requeridos no pueden estar vacíos.";
+    }
+}
+
+function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan, $rutaArchivo, $nombreArchivo) {
     session_start();
     global $pdo;
-    
 
     $sql = "UPDATE Plan SET Carrera = ?, Estado_Id_Estado = ?, Fecha_Inicio = ?, Fecha_Final = ? WHERE cod_Plan = ?";
     $stmt = $pdo->prepare($sql);
@@ -140,41 +173,26 @@ function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFina
     $stmt->execute([$nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan]);
 
     if ($stmt->rowCount() > 0) {
+        // Insertar o actualizar la información del archivo adjunto en la base de datos
+        $estadoDocumentacion = 1; // Cambiar a 1 para indicar el estado deseado
+
+        $sql = "INSERT INTO Documentacion (Descripcion, Estado_Documentacion, Ubicacion, fk_Plan) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE Descripcion = ?, Estado_Documentacion = ?, Ubicacion = ?";
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([$nombreArchivo, $estadoDocumentacion, $rutaArchivo, $cod_Plan, $nombreArchivo, $estadoDocumentacion, $rutaArchivo]);
+
         $_SESSION['messageEditarPlan'] = [
             'type' => 'success',
-            'text' => 'Datos del plan  actualizados exitosamente'
+            'text' => 'Datos del plan actualizados exitosamente'
         ];
     } else {
         $_SESSION['messageEditarPlan'] = [
             'type' => 'error',
-            'text' => 'Ha ocurrido un error al actualizar los datos del plan.'
+            'text' => 'Error al actualizar los datos del plan. Detalles del error: ' . implode(' | ', $stmt->errorInfo())
         ];
     }
-
-    header("Location: /instituto/Adman/lista_planes.php");
-    exit();
 }
-
-// Verificar si se ha enviado una solicitud de edición (update)
-if (isset($_POST['btnmodificarPlan'])) {
-    $cod_Plan = $_POST['cod_Plan']; // Asegúrate de obtener el código de plan desde el formulario
-    $nombreTarjeta = $_POST['nombreTarjeta'];
-    $estadoTarjeta = $_POST['estadoTarjeta'];
-    $fechaInicio = $_POST['fechaInicio'];
-    $fechaFinal = $_POST['fechaFinal'];
-
-   
-
-    // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
-    guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan);
-
-    header("Location: /instituto/Adman/lista_planes.php");
-    exit();
-}
-
-
-
-
+///////////////////////////////////////////////////
 
 function InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fechaFinalCrear, $estadoPlanCrear) {
     session_start();
