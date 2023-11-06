@@ -1230,3 +1230,43 @@ Usernalta-button:hover,
     border-radius: 4px; /* Bordes redondeados */
     cursor: pointer; /* Cambia el cursor al pasar por encima */
 }
+
+.container-sistemas {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+
+}
+
+.program-info .row {
+    background-color: #f3f4f6;
+    /* Cambia este color al que desees */
+    padding: 20px;
+    /* Añade espaciado interno para mejorar la apariencia */
+    border: 1px solid #ddd;
+    /* Borde alrededor de la fila */
+    border-radius: 5px;
+    /* Borde redondeado */
+}
+
+.program-description {
+    padding: 20px;
+}
+
+
+.program-info p {
+    margin: 0;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    /* Borde superior para separar h3 y p */
+}
+
+.pdf-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 325px;
+    /* Ajusta la altura según tus necesidades */
+    border: 1px solid #ccc;
+    /* Añade un borde según tus preferencias */
+}

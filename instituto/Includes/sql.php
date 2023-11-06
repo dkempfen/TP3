@@ -396,13 +396,32 @@ function DatosMateriaProfesor()
     LEFT JOIN Persona pr ON u.fk_DNI = pr.DNI
     LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
 
+  
+
     $datosMateriaProf = $pdo->prepare($sql);
     $datosMateriaProf->execute();
 
     $rowMateriaProf= $datosMateriaProf->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateriaProf;
+
+    
 }
 
+function DatosMateriaEstado()
+{
+    global $pdo;
+
+    $sql = "SELECT Id_Estado, Descripcion_Estado From Estado";
+
+
+    $datosMateriaEstado = $pdo->prepare($sql);
+    $datosMateriaEstado->execute();
+
+    $rowMateriaEstado= $datosMateriaEstado->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateriaEstado;
+
+    
+}
 
 
 function DatosMateria()
@@ -786,7 +805,7 @@ if (isset($_POST['codPlan'])) {
 
     // Devuelve el HTML de los detalles del plan como respuesta
     echo $html;
-} else {
-    echo 'Código de plan no proporcionado.';
-}
+}// else {
+//    echo 'Código de plan no proporcionado.';
+//}//
 ?>

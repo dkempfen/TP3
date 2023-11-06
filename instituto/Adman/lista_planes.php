@@ -8,6 +8,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modal_CrearPla
 
 ?>
 
+
+
 <?php
 if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
@@ -39,6 +41,8 @@ if ($pdo) {
         unset($_SESSION['messageEditarPlan']); // Clear the session variable after displaying the message
         showConfirmationMessageEditarPlan($messageEditarPlan);
     }
+
+
 
 
 
@@ -116,8 +120,9 @@ if ($pdo) {
                     class="planpdf-button">
                     <i class="fas fa-file-pdf"></i> Descargar PDF
                 </a>
-                <button data-toggle="modal" class="planalta-button" id="crearNuevoPlanBtn" type="button"  data-toggle="modal"
-                    onclick="mostrarCrearNuevoPlan()"><i class="fas fa-plus"></i> Crear Nuevo Plan</button>
+                <button data-toggle="modal" class="planalta-button" id="crearNuevoPlanBtn" type="button"
+                    data-toggle="modal" onclick="mostrarCrearNuevoPlan()"><i class="fas fa-plus"></i> Crear Nuevo
+                    Plan</button>
 
                 <!-- <a id="crearNuevoPlanBtn" href="#crearNuevoPlanModal" class="planalta-button"
                     onclick="mostrarCrearNuevoPlan(); return false;">
@@ -225,9 +230,9 @@ if ($pdo) {
         </div>
     </div>
 
-   
 
-    
+
+
 
 </main>
 
@@ -261,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-
 </script>
 <script>
 function descargarPDF() {
@@ -392,6 +396,6 @@ function mostrarCrearNuevoPlan() {
 
     $('#modalCrearPlan').modal('show');
 
-    
+
 }
 </script>

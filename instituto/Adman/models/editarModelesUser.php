@@ -49,7 +49,7 @@ $tableUsuarios = tableUsuarios();
 
                     <div class="form-group">
                         <label for="control-label">Clave:</label>
-                        <input type="text" class="form-control" name="claveeditaruser" id="claveeditaruser"
+                        <input type="password" class="form-control" name="claveeditaruser" id="claveeditaruser"
                             value="<?php echo $tableUsuarios['Password']; ?>">
 
                     </div>

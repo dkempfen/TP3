@@ -35,6 +35,8 @@ function showConfirmationMessagesMateria($message) {
 
 
 
+
+
 function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio, $inscripto) {
     session_start();
     global $pdo;
@@ -148,7 +150,7 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
 
         // Asignar el valor adecuado a la columna "Inscripto" según la selección del usuario
 
-        $inscripto = isset($inscripto) ? 1 : 0;
+        
 
         $sql = "INSERT INTO Persona (DNI, Nombre, Apellido, Fechanacimiento, Telefono, Email, Domicilio, Inscripto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
@@ -180,7 +182,7 @@ if (isset($_POST['btnaltaPersona'])) {
     $telefono = $_POST['telefono'];
     $mail = $_POST['mail'];
     $domicilio = $_POST['domicilio'];
-    $inscripto = isset($_POST['inscripto']) ? 1 : 0; // Valor por defecto 0 si no está marcado
+    $inscripto = ($_POST['inscripto']); // Valor por defecto 0 si no está marcado
 
     AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
 
@@ -266,6 +268,8 @@ function actualizarMateria($nombreMateriaeditar, $promocionaleditar, $nivelCarre
     session_start();
     global $pdo;
 
+
+
     $sql = "UPDATE Materia SET Descripcion = ?, Promocional = ?, Anio_Carrera = ? WHERE id_Materia = ?";
     $stmt = $pdo->prepare($sql);
 
@@ -324,23 +328,11 @@ if (isset($_POST['btnmodificarMateria'])) {
     exit();
 }
 
+/////////////////////Inser insertarNuevoProfesor/////////////////
 
-
-/*function insertarNuevoProfesor($materiaId,$profesorId) {
+function insertarNuevoProfesor($materiaId,$profesorId) {
     global $pdo;
     session_start();
-
-    $materiaId = $_POST['materiaId'];
-    $profesorId = $_POST['profesorId'];
-
-
-    if (empty($materiaId) || empty($profesorId)) {
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Debe proporcionar el ID del profesor y el ID de la materia.'
-        ];
-        return;
-    }
 
     $sql = "INSERT INTO Materia_Profesor (id_Materia, id_Profesor) VALUES (?, ?)";
     $stmt = $pdo->prepare($sql);
@@ -358,7 +350,7 @@ if (isset($_POST['btnmodificarMateria'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['btnProfesorMateria'])) {
     // Recuperar el ID del profesor seleccionado y el ID de la materia
     $materiaId = $_POST['materiaId'];
     $profesorId = $_POST['profesorId'];
@@ -369,7 +361,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     header("Location: /instituto/Adman/lista_materia.php");
     exit();
-}*/
+}
 
 
 
@@ -378,5 +370,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 // Devolver la respuesta como JSON
+
+
+//////////////////////////////////Insertar Materia//////////////////////
+
+function InsertarMateria($nombreMateria, $listEstado, $nivelCarrera, $promocional) {
+    session_start();
+    global $pdo;
+    
+
+    $sql = "INSERT INTO Materia (Descripcion, fk_Estado,Anio_Carrera, Promocional) VALUES (?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+
+    // Verifica si los valores son nulos antes de ejecutar la consulta
+    $stmt->execute([$nombreMateria, $listEstado, $nivelCarrera, $promocional]);
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['messageMateria'] = [
+            'type' => 'success',
+            'text' => 'Datos de la materia crear exitosamente'
+        ];
+    } else {
+        $_SESSION['messageMateria'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al crear los datos de la materia.'
+        ];
+    }
+
+    header("Location: /instituto/Adman/lista_materia.php");
+    exit();
+}
+
+// Verificar si se ha enviado una solicitud de edición (update)
+if (isset($_POST['btnCrearMateria'])) {
+    $nombreMateria = $_POST['nombreMateria']; // Asegúrate de obtener el código de plan desde el formulario
+    $listEstado = $_POST['listEstado'];
+    $nivelCarrera = $_POST['nivelCarrera'];
+    $promocional = $_POST['promocional'];
+  
+
+   
+
+    // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
+    InsertarMateria($nombreMateria, $listEstado, $nivelCarrera, $promocional);
+
+    header("Location: /instituto/Adman/lista_materia.php");
+    exit();
+}
 
 ?>

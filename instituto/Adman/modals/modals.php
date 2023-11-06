@@ -68,17 +68,24 @@ $DatosPersonas = DatosPersonas();
                                 <label for="control-label">Domicilio:</label>
                                 <input type="text" class="form-control" name="domicilio" id="domicilio" required>
                             </div>
-         
+
+
+
                             <div class="form-group">
                                 <label for="inscripto">Inscripto:</label>
                                 <div class="custom-control custom-switch custom-control-lg">
-                                    <input type="checkbox" class="custom-control-input" id="inscripto" name="inscripto"
-                                        <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == 'on' ? 'checked' : ''; ?>>
+                                    <input type="hidden" name="inscripto" value="0">
+                                    <input type="checkbox" class="custom-control-input" id="inscripto"
+                                        name="inscripto" value="1"
+                                        <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == '1' ? 'checked' : ''; ?>>
                                     <label class="custom-control-label custom-control-label-lg" for="inscripto">
-                                        <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == 'on' ? 'Sí, está inscrito' : 'No, no está inscrito'; ?>
+                                        <span id="inscripto-label">
+                                            <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == '1' ? 'Sí, es inscripto' : 'No, es inscripto'; ?>
+                                        </span>
                                     </label>
                                 </div>
                             </div>
+                        
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -139,7 +146,8 @@ $(document).ready(function() {
         var telefono = $("#telefono").val();
         var email = $("#mail").val();
         var domicilio = $("#domicilio").val();
-        var inscripto = $("#inscripto").is(":checked") ? 1 :0; // Asigna 1 si está marcado, 0 si no lo está
+        var inscripto = $("#inscripto").val();
+        0; // Asigna 1 si está marcado, 0 si no lo está
         var idusuario = $("#idusuario").val();
 
         console.log('Estado del checkbox "inscripto":', inscripto);
@@ -204,9 +212,8 @@ $(document).ready(function() {
 </script>
 
 <script>
-    // Agrega un console.log para verificar el estado del checkbox cuando la página se carga
-    document.addEventListener('DOMContentLoaded', function() {
-        var inscriptoCheckbox = document.getElementById('inscripto');
-        console.log('Checkbox está marcado:', inscriptoCheckbox.checked);
-    });
+document.getElementById("inscripto").addEventListener("change", function() {
+    var promocionalLabel = document.getElementById("inscripto-label");
+    promocionalLabel.textContent = this.checked ? "Sí, es inscripto" : "No, es inscripto";
+});
 </script>

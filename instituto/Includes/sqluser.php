@@ -15,8 +15,8 @@ function showConfirmationMessageUser($message, $rolUserEditar) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {";
-
-    if ($rolUserEditar == 3) {
+            
+  /*  if ($rolUserEditar == 3) {
         echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=3';";
     } elseif ($rolUserEditar == 2) {
         echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=2';";
@@ -24,7 +24,7 @@ function showConfirmationMessageUser($message, $rolUserEditar) {
         echo "window.location.href = '/instituto/Adman/lista_usuarios.php?rol=1';";
     } else {
         echo "window.location.href = '/instituto/Adman/lista_usuarios.php';";
-    }
+    }*/
 
     echo "});
     </script>";
@@ -99,18 +99,20 @@ function editarUsuarios($legajoUser, $claveeditaruser, $libromatrizEditar, $plan
         ];
     }
 
-    // Redirige según el rol
-    if ($rolUserEditar == 3) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=3");
-    } elseif ($rolUserEditar == 2) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=2");
-    } elseif ($rolUserEditar == 1) {
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=1");
+    // Redirige a la página de lista de usuarios manteniendo el parámetro 'rol' en la URL
+    if (isset($_GET['rol'])) {
+        $rol = $_GET['rol'];
+        header("Location: /instituto/Adman/lista_usuarios.php?rol=$rol");
     } else {
         header("Location: /instituto/Adman/lista_usuarios.php");
     }
     exit();
 }
+
+
+
+
+
 
 // Verificar si se ha enviado una solicitud de edición (update)
 if (isset($_POST['btnmodificarUsuario'])) {

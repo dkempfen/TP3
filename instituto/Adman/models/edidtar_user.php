@@ -72,19 +72,16 @@ $DatosPersonas = DatosPersonas();
                             value="<?php echo $persona['Domicilio']; ?>" required>
 
                     </div>
-                    <div class="form-group">
-                        <label for="inscriptoeditar">Inscripto:</label>
-                        <div class="custom-control custom-switch custom-control-lg">
-                            <input type="checkbox" class="custom-control-input"
-                                id="inscriptoeditar_<?php echo $persona['DNI']; ?>" name="inscriptoeditar"
-                                <?php echo $persona['Inscripto'] ? 'checked' : ''; ?>>
-                            <label class="custom-control-label custom-control-label-lg"
-                                for="inscriptoeditar_<?php echo $persona['DNI']; ?>">
-                                <?php echo $persona['Inscripto'] ? 'Sí, está inscrito' : 'No, no está inscrito'; ?>
-                            </label>
-                        </div>
-                    </div>
 
+                    <label for="inscriptoeditar">Promocional:</label>
+                        <select class="form-control" name="inscriptoeditar" id="inscriptoeditar">
+                            <option value="">--Seleccione--</option>
+                            <option value="0" <?php echo ($persona['Inscripto'] == 0) ? 'selected' : ''; ?>>NO
+                            </option>
+                            <option value="1" <?php echo ($persona['Inscripto'] == 1) ? 'selected' : ''; ?>>SI
+                            </option>
+                        </select>
+                    </div>
 
 
                     <div class="modal-footer">

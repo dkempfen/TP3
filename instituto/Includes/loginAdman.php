@@ -38,7 +38,7 @@ if (!empty($_POST)) {
            
             if( $result["fk_Rol"]==3){
                 $_SESSION['active'] = true;
-                header('Location:/instituto/Adman/index.php');
+                header('Location:/instituto/Adman/Pantallas/home.php');
                 $_SESSION['id_usuario'] = $result['Id_Usuario'];
                 $_SESSION['nombre'] = $result['Nombre'];
                 $_SESSION['mail'] = $result['Email'];
