@@ -1,7 +1,7 @@
 <?php
   session_start();
   if(empty($_SESSION['active'])){
-    header('Location:/sistema/instituto/Adman/index.php');
+    header('Location:/sistema/instituto/Alumno/index.php');
   }
 ?> 
 <!DOCTYPE html>
