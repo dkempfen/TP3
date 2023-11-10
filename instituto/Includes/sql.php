@@ -477,9 +477,7 @@ function DatosMateriaDetalle()
 {
     global $pdo;
 
-    $sql = "SELECT dc.id_Cursada,u.fk_DNI,p.Nombre,p.Apellido, dc.fk_Usuario, dc.fk_Legajo, dc.fk_Materia,m.Descripcion,dc.fk_Estado, dc.Primer_Parcial, 
-    dc.Recuperatio_Parcial_1, dc.Primer_TP, dc.Recuperatio_TP_1, dc.Segundo_Parcial,dc.Recuperatio_Parcial_2, dc.Segundo_TP,
-     dc.Recuperatio_TP_2, dc.Promedio, dc.Anio, pn.cod_Plan, pn.Carrera, Final
+    $sql = "SELECT *
      from DetalleCursada dc INNER JOIN Usuario u ON dc.fk_Usuario=u.Id_Usuario
      INNER JOIN Persona p ON p.DNI=u.fk_DNI 
      INNER JOIN Materia m ON m.id_Materia=dc.fk_Materia  
@@ -490,6 +488,21 @@ function DatosMateriaDetalle()
 
     $rowMateriaDetalle= $datosMateriaDetalle->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateriaDetalle;
+}
+
+
+function DatosMateriaDetalleAgregar()
+{
+    global $pdo;
+
+    $sql = "SELECT *
+     from DetalleCursada";
+
+    $datosMateriaDetalleAgregar= $pdo->prepare($sql);
+    $datosMateriaDetalleAgregar->execute();
+
+    $rowMateriaDetalleAgregar= $datosMateriaDetalleAgregar->fetchAll(PDO::FETCH_ASSOC);
+    return $rowMateriaDetalleAgregar;
 }
 
 function ()

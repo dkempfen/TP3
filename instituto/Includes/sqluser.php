@@ -242,16 +242,22 @@ if (isset($_POST['btnmCrearPlan'])) {
 
 
 
-function insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota) {
+function insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota, $promedio) {
     session_start();
     global $pdo;
 
+    $recuperatorio1 = isset($recuperatorio1) ? $recuperatorio1 : 0;
+    $parcial2 = isset($parcial2) ? $parcial2 : 0;
+    $recuperatorio2 = isset($recuperatorio2) ? $recuperatorio2 : 0;
+    $finalnota = isset($finalnota) ? $finalnota : 0;
+    $promedio = isset($promedio) ? $promedio : 0;
+
     $sql = "INSERT INTO DetalleCursada 
             (fk_Usuario, fk_Legajo, fk_Materia, Anio, fk_Estado, Primer_Parcial, Recuperatio_Parcial_1, 
-            Segundo_Parcial, Recuperatio_Parcial_2, Final)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Segundo_Parcial, Recuperatio_Parcial_2, Final, Promedio)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota]);
+    $stmt->execute([$alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota,$promedio]);
 
 
     if ($stmt->rowCount() > 0) {
@@ -282,35 +288,39 @@ if (isset($_POST['btnmCrearNota'])) {
     $parcial2 = $_POST['parcial2'];
     $recuperatorio2 = $_POST['recuperatorio2'];
     $finalnota = $_POST['finalnota'];
+    $promedio = $_POST['promedio'];
 
-    insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota);
+    insertarNuevaNota($alumnoNota, $LegajoNota, $materia, $anioMateria, $estadoMateria, $parcial1, $recuperatorio1, $parcial2, $recuperatorio2, $finalnota,$promedio);
     header("Location: /instituto/Adman/Pantallas/Notas.php");
     exit();
 }
 
 
 
-function ActualizarNuevaNota($alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada) {
+function ActualizarNuevaNota($idMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar) {
     session_start();
     global $pdo;
 
-    $sql = "UPDATE DetalleCursada SET
-         fk_Usuario = ?, fk_Legajo = ?, fk_Materia = ?, Anio = ?, fk_Estado = ?, Primer_Parcial = ?, Recuperatio_Parcial_1 = ?, 
+    $sql = "UPDATE DetalleCursada SET Primer_Parcial = ?, Recuperatio_Parcial_1 = ?, 
             Segundo_Parcial = ?, Recuperatio_Parcial_2 = ?, Final = ? WHERE id_Cursada = ?";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([$alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada]);
+    $stmt->execute([$parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar,$idMateriaEditar]);
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['messageNota'] = [
             'type' => 'success',
             'text' => 'Nota actualizada exitosamente.'
         ];
+        // Agrega un mensaje al array de resultados para mostrar en la consola
+        $result['consoleLog'] = 'Nota actualizada exitosamente.';
     } else {
         $_SESSION['messageNota'] = [
             'type' => 'error',
             'text' => 'Ha ocurrido un error al actualizar la nota.'
         ];
+        // Agrega un mensaje al array de resultados para mostrar en la consola
+        $result['consoleLog'] = 'Error al actualizar la nota.';
     }
 
     header("Location: /instituto/Adman/Pantallas/Notas.php");
@@ -318,23 +328,69 @@ function ActualizarNuevaNota($alumnoNotaEditar, $LegajoNotaEditar, $materiaEdita
 }
 
 // Verificar si se ha enviado una solicitud de actualización
-if (isset($_POST['alumnoNotaEditar'])) {
-    $alumnoNotaEditar = $_POST['alumnoNotaEditar'];
-    $LegajoNotaEditar = 0; // Asegúrate de obtener este valor adecuadamente
-    $materiaEditar = $_POST['materiaEditar'];
-    $anioMateriaEditar = $_POST['anioMateriaEditar'];
-    $estadoMateriaEditar = 0; // Asegúrate de obtener este valor adecuadamente
+if (isset($_POST['btnmCrearNotaEditar'])) {
+    $idMateriaEditar = $_POST['idMateriaEditar'];
     $parcial1Editar = $_POST['parcial1Editar'];
     $recuperatorio1Editar = $_POST['recuperatorio1Editar'];
     $parcial2Editar = $_POST['parcial2Editar'];
     $recuperatorio2Editar = $_POST['recuperatorio2Editar'];
     $finalnotaEditar = $_POST['finalnotaEditar'];
-    $idCursada = $_POST['idCursada'];
 
-    ActualizarNuevaNota($alumnoNotaEditar, $LegajoNotaEditar, $materiaEditar, $anioMateriaEditar, $estadoMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar, $idCursada);
+    ActualizarNuevaNota($idMateriaEditar,$parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar);
     header("Location: /instituto/Adman/Pantallas/Notas.php");
 
     exit();
 }
 
+
+// Define la función para obtener resultados de búsqueda
+function obtenerResultadosBusqueda($dni, $nombre, $apellido, $usuario, $carrera, $plan) {
+    // Aquí debes implementar la lógica para obtener los resultados de búsqueda
+    // Puedes realizar consultas a tu base de datos u otras operaciones según sea necesario
+    // Devuelve los resultados, por ejemplo, un array de resultados
+    $resultados = array();
+
+    // Ejemplo: $resultados = tu_logica_de_busqueda($dni, $nombre, $apellido, $usuario, $carrera, $plan);
+
+    return $resultados;
+}
+
+// Define la función para generar HTML a partir de los resultados
+function generarHtmlResultados($resultados) {
+    // Aquí debes implementar la generación de HTML basada en los resultados obtenidos
+    // Puedes recorrer los resultados y construir el HTML según tu estructura deseada
+    $html = '<div class="resultados">';
+    foreach ($resultados as $resultado) {
+        $html .= '<p>' . $resultado['nombre'] . ': ' . $resultado['detalle'] . '</p>';
+    }
+    $html .= '</div>';
+
+    return $html;
+}
+
+// Define la función para procesar la búsqueda
+function procesarBusqueda() {
+    // Tu lógica de conexión a la base de datos y demás...
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Obtener datos de búsqueda
+        $dni = $_POST['dni'];
+        $nombre = $_POST['nombre'];
+        $apellido = $_POST['apellido'];
+        $usuario = $_POST['usuario'];
+        $carrera = $_POST['carrera'];
+        $plan = $_POST['plan'];
+
+        // Realizar la consulta con los datos de búsqueda y obtener los resultados
+        $resultados = obtenerResultadosBusqueda($dni, $nombre, $apellido, $usuario, $carrera, $plan);
+
+        // Devolver el HTML actualizado
+        echo generarHtmlResultados($resultados);
+    }
+
+    // ... Tu otro código PHP ...
+}
+
+// Llamar a la función para procesar la búsqueda
+procesarBusqueda();
 ?>

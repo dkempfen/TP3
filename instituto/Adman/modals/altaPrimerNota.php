@@ -74,22 +74,30 @@ $DatosMateria = DatosMateria();
                         <input type="number" class="form-control" id="parcial1" name="parcial1">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" hidden>
                         <label for="recuperatorio1">1 Recuperatorio</label>
                         <input type="number" class="form-control" id="recuperatorio1" name="recuperatorio1">
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" hidden>
                         <label for="parcial2">2 Parcial</label>
                         <input type="number" class="form-control" id="parcial2" name="parcial2">
                     </div>
 
-                    <div class="form-group">
+                 
+                    <div class="form-group" hidden>
                         <label for="recuperatorio2">2 Recuperatorio</label>
                         <input type="number" class="form-control" id="recuperatorio2" name="recuperatorio2">
                     </div>
 
-                    <div class="form-group">
+                    
+                    <div class="form-group" hidden>
+                        <label for="promedio">Promedio</label>
+                        <input type="number" class="form-control" id="promedio" name="promedio">
+                    </div>
+
+                  
+                    <div class="form-group" hidden>
                         <label for="finalnota">Final</label>
                         <input type="number" class="form-control" id="finalnota" name="finalnota">
                     </div>
@@ -124,7 +132,7 @@ function openModalNota() {
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerNota");
     document.getElementById('btnCrearNota').classList.replace("btn-info", "btn-open-modal");
     document.getElementById('btnCrearNota').innerHTML = 'Guardar';
-    document.getElementById('tituloModalCrearNota').innerHTML = 'Alta de Nota';
+    document.getElementById('tituloModalCrearNota').innerHTML = 'Alta Primer Nota';
     document.getElementById('formCrearNota').reset();
 
     $('#modalCrearNota').modal('show');
@@ -144,7 +152,10 @@ function openModalNota() {
         var recuperatorio1 = $("#recuperatorio1").val();
         var parcial2 = $("#parcial2").val();
         var recuperatorio2 = $("#recuperatorio2").val();
+        var promedio = $("#promedio").val();
         var finalnota = $("#finalnota").val();
+
+        
 
 
         // Realizar la petición AJAX para insertar o actualizar datos
@@ -161,6 +172,7 @@ function openModalNota() {
                 recuperatorio1: recuperatorio1,
                 parcial2: parcial2,
                 recuperatorio2: recuperatorio2,
+                promedio: promedio,
                 finalnota: finalnota,
 
                 btnmCrearNota: 0
