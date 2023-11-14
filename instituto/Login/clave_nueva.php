@@ -2,9 +2,24 @@
 
 
 $pageTitle = "Cambio Clave"; // Define el título de la página
-include '../Includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
+$user_id = null;
+$token = null;
 
+if (empty($_GET['user_id']) || empty($_GET['token'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$user_id = $mysqli->real_escape_string($_GET['user_id']);
+$token = $mysqli->real_escape_string($_GET['token']);
+
+if (!verificaTokenPass($user_id, $token)) {
+    echo 'No se pudo verificar los datos';
+    exit;
+}
 ?>
 
 <body>
@@ -13,7 +28,8 @@ include '../Includes/header.php';
             <div class="panel-recupero caudro-recupero">
                 <div class="recupero-heading">
                     <div class="recupero-title">Cambiar Contraseña</div>
-                    <div style="float:right; font-size: 80%; position: relative; top:-20px"><a class="Iniciar-clave" href="index.php">Iniciar
+                    <div style="float:right; font-size: 80%; position: relative; top:-20px"><a class="Iniciar-clave"
+                            href="index.php">Iniciar
                             Sesión</a></div>
                 </div>
 
@@ -21,17 +37,21 @@ include '../Includes/header.php';
 
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                    <form id="" class="form-horizontal" role="form" action="" method="POST" autocomplete="off">
+                    <form id="" class="form-horizontal" role="form" action="guarda_pass.php" method="POST" autocomplete="off">
+
+                        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>" />
+                        <input type="hidden" id="token" name="token" value="<?php echo $token; ?>" />
 
                         <div style="margin-bottom: 25px" class="input-group">
-                        <label class="form-group" for="password">Nueva Contraseña</label>
-                        <input type="password" name="pass" id="pass" class="form-clave" placeholder="Contraseña">
-                       
-                    </div>
-                        
+                            <label class="form-group" for="password">Nueva Contraseña</label>
+                            <input type="password" name="pass" id="pass" class="form-clave" placeholder="Contraseña">
+
+                        </div>
+
                         <div style="margin-bottom: 25px" class="input-group">
-                        <label class="form-group" for="password">Confirmar Contraseña</label>
-                        <input type="password" name="pass" id="pass" class="form-clave"  placeholder="Confirmar Contraseña">
+                            <label class="form-group" for="con_password">Confirmar Contraseña</label>
+                            <input type="password" name="con_password" id="pass" class="form-clave"
+                                placeholder="Confirmar Contraseña">
                         </div>
 
                         <div style="margin-top:10px" class="form-group">
@@ -41,7 +61,7 @@ include '../Includes/header.php';
                             </div>
                         </div>
 
-                      
+
                     </form>
                 </div>
             </div>
@@ -55,11 +75,11 @@ include '../Includes/header.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-    </script>
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
     integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous">
-    </script>
+</script>
 
 
 </html>

@@ -1169,26 +1169,48 @@ Usernalta-button:hover,
     /* Agrega otros estilos según sea necesario */
 }
 
-#containerFinal {
+#containerFinalAnalista {
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px;
     position: relative;
 }
-#containerFinal table {
+#containerFinalAnalista table {
     width: 100%;
 }
 
-#containerFinal th,
-#containerFinal td {
+#containerFinalAnalista th,
+#containerFinalAnalista td {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: center;
 }
 
-#containerFinal th {
+#containerFinalAnalista th {
     background-color: #f2f2f2;
 }
+
+#containerFinalRedes {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    position: relative;
+}
+#containerFinalRedes table {
+    width: 100%;
+}
+
+#containerFinalRedes th,
+#containerFinalRedes td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+#containerFinalRedes th {
+    background-color: #f2f2f2;
+}
+
 
 
 
@@ -1269,4 +1291,8 @@ Usernalta-button:hover,
     /* Ajusta la altura según tus necesidades */
     border: 1px solid #ccc;
     /* Añade un borde según tus preferencias */
+}
+
+.select2-container--default .select2-selection--multiple {
+    min-height: 150px;
 }

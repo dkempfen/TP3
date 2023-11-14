@@ -385,6 +385,20 @@ function DatosPlan()
     $rowPlan = $datosPlam->fetchAll(PDO::FETCH_ASSOC);
     return $rowPlan;
 }
+
+function Plan()
+{
+    global $pdo;
+
+    $sql = "select * from Plan";
+
+    $datoslanCarrera = $pdo->prepare($sql);
+    $datoslanCarrera->execute();
+
+    $rowPlanCarrera = $datoslanCarrera->fetchAll(PDO::FETCH_ASSOC);
+    return $rowPlanCarrera;
+}
+
 function DatosMateriaProfesor()
 {
     global $pdo;
@@ -505,6 +519,56 @@ function DatosMateriaDetalleAgregar()
     return $rowMateriaDetalleAgregar;
 }
 
+function obtenerMateriasAnalista (){
+     
+    global $pdo;
+
+    $sql = "SELECT * FROM FechasFinales ff 
+    INNER JOIN Materia m ON ff.fk_Materia = m.id_Materia
+    INNER JOIN Detalle_Plan dp ON dp.fk_Materia = ff.fk_Materia
+    WHERE dp.fk_Plan ='6790/19'";
+
+    $datosFinalesAnlista= $pdo->prepare($sql);
+    $datosFinalesAnlista->execute();
+
+    $rowFinalesAnlista= $datosFinalesAnlista->fetchAll(PDO::FETCH_ASSOC);
+    return $rowFinalesAnlista;
+
+}
+
+function obtenerMateriasRedes (){
+     
+    global $pdo;
+
+    $sqlRedes = "SELECT * FROM FechasFinales fs
+    INNER JOIN Materia mt ON fs.fk_Materia = mt.id_Materia
+    INNER JOIN Detalle_Plan dn ON dn.fk_Materia = fs.fk_Materia
+    WHERE dn.fk_Plan ='5817/03'";
+
+    $datosFinalesRedes= $pdo->prepare($sqlRedes);
+    $datosFinalesRedes->execute();
+
+    $rowFinalesRedes= $datosFinalesRedes->fetchAll(PDO::FETCH_ASSOC);
+    return $rowFinalesRedes;
+
+}
+
+function obtenerFinales (){
+     
+    global $pdo;
+
+    $sql = "SELECT * FROM FechasFinales ff 
+    INNER JOIN Materia m ON ff.fk_Materia = m.id_Materia
+    INNER JOIN Detalle_Plan dp ON dp.fk_Materia = ff.fk_Materia";
+
+    $datosFinales= $pdo->prepare($sql);
+    $datosFinales->execute();
+
+    $rowFinales= $datosFinales->fetchAll(PDO::FETCH_ASSOC);
+    return $rowFinales;
+
+}
+
 function ()
 {
     global $pdo;
@@ -522,6 +586,7 @@ function ()
     $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateria;
 }
+
 
 
 

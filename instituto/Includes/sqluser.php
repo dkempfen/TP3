@@ -369,7 +369,7 @@ function generarHtmlResultados($resultados) {
 }
 
 // Define la función para procesar la búsqueda
-function procesarBusqueda() {
+/*function procesarBusqueda() {
     // Tu lógica de conexión a la base de datos y demás...
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -392,5 +392,5 @@ function procesarBusqueda() {
 }
 
 // Llamar a la función para procesar la búsqueda
-procesarBusqueda();
+procesarBusqueda();*/
 ?>

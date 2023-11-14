@@ -53,72 +53,37 @@ if (!empty($_POST)) {
                 $_SESSION['dni'] = $result['fk_DNI'];
                 $_SESSION['plan'] = $result['fk_Plan'];
                 $_SESSION['libromatriz'] = $result['Libromatriz'];
-               echo '<div class="alert alert-success"><button type="button" class="close"
-                data-dismiss="alert"></button>Redirecting</div>';}
+               // Resto de las asignaciones para el rol 3
 
-            if( $result["fk_Rol"]==2){
-                $_SESSION['activep'] = true;
-                header('Location:/instituto/profesor/index.php');
-                $_SESSION['id_usuario'] = $result['Id_Usuario'];
-                $_SESSION['nombre'] = $result['Nombre'];
-                $_SESSION['mail'] = $result['Email'];
-                $_SESSION['usuario'] = $result['user'];
-                $_SESSION['clave'] = $result['Password'];
-                $_SESSION['rol'] = $result['fk_Rol'];
-                $_SESSION['nombre_rol'] = $result['descripcion'];
-                $_SESSION['edad'] = $result['edad'];
-                $_SESSION['fechanac'] = $result['Fechanacimiento'];
-                $_SESSION['carrrea'] = $result['carrera'];
-                $_SESSION['estado'] = $result['fk_Estado_Usuario'];
-                $_SESSION['dni'] = $result['fk_DNI'];
-                $_SESSION['plan'] = $result['fk_Plan'];
-                $_SESSION['libromatriz'] = $result['Libromatriz'];
-                echo '<div class="alert alert-success"><button type="button" class="close"
-                data-dismiss="alert"></button>Redirecting</div>';}
-
-
-            if( $result["fk_Rol"]==1){
-                $_SESSION['activea'] = true;
-                header('Location:/instituto/Alumno/index.php');
-                $_SESSION['id_usuario'] = $result['Id_Usuario'];
-                $_SESSION['nombre'] = $result['Nombre'];
-                $_SESSION['mail'] = $result['Email'];
-                $_SESSION['usuario'] = $result['user'];
-                $_SESSION['clave'] = $result['Password'];
-                $_SESSION['rol'] = $result['fk_Rol'];
-                $_SESSION['nombre_rol'] = $result['descripcion'];
-                $_SESSION['edad'] = $result['edad'];
-                $_SESSION['fechanac'] = $result['Fechanacimiento'];
-                $_SESSION['carrrea'] = $result['carrera'];
-                $_SESSION['estado'] = $result['fk_Estado_Usuario'];
-                $_SESSION['dni'] = $result['fk_DNI'];
-                $_SESSION['plan'] = $result['fk_Plan'];
-                $_SESSION['libromatriz'] = $result['Libromatriz'];
-               echo '<div class="alert alert-success"><button type="button" class="close"
-                data-dismiss="alert"></button>Redirecting</div>';}
-
-           /*if (password_verify($pass, $result['clave'])) {
-                $_SESSION['active'] = true;
-                $_SESSION['id_usuario'] = $result['usuario_id'];
-                $_SESSION['nombre'] = $result['usuario'];
-                $_SESSION['rol'] = $result['rol_id'];
-                $_SESSION['nombre_rol'] = $result['nombre_rol'];
-
-                echo '<div class="alert alert-success"><button type="button" class="close"
-                data-dismiss="alert"></button>Redirecting</div>';
-
-            }*/ else {
-                echo '<div class="alert alert-danger"><button type="button" class="close"
-                data-dismiss="alert"></button>Usuario ó Clave incorrectas</div>';
-            }
-        } else {
-            echo '<div class="alert alert-danger"><button type="button" class="close"
-            data-dismiss="alert"></button>Usuario y Claves incorrectas</div>';
-        }
-    }
-   
+                // Mostrar el mensaje de carga y redirigir después de un breve retraso
+ 
+               echo '
+               <div class="alert alert-success">
+                   <button type="button" class="close" data-dismiss="alert"></button>
+                   <span id="loading-message">Cargando...</span>
+               </div>
+               <script>
+                   setTimeout(function() {
+                       document.getElementById("loading-message").innerHTML = "Ingresando...";
+                       window.location.href = "/sistema/instituto/Adman/Pantallas/home.php";
+                   }, 2000); // 2000 milisegundos (2 segundos) de retraso
+               </script>';
+           exit(); // Asegura que el script se detenga después de la redirección
+       } elseif ($result["fk_Rol"] == 2) {
+           $_SESSION['activep'] = true;
+           // Resto de las asignaciones para el rol 2
+       } elseif ($result["fk_Rol"] == 1) {
+           $_SESSION['activea'] = true;
+           // Resto de las asignaciones para el rol 1
+       } else {
+           echo '<div class="alert alert-danger"><button type="button" class="close"
+           data-dismiss="alert"></button>Rol no reconocido</div>';
+       }
+   } else {
+       echo '<div class="alert alert-danger"><button type="button" class="close"
+       data-dismiss="alert"></button>Usuario y Claves incorrectas</div>';
+   }
 }
 
-
-
-
+}
+?>

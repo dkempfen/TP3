@@ -12,8 +12,6 @@ $DatosMateria = DatosMateria();
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Modal de Alta de Nota -->
 
-<?php foreach ($DatosAlumnoNota as $alumno) : ?>
-<?php foreach ($DatosMateria as $materia) : ?>
 <div class="modal fade" id="modalCrearNota" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -116,8 +114,6 @@ $DatosMateria = DatosMateria();
         </div>
     </div>
 </div>
-<?php endforeach; ?>
-<?php endforeach; ?>
 
 <script>
 function isValidInput(value) {

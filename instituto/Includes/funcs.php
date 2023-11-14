@@ -1,5 +1,8 @@
 <?php
 	use PHPMailer\PHPMailer\PHPMailer;
+
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/PHPMailer/src/PHPMailer.php';
+
     
 	use PHPMailer\PHPMailer\SMTP;
 	
@@ -231,3 +234,125 @@
 		return $msg;
 	}
 	
+////Funciones de recupero clave///
+
+function generaTokenPass($user_id)
+{
+    global $pdo;
+
+    $token = generateToken();
+
+    try {
+        $stmt = $pdo->prepare("UPDATE Usuario SET token_password=:token, password_request=1 WHERE Id_Usuario = :user_id");
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $token;
+    } catch (PDOException $e) {
+        // Manejo de errores de PDO
+        return null;
+    }
+}
+
+function getValor($campo, $campoWhere, $valor)
+{
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("SELECT $campo FROM Usuario u INNER JOIN Persona p
+		ON u.fk_DNI = p.DNI 
+		WHERE $campoWhere = :valor LIMIT 1");
+        $stmt->bindParam(':valor', $valor, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $result[$campo];
+        } else {
+            return null;
+        }
+    } catch (PDOException $e) {
+        // Manejo de errores de PDO
+        return null;
+    }
+}
+
+function getPasswordRequest($id)
+{
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("SELECT password_request FROM Usuario WHERE Id_Usuario = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $result['password_request'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        // Manejo de errores de PDO
+        return false;
+    }
+}
+
+function verificaTokenPass($user_id, $token)
+{
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("SELECT fk_Estado_Usuario FROM usuarios WHERE Id_Usuario = :user_id AND token_password = :token AND password_request = 1 LIMIT 1");
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result && $result['fk_Estado_Usuario'] == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        // Manejo de errores de PDO
+        return false;
+    }
+}
+
+function cambiaPassword($password, $user_id, $token)
+{
+    global $pdo;
+
+    try {
+        $stmt = $pdo->prepare("UPDATE Usuario SET Password = :password, token_password='', password_request=0 WHERE Id_Usuario = :user_id AND token_password = :token");
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        // Manejo de errores de PDO
+        return false;
+    }
+}
+
+
+
+//Valida que las contraseñas sean iguales
+function validaPassword($var1, $var2)
+{
+	if (strcmp($var1, $var2) !== 0){
+		return false;
+		} else {
+		return true;
+	}
+}
+
+
+
+function hashPassword($password) 
+	{
+		$hash = password_hash($password, PASSWORD_DEFAULT);
+		return $hash;
+	}
