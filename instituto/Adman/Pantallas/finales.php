@@ -24,6 +24,7 @@ $obtenerFinales = obtenerFinales();
                         <th>Nivel</th>
                         <th>Fecha de Final</th>
                         <th>Plan</th>
+                        <th>Promocional</th>
                         <th>Editar</th>
                     </tr>
                 </thead>
@@ -40,6 +41,7 @@ $obtenerFinales = obtenerFinales();
                             echo '<td>' . $rowFinalesAnlista['Anio_Carrera'] . '</td>';
                             echo '<td>' . $rowFinalesAnlista['Fecha'] . '</td>';
                             echo '<td>' . $rowFinalesAnlista['fk_Plan'] . '</td>';
+                            echo '<td>' . $rowFinalesAnlista['Promocional'] . '</td>';
                             echo '<td><button class="btn-icon" onclick="ModalsFinalEditar(' . $rowFinalesAnlista['Id_Fecha_Final'] . ')"><i class="edit-btn"></i>✏️</button></td>';
                             echo '</tr>';
                         }

@@ -61,7 +61,9 @@
 	{
 		global $pdo;
 		
-		$stmt = $pdo->prepare("SELECT DNI FROM Persona WHERE Email = :email LIMIT 1");
+		$stmt = $pdo->prepare("SELECT DNI FROM Persona p INNER JOIN Usuario u
+		ON u.fk_DNI = p.DNI 
+		WHERE Email = :email LIMIT 1");
 		$stmt->bindParam(':email', $email, PDO::PARAM_STR);
 		$stmt->execute();
 		
@@ -159,10 +161,10 @@
      
       
 
-         $mail->Username = 'buenviajelujan@gmail.com'; //Correo de donde enviaremos los correos
-         $mail->Password = 'kzthntenhbubpzgp'; // Password de la cuenta de envío
+         $mail->Username = 'd.kempfen@gmail.com'; //Correo de donde enviaremos los correos
+         $mail->Password = 'vioaqiubxyagfpny'; // Password de la cuenta de envío
         
-         $mail->setFrom('buenviajelujan@gmail.com', 'Sistema de Usuarios');
+         $mail->setFrom('d.kempfen@gmail.com', 'Sistema de Usuarios');
 		 $mail->addAddress($email,$nombre);
         
          $mail->Subject = $asunto;

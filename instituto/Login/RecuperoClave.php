@@ -17,13 +17,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
             if (emailExiste($email)) {
                 // Obtener datos del usuario mediante PDO
-                $user_id = getValor('Id_Usuario', 'Email', $email);
-                $nombre = getValor('User', 'Email', $email);
+                $user_id = getValor('fk_DNI', 'Email', $email);
+                $nombre = getValor('Nombre', 'Email', $email);
                 $token = generaTokenPass($user_id);
 
-                $url = 'http://' . $_SERVER["SERVER_NAME"] . '/instituto/Login/clave_nueva.php.php?Id_Usuario=' . $user_id . '&val=' . $token;
+                $url = 'http://' . $_SERVER["SERVER_NAME"] . '/TP3/instituto/Login/clave_nueva.php?Id_Usuario=' . $user_id . '&token=' . $token;
 
-                $asunto = "Activación de Cuenta";
+                $asunto = "Sistema de Usuarios";
                 $cuerpo = "Hola $nombre: <br /><br />Se ha solicitado un reinicio 
                     de contraseña. <br/><br/>Para restaurar la
                     Contraseña, visita la siguiente dirección: <a href='$url'> Cambiar

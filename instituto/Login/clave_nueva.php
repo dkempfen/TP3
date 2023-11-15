@@ -13,13 +13,15 @@ if (empty($_GET['user_id']) || empty($_GET['token'])) {
     exit;
 }
 
-$user_id = $mysqli->real_escape_string($_GET['user_id']);
-$token = $mysqli->real_escape_string($_GET['token']);
+$user_id = $_GET['user_id'];
+$token = $_GET['token'];
 
+// Verificar token con PDO
 if (!verificaTokenPass($user_id, $token)) {
     echo 'No se pudo verificar los datos';
     exit;
 }
+
 ?>
 
 <body>

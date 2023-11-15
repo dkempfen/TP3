@@ -10,9 +10,9 @@ $Plan = Plan();
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<?php foreach ($obtenerFinales as $obtenerFinales) ; { ?>
+<?php foreach ($obtenerFinales as $obtenerFinales)  { ?>
 
-<div class="modal fade" id="finalmodalEditar_<?php echo $obtenerFinales['Id_Fecha_Final']; ?>" tabindex="-1"
+<div class="modal fade" id="finalmodalEditar_<?php echo $obtenerFinales['Id_Fecha_Final'] ?>" tabindex="-1"
     role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -97,15 +97,21 @@ function isValidInput(value) {
 
 function ModalsFinalEditar(Id_Fecha_Final) {
     console.log('Abrir modal');
-    document.getElementById('EditarFechaFinal').value = "";
     document.querySelector('.modal-header').classList.replace("headerUpdate", "headerEditarFinal");
     document.getElementById('btnFinalEditar').classList.replace("btn-info", "btn-open-modal");
     document.getElementById('btnFinalEditar').innerHTML = 'Guardar';
     document.getElementById('FechaFInalEditar').innerHTML = 'Editar Fecha Final';
     document.getElementById('formFinalDateEditar').reset();
-    var Id_Fecha_Final = "#finalmodalEditar_" + Id_Fecha_Final;
-    $(Id_Fecha_Final).modal('show');
 
+    // Obtener el modal específico utilizando el Id_Fecha_Final
+    var modalId = "#finalmodalEditar_" + Id_Fecha_Final;
+    var modal = $(modalId);
+
+    // Llenar los campos del modal con los datos correspondientes
+    modal.find('#materiaFinalEditar').val('<?= $obtenerFinales['Descripcion']?>');
+
+    // Mostrar el modal
+    modal.modal('show');
 }
 
 (document).ready(function() {
