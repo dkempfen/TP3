@@ -393,4 +393,6 @@ function generarHtmlResultados($resultados) {
 
 // Llamar a la función para procesar la búsqueda
 procesarBusqueda();*/
+
+
 ?>

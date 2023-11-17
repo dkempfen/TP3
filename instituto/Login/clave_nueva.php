@@ -13,14 +13,13 @@ if (empty($_GET['user_id']) || empty($_GET['token'])) {
     exit;
 }
 
-$user_id = $_GET['user_id'];
-$token = $_GET['token'];
 
-// Verificar token con PDO
-if (!verificaTokenPass($user_id, $token)) {
-    echo 'No se pudo verificar los datos';
-    exit;
-}
+$token = trim($_GET['token']) ?? null;
+$user_id = trim($_GET['user_id']) ?? null;
+
+
+var_dump($user_id, $token);
+
 
 ?>
 
@@ -39,14 +38,14 @@ if (!verificaTokenPass($user_id, $token)) {
 
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                    <form id="" class="form-horizontal" role="form" action="guarda_pass.php" method="POST" autocomplete="off">
+                    <form id="cambioClaveForm" class="form-horizontal" role="form" action="guarda_pass.php" method="POST" autocomplete="off">
 
-                        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id; ?>" />
-                        <input type="hidden" id="token" name="token" value="<?php echo $token; ?>" />
+                        <input type="hidden" id="user_id" name="user_id" value="<?php echo $user_id['Id_Usuario']; ?>" />
+                        <input type="hidden" id="token" name="token" value="<?php echo $token['token']; ?>" />
 
                         <div style="margin-bottom: 25px" class="input-group">
                             <label class="form-group" for="password">Nueva Contraseña</label>
-                            <input type="password" name="pass" id="pass" class="form-clave" placeholder="Contraseña">
+                            <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
 
                         </div>
 

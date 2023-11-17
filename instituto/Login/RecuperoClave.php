@@ -1,54 +1,11 @@
 <?php
-
-
 $pageTitle = "Cambio Clave"; // Define el título de la página
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
-        $errors = array();
-
-        if (!empty($_POST)) {
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'Por favor, ingrese una dirección de correo electrónico válida.';
-            }
-
-            if (emailExiste($email)) {
-                // Obtener datos del usuario mediante PDO
-                $user_id = getValor('fk_DNI', 'Email', $email);
-                $nombre = getValor('Nombre', 'Email', $email);
-                $token = generaTokenPass($user_id);
-
-                $url = 'http://' . $_SERVER["SERVER_NAME"] . '/TP3/instituto/Login/clave_nueva.php?Id_Usuario=' . $user_id . '&token=' . $token;
-
-                $asunto = "Sistema de Usuarios";
-                $cuerpo = "Hola $nombre: <br /><br />Se ha solicitado un reinicio 
-                    de contraseña. <br/><br/>Para restaurar la
-                    Contraseña, visita la siguiente dirección: <a href='$url'> Cambiar
-                    Contraseña</a><br /><br />Si no has sido tú, ignora este mensaje.";
-
-                // Enviar el correo electrónico usando PDO
-                if (enviarEmail($email, $nombre, $asunto, $cuerpo)) {
-                    echo "Hemos enviado un correo electrónico a la dirección $email para restablecer tu contraseña. <br />";
-                    echo "<a href='index.php' class='btn btn-success'>Iniciar Sesión</a>";
-                    exit;
-                } else {
-                    $errors[] = "Error al enviar Email";
-                }
-            } else {
-                $errors[] = "No existe el correo electrónico";
-            }
-        }
-
-        // Manejo de errores (puedes ajustar según tus necesidades)
-        if (!empty($errors)) {
-            foreach ($errors as $error) {
-                echo $error . "<br>";
-            }
-        }
 ?>
+
 
 <body>
 
@@ -65,7 +22,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
 
-                    <form id="" class="form-horizontal" role="form" action="<?php echo $_SERVER['PHP_SELF']; ?>"
+                    <form id="" class="form-horizontal" role="form" action=""
                         method="POST" autocomplete="off">
 
                         <div style="margin-bottom: 25px" class="input-group">
@@ -81,23 +38,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group custom-border">
                             <div class="col-md-12 control">
-                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                            <div style="font-size: 85%">
                                     No tiene acceso? <a href="registro.php">Inscribirse aquí</a>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <?php
-                        if (!empty($errors)) {
-                            echo "<div class='alert alert-danger'>";
-                            foreach ($errors as $error) {
-                                echo $error . "<br>";
-                            }
-                            echo "</div>";
-                        }
-                        ?>
+                
                 </div>
             </div>
         </div>
@@ -116,4 +65,3 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
     integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous">
 </script>
 
-</html>

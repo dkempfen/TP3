@@ -16,6 +16,7 @@ function showConfirmationMessage($message) {
   </script>";
 }
 
+
 function count_by_id($table)
 {
   global $pdo;
@@ -523,10 +524,10 @@ function obtenerMateriasAnalista (){
      
     global $pdo;
 
-    $sql = "SELECT * FROM FechasFinales ff 
-    INNER JOIN Materia m ON ff.fk_Materia = m.id_Materia
-    INNER JOIN Detalle_Plan dp ON dp.fk_Materia = ff.fk_Materia
-    WHERE dp.fk_Plan ='6790/19'";
+    $sql = "SELECT * FROM FechasFinales fs
+    INNER JOIN Materia mt ON fs.fk_Materia = mt.id_Materia
+    INNER JOIN Detalle_Plan dn ON dn.fk_Materia = fs.fk_Materia
+    WHERE dn.fk_Plan ='6790/19'";
 
     $datosFinalesAnlista= $pdo->prepare($sql);
     $datosFinalesAnlista->execute();
@@ -566,6 +567,20 @@ function obtenerFinales (){
 
     $rowFinales= $datosFinales->fetchAll(PDO::FETCH_ASSOC);
     return $rowFinales;
+
+}
+
+function fechaFinales (){
+     
+    global $pdo;
+
+    $sql = "SELECT * FROM FechasFinales";
+
+    $datosFechaFinales= $pdo->prepare($sql);
+    $datosFechaFinales->execute();
+
+    $rowFechaFinales= $datosFechaFinales->fetchAll(PDO::FETCH_ASSOC);
+    return $rowFechaFinales;
 
 }
 
@@ -886,4 +901,6 @@ if (isset($_POST['codPlan'])) {
 }// else {
 //    echo 'Código de plan no proporcionado.';
 //}//
+
+
 ?>

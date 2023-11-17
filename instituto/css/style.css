@@ -1296,3 +1296,30 @@ Usernalta-button:hover,
 .select2-container--default .select2-selection--multiple {
     min-height: 150px;
 }
+
+.custom-border {
+    border-top: 1px solid #3498db;
+    padding-top: 10px;
+    margin-top: 10px;
+    text-align: left; /* Alinea el texto a la izquierda dentro del borde */
+}
+
+.custom-border a {
+    color: #3498db;
+    margin-left: 15px; /* Ajusta según sea necesario para el espacio entre el texto y el borde izquierdo */
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.planalta-button {
+    /* Ajusta el espacio entre los botones y la etiqueta de cambio */
+    margin-right: 10px;
+}
+
+.switch {
+    /* Alinea el interruptor al final del contenedor */
+    margin-left: auto;
+}

@@ -1,33 +1,47 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
-// Suponiendo que $_POST['user_id'], $_POST['token'], $_POST['password'], $_POST['con_password'] existen
+// Obtener datos del formulario
+$user_id = $_POST['user_id'] ?? null;
+$token = $_POST['token'] ?? null;
+$password = $_POST['password'] ?? null;
+$con_password = $_POST['con_password'] ?? null;
 
-$user_id = $_POST['user_id'];
-$token = $_POST['token'];
-$password = $_POST['password'];
-$con_password = $_POST['con_password'];
+// Verificar si las contraseñas coinciden
+if ($password == $con_password) {
+    // Verifica que el token y el usuario son válidos
+    if (verificaTokenPass($user_id, $token)) {
+        // Realiza el cambio de contraseña
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $result = cambiaPassword($hashed_password, $user_id, $token);
+        echo $result;
+    } else {
+        echo 'No se pudo verificar los datos';
+    }
+} else {
+    echo 'Las contraseñas no coinciden.';
+}
 
-if (validaPassword($password, $con_password)) {
-    $pass_hash = hashPassword($password);
+function cambiaPassword($password, $user_id, $token)
+{
+    global $pdo;
 
     try {
-        $stmt = $pdo->prepare("UPDATE Usuario SET Password = ?, token_password='', password_request=0 WHERE Id_Usuario = ? AND token_password = ?");
-        $stmt->bindParam(1, $pass_hash, PDO::PARAM_STR);
-        $stmt->bindParam(2, $user_id, PDO::PARAM_INT);
-        $stmt->bindParam(3, $token, PDO::PARAM_STR);
+        $stmt = $pdo->prepare("UPDATE Usuario SET Password = :password, token_password='', password_request=0 WHERE Id_Usuario = :user_id AND token_password = :token");
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            echo "Contraseña modificada";
-            echo "<br><a href='index.php' > Iniciar Sesión</a>";
+            // La contraseña se cambió con éxito
+            return 'Contraseña modificada con éxito.';
         } else {
-            $errors[] = "Error al modificar la contraseña";
+            // No se pudo cambiar la contraseña
+            return 'Error al modificar la contraseña.';
         }
     } catch (PDOException $e) {
         // Manejo de errores de PDO
-        $errors[] = "Error: " . $e->getMessage();
+        return 'Error en la base de datos: ' . $e->getMessage();
     }
-} else {
-    echo 'Las Contraseñas no coinciden';
 }
 ?>

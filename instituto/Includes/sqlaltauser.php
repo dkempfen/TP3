@@ -1,5 +1,3 @@
-
-
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
@@ -23,6 +21,22 @@ function showConfirmationMessagesMateriaEstado($message) {
 }  
 
 
+function showConfirmationMessageFecha($messageFecha) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $messageFecha['type'] . "',
+            title: '" . $messageFecha['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {                                  
+            window.location.href = '/instituto/Adman/Pantallas/finales.php';
+        });
+    </script>";
+}  
+
+
+
+  
 
 function actualizarEstadoMateria()
 {
@@ -84,3 +98,55 @@ if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
   exit();
 }
 
+function actualizarEstadoFecha()
+{
+    session_start();
+    global $pdo;
+    if (isset($_POST['toggleAll']) && isset($_POST['estado'])) {
+        $estado = $_POST['estado'];
+    
+        // Actualiza todos los registros en la tabla FechasFinales
+        $sql = "UPDATE FechasFinales SET fk_Estado_Final = :estado";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':estado', $estado, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            $_SESSION['messageFecha'] = [
+                'type' => 'success',
+                'text' => 'Estado de fecha final actualizado exitosamente'
+            ];
+        } else {
+            $_SESSION['messageFecha'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar el estado de la fecha final.'
+            ];
+        }
+    } else {
+        $_SESSION['messageFecha'] = [
+            'type' => 'error',
+            'text' => 'Faltan parámetros requeridos para actualizar el estado de la fecha final.'
+        ];
+    }
+    header("Location: /instituto/Adman/Pantallas/finales.php");
+    exit();
+}
+
+if (isset($_POST['toggleAll']) && isset($_POST['estado']) ) {
+    actualizarEstadoFecha();
+    header("Location: /instituto/Adman/Pantallas/finales.php");
+    exit();
+}
+
+
+
+function obtenerEstadoToggleAll() {
+    session_start();
+    global $pdo;
+    
+    // Cambié la tabla de 'Materias' a 'FechasFinales' en la consulta
+    $sql = "SELECT COUNT(*) FROM FechasFinales WHERE fk_Estado_Final = 1";
+    $estadoToggleAll = $pdo->query($sql)->fetchColumn();
+
+    // Si hay al menos un registro habilitado, devolvemos 1, de lo contrario, devolvemos 0
+    return $estadoToggleAll > 0 ? 1 : 2;
+}

@@ -32,6 +32,19 @@ function showConfirmationMessagesMateria($message) {
     </script>";
 }  
 
+function showConfirmationMessagesFechaFinal($messageFecha) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $messageFecha['type'] . "',
+            title: '" . $messageFecha['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        }).then(function() {                                  
+            window.location.href = '/instituto/Adman/Pantallas/finales.php';
+        });
+    </script>";
+}  
+
 
 
 
@@ -484,5 +497,142 @@ function buscarAlumnos($tipoFiltro, $filtroValor) {
 }
 
 
+//////////////////////////////////Insertar Fecha//////////////////////
+function InsertarFecha($materiaFinal, $fechaFinal) {
+    session_start();
+    global $pdo;
 
+    // Verificar si la materia está asociada a una carrera en la tabla Detalle_Plan
+    $sqlVerificarMateria = "SELECT COUNT(*) AS count FROM Detalle_Plan WHERE fk_Materia = ?";
+    $stmtVerificarMateria = $pdo->prepare($sqlVerificarMateria);
+    $stmtVerificarMateria->execute([$materiaFinal]);
+    $resultVerificarMateria = $stmtVerificarMateria->fetch(PDO::FETCH_ASSOC);
+
+    if ($resultVerificarMateria['count'] > 0) {
+        // La materia está asociada a una carrera, verificar si ya existe la fecha en FechasFinales
+        $sqlVerificarFecha = "SELECT COUNT(*) AS count, MAX(Fecha) AS maxFecha FROM FechasFinales WHERE fk_Materia = ?";
+        $stmtVerificarFecha = $pdo->prepare($sqlVerificarFecha);
+        $stmtVerificarFecha->execute([$materiaFinal]);
+        $resultVerificarFecha = $stmtVerificarFecha->fetch(PDO::FETCH_ASSOC);
+
+        if ($resultVerificarFecha['count'] > 0) {
+            // Ya existe una fecha con la misma materia
+            $fechaExistente = new DateTime($resultVerificarFecha['maxFecha']);
+            $fechaNueva = new DateTime($fechaFinal);
+
+            // Verificar si ha pasado al menos tres meses desde la fecha existente
+            $diferenciaMeses = $fechaExistente->diff($fechaNueva)->m;
+
+            if ($diferenciaMeses >= 3) {
+                // Proceder con la inserción
+                $sql = "INSERT INTO FechasFinales (fk_Materia, Fecha, fk_Estado_Final) VALUES (?, ?, 1)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$materiaFinal, $fechaFinal]);
+
+                if ($stmt->rowCount() > 0) {
+                    $_SESSION['messageFecha'] = [
+                        'type' => 'success',
+                        'text' => 'Datos de la fecha fueron creados exitosamente'
+                    ];
+                } else {
+                    $_SESSION['messageFecha'] = [
+                        'type' => 'error',
+                        'text' => 'Ha ocurrido un error al crear los datos de la fecha.'
+                    ];
+                }
+            } else {
+                // No han pasado tres meses, mostrar mensaje de error
+                $_SESSION['messageFecha'] = [
+                    'type' => 'error',
+                    'text' => 'No puedes agregar una fecha para la misma materia antes de tres meses.'
+                ];
+            }
+        } else {
+            // No existe una fecha con la misma materia, proceder con la inserción
+            $sql = "INSERT INTO FechasFinales (fk_Materia, Fecha, fk_Estado_Final) VALUES (?, ?, 1)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$materiaFinal, $fechaFinal]);
+
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['messageFecha'] = [
+                    'type' => 'success',
+                    'text' => 'Datos de la fecha fueron creados exitosamente'
+                ];
+            } else {
+                $_SESSION['messageFecha'] = [
+                    'type' => 'error',
+                    'text' => 'Ha ocurrido un error al crear los datos de la fecha.'
+                ];
+            }
+        }
+    } else {
+        // La materia no está asociada a una carrera, mostrar mensaje de error
+        $_SESSION['messageFecha'] = [
+            'type' => 'error',
+            'text' => 'La materia no está asociada a una carrera. No se puede insertar la fecha.'
+        ];
+    }
+}
+
+
+// Verificar si se ha enviado una solicitud de inserción (insert)
+if (isset($_POST['btnaltaFechaFinal'])) {
+    $materiaFinal = $_POST['materiaFinal']; // Asegúrate de obtener el código de plan desde el formulario
+    $fechaFinal = $_POST['fechaFinal'];
+
+    // Llamar a la función InsertarFecha solo si los campos requeridos no están vacíos
+    InsertarFecha($materiaFinal, $fechaFinal);
+
+    // Redirigir después de llamar a la función
+    header("Location: /instituto/Adman/Pantallas/finales.php");
+    exit();
+}
+
+
+//////////////////////////////////Actualizar Final Fecha//////////////////////
+function ActualizarFechaFInal($idMateriaActualFecha, $FechaFinalEditar) {
+    session_start();
+    global $pdo;
+
+    // Formatear la fecha al formato "AAAA-MM-DD"
+    $fechaFormateada = date("Y-m-d", strtotime($FechaFinalEditar));
+
+    $sql = "UPDATE FechasFinales SET Fecha = ? WHERE Id_Fecha_Final = ?";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([$fechaFormateada, $idMateriaActualFecha]);
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['messageFecha'] = [
+            'type' => 'success',
+            'text' => 'Los datos fueron actualizados exitosamente.'
+        ];
+        // Agrega un mensaje al array de resultados para mostrar en la consola
+        $result['consoleLog'] = 'Los datos fueron actualizados exitosamente.';
+    } else {
+        $_SESSION['messageFecha'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al actualizar los datos.'
+        ];
+        // Agrega un mensaje al array de resultados para mostrar en la consola
+        $result['consoleLog'] = 'Error al actualizar los datos.';
+    }
+
+    header("Location: /instituto/Adman/Pantallas/finales.php");
+    exit();
+}
+
+
+// Verificar si se ha enviado una solicitud de inserción (insert)
+if (isset($_POST['btnmodificarFechaFInal'])) {
+    $idMateriaActualFecha = $_POST['idMateriaActualFecha'];
+    $FechaFinalEditar = $_POST['FechaFinalEditar'];
+
+    // Llamar a la función InsertarFecha solo si los campos requeridos no están vacíos
+    ActualizarFechaFInal($idMateriaActualFecha, $FechaFinalEditar);
+
+    // Redirigir después de llamar a la función
+    header("Location: /instituto/Adman/Pantallas/finales.php");
+    exit();
+}
 ?>

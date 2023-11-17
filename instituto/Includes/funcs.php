@@ -153,12 +153,12 @@
 		$mail= new PHPMailer();
 
 		 $mail->isSMTP();
-		 $mail->SMTPDebug = 2;// Desactiva la depuración o el registro
          $mail->SMTPAuth = true;
          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
          $mail->Host = 'smtp.gmail.com';
          $mail->Port = 465;
-     
+         $mail->SMTPDebug = false; // Establece el modo de depuración en false
+
       
 
          $mail->Username = 'd.kempfen@gmail.com'; //Correo de donde enviaremos los correos
@@ -322,22 +322,7 @@ function verificaTokenPass($user_id, $token)
     }
 }
 
-function cambiaPassword($password, $user_id, $token)
-{
-    global $pdo;
 
-    try {
-        $stmt = $pdo->prepare("UPDATE Usuario SET Password = :password, token_password='', password_request=0 WHERE Id_Usuario = :user_id AND token_password = :token");
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        // Manejo de errores de PDO
-        return false;
-    }
-}
 
 
 
@@ -358,3 +343,46 @@ function hashPassword($password)
 		$hash = password_hash($password, PASSWORD_DEFAULT);
 		return $hash;
 	}
+
+	function processPasswordReset()
+	{
+		$mensajeExito = "";
+		$errors = array();
+	
+		if (!empty($_POST)) {
+			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+	
+			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+				$errors[] = 'Por favor, ingrese una dirección de correo electrónico válida.';
+			}
+	
+			if (emailExiste($email)) {
+				$user_id = getValor('Id_Usuario', 'Email', $email);
+				$nombre = getValor('Nombre', 'Email', $email);
+				$token = generaTokenPass($user_id);
+				
+	
+				$url = 'http://' . $_SERVER["HTTP_HOST"] . '/instituto/Login/clave_nueva.php?token=' . $token . '&user_id=' . $user_id;
+	
+				$asunto = "Sistema de Usuarios";
+				$cuerpo = "Hola $nombre: <br /><br />Se ha solicitado un reinicio 
+						de contraseña. <br/><br/>Para restaurar la
+						Contraseña, visita la siguiente dirección: <a href='$url'> Cambiar
+						Contraseña</a><br /><br />Si no has sido tú, ignora este mensaje.";
+	
+				if (enviarEmail($email, $nombre, $asunto, $cuerpo)) {
+					$mensajeExito = "Hemos enviado un correo electrónico a la dirección $email para restablecer tu contraseña.";
+				} else {
+					$errors[] = "Error al enviar Email";
+				}
+			} else {
+				$errors[] = "No existe el correo electrónico";
+			}
+		}
+	
+		// Devuelve el mensaje de éxito o un array con los errores
+		return array('exito' => $mensajeExito, 'errores' => $errors);
+	}
+	// Llama a la función
+	$resultado = processPasswordReset();
+	
