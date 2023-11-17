@@ -469,6 +469,25 @@ function DatosAlumnoNota()
     return $rowNota;
 }
 
+function DatosMateriaPlan()
+{
+    
+    global $pdo;
+
+    $sql = "SELECT dp.Id_Detalle_Plan, p.Carrera, m.Anio_Carrera, m.Promocional, m.id_Materia, m.Descripcion, pr.Nombre, pr.Apellido,p.cod_Plan
+        FROM Detalle_Plan dp
+        LEFT JOIN Plan p ON p.cod_Plan = dp.fk_Plan 
+        LEFT JOIN Materia m ON dp.fk_Materia = m.id_Materia
+        LEFT JOIN Materia_Profesor mp ON dp.fk_Materia = mp.id_Materia
+        LEFT JOIN Usuario u ON u.Id_Usuario = mp.id_Profesor
+        LEFT JOIN Persona pr ON pr.DNI = u.fk_DNI";
+
+        $DatosMateriaPlan = $pdo->prepare($sql);
+        $DatosMateriaPlan->execute();
+    
+        $rowNotaPlan = $DatosMateriaPlan->fetchAll(PDO::FETCH_ASSOC);
+        return $rowNotaPlan;
+    }
 function DatosMateriaNota()
 {
     global $pdo;
