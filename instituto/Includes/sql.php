@@ -375,7 +375,7 @@ function DatosPlan()
 {
     global $pdo;
 
-    $sql = "select Descripcion, Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
+    $sql = "select Descripcion_Documentacion, Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
     INNER JOIN Plan P ON P.Estado_Id_Estado=E.Id_Estado
     INNER JOIN Documentacion AS d
     ON P.cod_Plan = d.fk_Plan";
@@ -584,6 +584,21 @@ function fechaFinales (){
 
 }
 
+function obtenerDocumentos (){
+     
+    global $pdo;
+
+    $sql = "SELECT * FROM Documentacion d
+    LEFT JOIN Materia m ON d.fk_Materia = m.id_Materia";
+
+    $datosDocumentacion= $pdo->prepare($sql);
+    $datosDocumentacion->execute();
+
+    $rowDocumentacion= $datosDocumentacion->fetchAll(PDO::FETCH_ASSOC);
+    return $rowDocumentacion;
+
+}
+
 function ()
 {
     global $pdo;
@@ -601,7 +616,6 @@ function ()
     $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateria;
 }
-
 
 
 

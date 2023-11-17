@@ -140,7 +140,6 @@ if (isset($_POST['toggleAll']) && isset($_POST['estado']) ) {
 
 
 function obtenerEstadoToggleAll() {
-    session_start();
     global $pdo;
     
     // Cambié la tabla de 'Materias' a 'FechasFinales' en la consulta
@@ -149,4 +148,33 @@ function obtenerEstadoToggleAll() {
 
     // Si hay al menos un registro habilitado, devolvemos 1, de lo contrario, devolvemos 0
     return $estadoToggleAll > 0 ? 1 : 2;
+}
+
+if (isset($_POST['isChecked'])) {
+    $isChecked = $_POST['isChecked'];
+    $result = toggleStatusMessage($isChecked);
+    echo json_encode($result);
+}
+
+function toggleStatusMessage($isChecked) {
+    $result = [];
+
+    if ($isChecked) {
+        $fechasActivas = obtenerEstadoToggleAll();
+
+        if ($fechasActivas === 1) {
+            $result['message'] = 'Las fechas están activas para anotarse.';
+            // Usar la misma clave 'dateRows1' aquí
+            $result['dateRows1'] = '<tr><td>Fecha activa</td><td>2023-09-25</td></tr>';
+        } else {
+            $result['message'] = 'No hay fechas activas para anotarse.';
+            // Usar la misma clave 'dateRows1' aquí
+            $result['dateRows1'] = '';
+        }
+    } else {
+        $result['message'] = '';
+        $result['dateRows1'] = '';
+    }
+
+    return $result;
 }

@@ -11,6 +11,7 @@ $obtenerFinales = obtenerFinales();
 $estadoToggleAllActual = obtenerEstadoToggleAll(); // Cambia esto según tu lógica
 $checkedToggleAll = ($estadoToggleAllActual == 1) ? 'checked' : '';
    
+$result = toggleStatusMessage($checkedToggleAll);
 
 
 if ($pdo) {
@@ -209,3 +210,4 @@ function toggleAllMaterias(checkbox) {
     });
 }
 </script>
+

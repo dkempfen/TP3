@@ -137,7 +137,7 @@ if ($pdo) {
             <?php
                 // Realiza una conexión a la base de datos (debes configurar tus propios detalles de conexión)
 
-                $sql = "SELECT P.cod_Plan, P.Carrera, P.Estado_Id_Estado, P.Fecha_Inicio, P.Fecha_Final, D.Descripcion
+                $sql = "SELECT P.cod_Plan, P.Carrera, P.Estado_Id_Estado, P.Fecha_Inicio, P.Fecha_Final, D.Descripcion_Documentacion
                      FROM Plan AS P
                      LEFT JOIN Documentacion AS D ON P.cod_Plan = D.fk_Plan";
                 $resultado = $pdo->query($sql);
@@ -160,8 +160,8 @@ if ($pdo) {
                     echo '<p><strong>Fecha Final:</strong> ' . $fila['Fecha_Final'] . '</p>';
                     
                     // Verificar si hay una descripción de archivo
-                    if ($fila['Descripcion'] !== null) {
-                        echo '<p><strong>Archivo del Plan:</strong> ' . $fila['Descripcion'] . '</p>';
+                    if ($fila['Descripcion_Documentacion'] !== null) {
+                        echo '<p><strong>Archivo del Plan:</strong> ' . $fila['Descripcion_Documentacion'] . '</p>';
                     } else {
                         echo '<p><strong>Archivo del Plan:</strong> No se ha adjuntado archivo</p>';
                     }

@@ -22,14 +22,31 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                         <table class="table table-hover table-bordered" id="tabledoc">
                             <thead>
                                 <tr>
+                                   
+                                    <th>Nombre Archivo</th>
+                                    <th>Materia</th>
+                                    <th>Fecha</th>
                                     <th>Acciones</th>
-                                    <th>ID</th>
-                                    <th>Nombre Archivo</th>        
-                                    <th>Tipo Archivo</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                               
+                            <tbody id="messageFecha">
+                                <?php
+                                // Comprueba si la consulta fue exitosa
+                                $rowDocumentacion = obtenerDocumentos();
+                                if ($rowDocumentacion) {
+                                    // Loop a través del resultado y generar filas de la tabla
+                                    foreach ($rowDocumentacion as $rowDocumentacion) {
+                                        echo '<tr>';                                      
+                                        echo '<td>' . $rowDocumentacion['Descripcion_Documentacion'] . '</td>';
+                                        echo '<td>' . $rowDocumentacion['fk_Materia'] . '</td>';
+                                         echo '<td>' . $rowDocumentacion['fk_Plan'] . '</td>';
+                                        echo '<td><button class="btn-icon" onclick="ModalsFinalEditar(' . $rowDocumentacion['id_Documentacion'] . ')"><i class="edit-btn"></i>✏️</button></td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo "Sin datos que mostrar"; // Puedes personalizar el mensaje de error según tus necesidades
+                                }
+                                ?>
                             </tbody>
                         </table>
                     </div>
