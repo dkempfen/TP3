@@ -76,17 +76,13 @@
 		
 	
 	//recibe los errores
-	function resultBlock($errors){ 
-		if(count($errors) > 0)
-		
-		
-		{
+	function resultBlock($errors) {
+		if (is_array($errors) && count($errors) > 0) {
 			echo "<div id='error' class='alert alert-danger' role='alert'>
 			<a href='#' onclick=\"showHide('error');\">[X]</a>
 			<ul>";
-			foreach($errors as $error)//muestra todos los erroress
-			{
-				echo "<li>".$error."</li>";
+			foreach ($errors as $error) {
+				echo "<li>" . $error . "</li>";
 			}
 			echo "</ul>";
 			echo "</div>";

@@ -4,6 +4,8 @@
 </head>
 
 <?php
+
+//////////Mensajes /////////////////
 require_once('load.php');
 function showConfirmationMessage($message) {
   echo "<script>
@@ -16,7 +18,19 @@ function showConfirmationMessage($message) {
   </script>";
 }
 
-
+function showConfirmationMessageDocuementacion($messageDocuementacion) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $messageDocuementacion['type'] . "',
+            title: '" . $messageDocuementacion['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>";
+  }
+  
+  
+///////////Contadores En Tablas//////////////////
 function count_by_id($table)
 {
   global $pdo;
@@ -602,7 +616,7 @@ function fechaFinales (){
     return $rowFechaFinales;
 
 }
-
+////Funciones de Documentacion/////
 function obtenerDocumentos (){
      
     global $pdo;
@@ -616,6 +630,239 @@ function obtenerDocumentos (){
     $rowDocumentacion= $datosDocumentacion->fetchAll(PDO::FETCH_ASSOC);
     return $rowDocumentacion;
 
+}
+
+function InsertarDocumentos ($ArchivoDocumentacion, $AsuntoArchivoocumentacion) {
+    session_start();
+    global $pdo;
+    
+
+    $sql = "INSERT INTO Documentacion (Descripcion_Documentacion, Estado_Documentacion, Asunto, fecha_documentacion) VALUES (?, 1, ?,NOW())";
+    $stmt = $pdo->prepare($sql);
+
+    // Verifica si los valores son nulos antes de ejecutar la consulta
+    $stmt->execute([$ArchivoDocumentacion, $AsuntoArchivoocumentacion]);
+
+    if ($stmt->rowCount() > 0) {
+        $_SESSION['messageDocuementacion'] = [
+            'type' => 'success',
+            'text' => 'Documentacion insertados exitosamente'
+        ];
+    } else {
+        $_SESSION['messageDocuementacion'] = [
+            'type' => 'error',
+            'text' => 'Ha ocurrido un error al insertar el documento.'
+        ];
+    }
+
+    header("Location: /instituto/Adman/Pantallas/documentacion.php");
+    exit();
+}
+
+// Verificar si se ha enviado una solicitud de edición (update)
+if (isset($_POST['btnaltaDocumentacion'])) {
+    $ArchivoDocumentacion = $_POST['ArchivoDocumentacion']; // Asegúrate de obtener el código de plan desde el formulario
+    $AsuntoArchivoocumentacion = $_POST['AsuntoArchivoocumentacion'];
+ 
+
+    // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
+    InsertarDocumentos($ArchivoDocumentacion, $AsuntoArchivoocumentacion);
+
+    header("Location: /instituto/Adman/Pantallas/documentacion.php");
+    exit();
+}
+
+function actualizarAsuntoDocumentacion($idDocumentacion, $nuevoAsunto) {
+    session_start();
+    global $pdo;
+
+    // Inicializar la respuesta
+    $response = array();
+
+    try {
+        $sql = "SELECT Asunto FROM Documentacion WHERE id_Documentacion = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idDocumentacion]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar si el nuevo asunto es diferente al existente
+        if ($resultado['Asunto'] == $nuevoAsunto) {
+            // Si no hay cambios, informar al usuario y devolver la respuesta
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'info',
+                'text' => 'No se actualizaron datos.'
+            ];
+            $response['success'] = true;
+            $response['messageDocuementacion'] = 'No se actualizaron datos.';
+            return $response;
+        }
+
+        $sql = "UPDATE Documentacion SET Asunto = ? WHERE id_Documentacion = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$nuevoAsunto, $idDocumentacion]);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'success',
+                'text' => 'Asunto actualizado exitosamente'
+            ];
+            // Indicar éxito en la respuesta
+            $response['success'] = true;
+        } else {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar el asunto.'
+            ];
+            // Indicar error en la respuesta
+            $response['success'] = false;
+            $response['message'] = 'Ha ocurrido un error al actualizar el asunto.';
+        }
+    } catch (PDOException $e) {
+        // En caso de un error en la base de datos
+        $_SESSION['messageDocuementacion'] = [
+            'type' => 'error',
+            'text' => 'Error en la base de datos al actualizar el asunto.'
+        ];
+
+        // Indicar error en la respuesta
+        $response['success'] = false;
+        $response['messageDocuementacion'] = 'Error en la base de datos al actualizar el asunto.';
+    }
+
+    return $response;
+
+}
+
+if (isset($_POST['btnActualizarAsunto'])) {
+    $idDocumentacion = $_POST['idDocumentacionArchivo'];
+    $nuevoAsunto = $_POST['NuevoAsunto'];
+
+    $response = actualizarAsuntoDocumentacion($idDocumentacion, $nuevoAsunto);
+
+    // Devolver la respuesta al cliente
+    echo json_encode($response);
+    exit();
+}
+
+
+
+function BorrarDocumentacion($idDocumentacion) {
+    session_start();
+    global $pdo;
+
+   
+    // Inicializar la respuesta
+    $response = array();
+
+    // Obtén el mensaje de confirmación del lado del servidor
+    $confirmacion = "¿Seguro que quieres borrar este documento?";
+
+    // Agrega el mensaje de confirmación a la respuesta
+    $response['confirmacion'] = $confirmacion;
+
+    try {
+       
+        $sql = "DELETE FROM Documentacion  WHERE id_Documentacion = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idDocumentacion]);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'success',
+                'text' => 'Docuemento borrado exitosamente'
+            ];
+            // Indicar éxito en la respuesta
+            $response['success'] = true;
+        } else {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al borrar el documento.'
+            ];
+            // Indicar error en la respuesta
+            $response['success'] = false;
+            $response['messageDocuementacion'] = 'Ha ocurrido un error al borrar el documento.';
+        }
+    } catch (PDOException $e) {
+        // En caso de un error en la base de datos
+        $_SESSION['messageDocuementacion'] = [
+            'type' => 'error',
+            'text' => 'Error en la base de datos al borrar el documento.'
+        ];
+
+        // Indicar error en la respuesta
+        $response['success'] = false;
+        $response['messageDocuementacion'] = 'Error en la base de datos al borrar el documento.';
+    }
+
+    return $response;
+
+}
+
+if (isset($_POST['btnABorrarDoc'])) {
+    $idDocumentacion = $_POST['idDocumentacionArchivo'];
+
+    $response = BorrarDocumentacion($idDocumentacion);
+
+    // Devolver la respuesta al cliente
+    echo json_encode($response);
+    exit();
+}
+
+
+function borrarDocumentosMasivos($documentosSeleccionados) {
+    session_start();
+
+    global $pdo;
+
+    try {
+        // Utiliza la lista de identificadores para construir la cláusula IN en la consulta
+        $placeholders = str_repeat('?,', count($documentosSeleccionados) - 1) . '?';
+
+        $sql = "DELETE FROM Documentacion WHERE id_Documentacion IN ($placeholders)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($documentosSeleccionados);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'success',
+                'text' => 'Docuemento borrado exitosamente'
+            ];
+            // Indicar éxito en la respuesta
+            $response['success'] = true;
+        } else {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al borrar el documento.'
+            ];
+            // Indicar error en la respuesta
+            $response['success'] = false;
+            $response['messageDocuementacion'] = 'Ha ocurrido un error al borrar el documento.';
+        }
+    } catch (PDOException $e) {
+        // En caso de un error en la base de datos
+        $_SESSION['messageDocuementacion'] = [
+            'type' => 'error',
+            'text' => 'Error en la base de datos al borrar el documento.'
+        ];
+
+        // Indicar error en la respuesta
+        $response['success'] = false;
+        $response['messageDocuementacion'] = 'Error en la base de datos al borrar el documento.';
+    }
+
+    return $response;
+
+}
+
+if (isset($_POST['btnABorrarDocMasivos'])) {
+ 
+    $documentosSeleccionados = $_POST['documentos'];
+
+    $response = borrarDocumentosMasivos($documentosSeleccionados);
+
+    // Devolver la respuesta al cliente
+    echo json_encode($response);
+    exit();
 }
 
 function ()

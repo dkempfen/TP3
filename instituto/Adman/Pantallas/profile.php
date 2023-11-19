@@ -137,7 +137,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                                               <div class="col-md-6 col-sm-6 col-xs-12">
                                                   <input id="old_password" name="old_password"
                                                       class="password form-control col-md-7 col-xs-12" type=""
-                                                      placeholder="**********"  value="<?= $_SESSION['clave']; ?>"
+                                                      placeholder="**********"  value=""
                                                     >                                                                         
                                               </div>
                                           </div>

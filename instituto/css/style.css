@@ -1323,3 +1323,12 @@ Usernalta-button:hover,
     /* Alinea el interruptor al final del contenedor */
     margin-left: auto;
 }
+
+#botonesArchivos div {
+    display: flex;
+    align-items: center;
+}
+
+#botonesArchivos button {
+    margin-left: 10px;
+}

@@ -2,8 +2,8 @@
 session_start();
 if (!empty($_SESSION['active'])) {
     header('Location:/instituto/Adman/Pantallas/home.php');
-} else if (!empty($_SESSION['activeP'])) {
-    header('Location:/instituto/profesor/index.php');
+} else if (!empty($_SESSION[''])) {
+  
 } else if (!empty($_SESSION['activea'])) {
     header('Location:/instituto/Alumno/index.php');
 }

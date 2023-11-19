@@ -3,6 +3,7 @@ $pageTitle = "Registro Instituto"; // Define el título de la página
 include '../Includes/header.php';
 include '../Includes/load.php';
 
+$errors = []; // Puedes inicializarla como un array vacío o de acuerdo a tu lógica de manejo de errores
 
 
 ?>

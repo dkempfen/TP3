@@ -70,7 +70,8 @@ if (!empty($_POST) && $_SERVER['REQUEST_URI'] === '/instituto/Login/index.php') 
                </script>';
            exit(); // Asegura que el script se detenga después de la redirección
        } elseif ($result["fk_Rol"] == 2) {
-           $_SESSION['activep'] = true;
+           $_SESSION['activeP'] = true;
+          
            // Resto de las asignaciones para el rol 2
        } elseif ($result["fk_Rol"] == 1) {
            $_SESSION['activea'] = true;
