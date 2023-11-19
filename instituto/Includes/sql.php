@@ -556,13 +556,19 @@ function DatosMateriaDetalleAgregar()
 function obtenerMateriasAnalista (){
      
     global $pdo;
+    $fechaActual = date('Y-m-d');
+
+    // Calcula la fecha hace dos meses
+    $fechaLimite = date('Y-m-d', strtotime('-2 months', strtotime($fechaActual)));
 
     $sql = "SELECT * FROM FechasFinales fs
     INNER JOIN Materia mt ON fs.fk_Materia = mt.id_Materia
     INNER JOIN Detalle_Plan dn ON dn.fk_Materia = fs.fk_Materia
-    WHERE dn.fk_Plan ='6790/19'";
+    WHERE dn.fk_Plan ='6790/19' AND fs.Fecha >= :fechaLimite AND fs.Fecha <= :fechaActual";
 
     $datosFinalesAnlista= $pdo->prepare($sql);
+    $datosFinalesAnlista->bindParam(':fechaLimite', $fechaLimite);
+    $datosFinalesAnlista->bindParam(':fechaActual', $fechaActual);
     $datosFinalesAnlista->execute();
 
     $rowFinalesAnlista= $datosFinalesAnlista->fetchAll(PDO::FETCH_ASSOC);
@@ -570,23 +576,28 @@ function obtenerMateriasAnalista (){
 
 }
 
-function obtenerMateriasRedes (){
-     
+function obtenerMateriasRedes(){
     global $pdo;
 
-    $sqlRedes = "SELECT * FROM FechasFinales fs
-    INNER JOIN Materia mt ON fs.fk_Materia = mt.id_Materia
-    INNER JOIN Detalle_Plan dn ON dn.fk_Materia = fs.fk_Materia
-    WHERE dn.fk_Plan ='5817/03'";
+    // Obtén la fecha actual
+    $fechaActual = date('Y-m-d');
 
-    $datosFinalesRedes= $pdo->prepare($sqlRedes);
+    // Calcula la fecha hace dos meses
+    $fechaLimite = date('Y-m-d', strtotime('-2 months', strtotime($fechaActual)));
+
+    $sqlRedes = "SELECT * FROM FechasFinales fs
+        INNER JOIN Materia mt ON fs.fk_Materia = mt.id_Materia
+        INNER JOIN Detalle_Plan dn ON dn.fk_Materia = fs.fk_Materia
+        WHERE dn.fk_Plan ='5817/03' AND fs.Fecha >= :fechaLimite AND fs.Fecha <= :fechaActual";
+
+    $datosFinalesRedes = $pdo->prepare($sqlRedes);
+    $datosFinalesRedes->bindParam(':fechaLimite', $fechaLimite);
+    $datosFinalesRedes->bindParam(':fechaActual', $fechaActual);
     $datosFinalesRedes->execute();
 
-    $rowFinalesRedes= $datosFinalesRedes->fetchAll(PDO::FETCH_ASSOC);
+    $rowFinalesRedes = $datosFinalesRedes->fetchAll(PDO::FETCH_ASSOC);
     return $rowFinalesRedes;
-
 }
-
 function obtenerFinales (){
      
     global $pdo;
