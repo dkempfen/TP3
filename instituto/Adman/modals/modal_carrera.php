@@ -9,9 +9,11 @@ $tableUsuarios = tableUsuarios();
 ?>
 
 <?php
-// Realiza una conexión a la base de datos (debes configurar tus propios detalles de conexión)
+$carrera = $_GET['carrera'] ?? '';
+$nombrePlan = $_GET['nombrePlan'] ?? '';
+$fechaInicio = $_GET['fechaInicio'] ?? '';
+$fechaFinal = $_GET['fechaFinal'] ?? '';
 
-// Prepara y ejecuta la consulta SQL para obtener los datos de las asignaturas y profesores
 $sql = "SELECT dp.Id_Detalle_Plan, p.Carrera, m.Anio_Carrera, m.Promocional, m.id_Materia, m.Descripcion, pr.Nombre, pr.Apellido, p.cod_Plan
 FROM Detalle_Plan dp
 LEFT JOIN Plan p ON p.cod_Plan = dp.fk_Plan 
@@ -51,35 +53,30 @@ $result = $pdo->query($sql);
                         </thead>
                         <tbody id="message">
                             <?php
-                            $codPlanes = []; // Inicializa el array antes del bucle
-
-                            if ($result) {
-                                // La consulta se ejecutó con éxito, ahora verifica si hay resultados
-                                if ($result->rowCount() > 0) {
-                                    // Hay resultados, muestra los datos
-                                    foreach ($result as $row) {
-                                        // Agrega el valor al array si aún no está presente
-                                        if (!in_array($row['cod_Plan'], $codPlanes)) {
-                                            $codPlanes[] = $row['cod_Plan'];
-                                        }
-
-                                        echo '<tr>';
-                                        echo '<td>' . $row['Anio_Carrera'] . '</td>';
-                                        echo '<td>' . $codPlanes[0] . '</td>'; // Muestra el primer valor del array
-                                        echo '<td>' . $row['Promocional'] . '</td>';
-                                        echo '<td>' . $row['id_Materia'] . '</td>';
-                                        echo '<td>' . $row['Descripcion'] . '</td>';
-                                        echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
-                                        echo '</tr>';
-                                    }
-                                } else {
-                                    echo "No se encontraron resultados para la consulta.";
-                                }
-                            } else {
-                                // Hubo un error en la consulta, muestra un mensaje de error
-                                echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2];
-                            }
-                            ?>
+                if ($result) {
+                    if ($result->rowCount() > 0) {
+                        foreach ($result as $row) {
+                            echo '<tr data-cod-plan="' . $row['cod_Plan'] . '">';
+                            echo '<td>' . $row['Anio_Carrera'] . '</td>';
+                            echo '<td>' . $row['cod_Plan'] . '</td>';
+                            echo '<td>' . $row['Promocional'] . '</td>';
+                            echo '<td>' . $row['id_Materia'] . '</td>';
+                            echo '<td>' . $row['Descripcion'] . '</td>';
+                            echo '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
+                            echo '<td>';
+                            // Agrega el campo oculto con un ID único
+                            echo '<input type="hidden" class="cod_PlanS" name="cod_PlanS[]" value="' . $row['cod_Plan'] . '">';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        echo "No se encontraron resultados para la consulta.";
+                    }
+                } else {
+                    echo "Error: " . $sql . "<br>" . $pdo->errorInfo()[2];
+                }
+                ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -94,15 +91,22 @@ $result = $pdo->query($sql);
         </div>
     </div>
 </div>
-
 <script>
 function mostrarInfoAdicional(codPlan) {
-    $('#tablaModal').modal('show');
+    // Obtén todos los elementos con la clase 'cod_PlanS'
+    var elementosCodPlanS = document.getElementsByClassName('cod_PlanS');
 
+    // Itera sobre los elementos y establece el valor
+    for (var i = 0; i < elementosCodPlanS.length; i++) {
+        elementosCodPlanS[i].value = codPlan;
+    }
+
+    // Resto de tu código...
+    $('#tablaModal').modal('show');
     console.log("Clic en Más Información con codPlan: " + codPlan);
 
     // Convertir codPlan en un número entero
     codPlan = parseInt(codPlan);
-
 }
+
 </script>

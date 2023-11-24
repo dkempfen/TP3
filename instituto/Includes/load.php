@@ -25,6 +25,8 @@ require_once(LIB_PATH_INC.'sqlaltauser.php');
 require_once(LIB_PATH_INC.'sqluser.php');
 require_once(LIB_PATH_INC.'funcs.php');
 require_once(LIB_PATH_INC.'mensajeRegistro.php');
+require_once(LIB_PATH_INC.'funcionesPlan.php');
+
 
 
 

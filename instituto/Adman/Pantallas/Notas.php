@@ -7,7 +7,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/AgregarTodasNo
 
 ?>
 
+<style>
 
+</style>
 <?php
 
    
@@ -55,41 +57,23 @@ if ($pdo) {
                     <div class="card-body">
                         <h4 class="card-title text-center">Filtrar Alumnos</h4>
                         <form id="busquedaForm" class="form-row align-items-end">
-                            <!-- Agregamos la clase "align-items-end" aquí -->
                             <div class="form-group col-md-3">
                                 <label for="dni">DNI:</label>
-                                <input type="text" class="form-control" id="dni">
+                                <input type="number" class="form-control" name="btnBuscarAlumnosDNI" id="dni"
+                                    placeholder="Ingrese DNI">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="nombreUser">Nombre:</label>
-                                <input type="text" class="form-control" id="nombreUser">
+                                <input type="text" class="form-control" name="btnBuscarAlumnosNombre" id="nombreUser"
+                                    placeholder="Ingrese nombre">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="apellidoUser">Apellido:</label>
-                                <input type="text" class="form-control" id="apellidoUser">
+                                <input type="text" class="form-control" name="btnBuscarAlumnosApellido"
+                                    placeholder="Ingrese apellido">
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="userNotas">Usuario:</label>
-                                <input type="text" class="form-control" id="userNotas">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="carreraNotas">Carrera:</label>
-                                <select class="form-control" id="carreraNotas">
-                                    <option value="Redes Informaticas">Redes Informaticas</option>
-                                    <option value="Analista de Sistema">Analista de Sistema</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="planNotas">Plan:</label>
-                                <select class="form-control" id="planNotas">
-                                    <option value="Plan 1">Plan 1</option>
-                                    <option value="Plan 2">Plan 2</option>
-                                    <option value="Plan 3">Plan 3</option>
-                                    <!-- Agrega más opciones de plan según sea necesario -->
-                                </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <button type="button" class="btn-primary btn-buscar" onclick="buscarAlumnos()">
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-primary btn-lg" onclick="realizarBusqueda()">
                                     <i class="fas fa-search"></i> Buscar
                                 </button>
                             </div>
@@ -267,55 +251,46 @@ $('#nombreAlumno').on('change', function() {
     var nombreAlumno = $(this).data('alumno');
     table.column(0).search(nombreAlumno).draw();
 });
-
 </script>
 
-<script>
-function buscarAlumnos() {
-    // Obtener los valores de los campos de búsqueda
-    var dni = $('#dni').val();
-    var nombre = $('#nombreUser').val();
-    var apellido = $('#apellidoUser').val();
-    var usuario = $('#userNotas').val();
-    var carrera = $('#carreraNotas').val();
-    var plan = $('#planNotas').val();
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
-    // Realizar la solicitud AJAX al servidor
-    $.ajax({
-        url: "/instituto/Includes/sqluser.php", // Reemplaza con la ruta correcta a tu archivo PHP
-        type: 'POST',
-        data: {
-            dni: dni,
-            nombre: nombre,
-            apellido: apellido,
-            usuario: usuario,
-            carrera: carrera,
-            plan: plan
-        },
-        success: function(response) {
-            // Manejar la respuesta del servidor y actualizar el contenido de la página
-            $('#contenido-alumnos').html(response);
-        },
-        error: function(error) {
-            console.log("Error en la solicitud AJAX:", error);
-        }
+<script>
+$(document).ready(function() {
+    var calificacionestable = $('#calificaciones-table').DataTable();
+})
+
+$(document).ready(function() {
+    // Asignar el evento click al botón de búsqueda
+    $('#buscarBtn').on('click', function() {
+        realizarBusqueda();
     });
+});
+
+
+function realizarBusqueda() {
+    // Collect filter values
+    var dni = document.getElementById('dni').value;
+    var nombre = document.getElementById('nombreUser').value;
+    var apellido = document.getElementById('btnBuscarAlumnosApellido').value;
+
+    // Make an asynchronous request to the server
+    fetch('/instituto/Includes/sql.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'dni=' + dni + '&nombre=' + nombre + '&apellido=' + apellido,
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the response data
+        // Update the table or perform other actions based on the filtered data
+        console.log(data);
+    })
+    .catch(error => console.error('Error:', error));
 }
 
-// Asignar esta función al clic del botón de búsqueda
-$(document).ready(function() {
-    $('.btn-buscar').on('click', function() {
-        buscarAlumnos();
-    });
-});
-</script>
 
-<script>
-// Inicializar DataTable para cada tabla de calificaciones
-$('[id^="table_"]').each(function() {
-    var tableId = $(this).attr('id');
-    $('#' + tableId).DataTable({
-        // Configuraciones de DataTable
-    });
-});
 </script>

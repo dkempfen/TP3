@@ -28,6 +28,17 @@ function showConfirmationMessageDocuementacion($messageDocuementacion) {
         });
     </script>";
   }
+
+  function showConfirmationMessageFechaFinCursada($messageFinCursada) {
+    echo "<script>
+        Swal.fire({
+            icon: '" . $messageFinCursada['type'] . "',
+            title: '" . $messageFinCursada['text'] . "',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>";
+  }
   
   
 ///////////Contadores En Tablas//////////////////
@@ -401,6 +412,23 @@ function DatosPlan()
     return $rowPlan;
 }
 
+function DatosPlanMateria()
+{
+    global $pdo;
+
+    $sql = "SELECT * FROM Persona p 
+    INNER JOIN Usuario u ON p.DNI = u.fk_DNI
+    INNER JOIN Materia_Profesor mp ON u.Id_Usuario = mp.id_Profesor
+    INNER JOIN Detalle_Plan dp ON mp.id_Materia = dp.fk_Materia 
+    INNER JOIN Materia m ON m.id_Materia = mp.id_Materia";
+
+    $datosPlanDetalle = $pdo->prepare($sql);
+    $datosPlanDetalle->execute();
+
+    $rowPlanDetalle = $datosPlanDetalle->fetchAll(PDO::FETCH_ASSOC);
+    return $rowPlanDetalle;
+}
+
 function Plan()
 {
     global $pdo;
@@ -482,26 +510,27 @@ function DatosAlumnoNota()
     $rowNota = $datosAlumnoNota->fetchAll(PDO::FETCH_ASSOC);
     return $rowNota;
 }
+function DatosMateriaPlan() {
 
-function DatosMateriaPlan()
-{
-    
     global $pdo;
 
-    $sql = "SELECT dp.Id_Detalle_Plan, p.Carrera, m.Anio_Carrera, m.Promocional, m.id_Materia, m.Descripcion, pr.Nombre, pr.Apellido,p.cod_Plan
-        FROM Detalle_Plan dp
-        LEFT JOIN Plan p ON p.cod_Plan = dp.fk_Plan 
-        LEFT JOIN Materia m ON dp.fk_Materia = m.id_Materia
-        LEFT JOIN Materia_Profesor mp ON dp.fk_Materia = mp.id_Materia
-        LEFT JOIN Usuario u ON u.Id_Usuario = mp.id_Profesor
-        LEFT JOIN Persona pr ON pr.DNI = u.fk_DNI";
+    $sql = "SELECT *
+    FROM Detalle_Plan dp
+    LEFT JOIN Plan p ON p.cod_Plan = dp.fk_Plan 
+    LEFT JOIN Materia m ON dp.fk_Materia = m.id_Materia
+    LEFT JOIN Materia_Profesor mp ON dp.fk_Materia = mp.id_Materia
+    WHERE cod_Plan = :codPlan
+    ORDER BY m.Anio_Carrera DESC";
 
-        $DatosMateriaPlan = $pdo->prepare($sql);
-        $DatosMateriaPlan->execute();
-    
-        $rowNotaPlan = $DatosMateriaPlan->fetchAll(PDO::FETCH_ASSOC);
-        return $rowNotaPlan;
-    }
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':codPlan', $codPlan);
+    $stmt->execute();
+
+    $rowNotaPlan = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $rowNotaPlan;
+}
+
+
 function DatosMateriaNota()
 {
     global $pdo;
@@ -627,6 +656,22 @@ function fechaFinales (){
     return $rowFechaFinales;
 
 }
+
+
+function DetallePlan (){
+     
+    global $pdo;
+
+    $sql = "SELECT * FROM Detalle_Plan";
+
+    $datosDetallePlan= $pdo->prepare($sql);
+    $datosDetallePlan->execute();
+
+    $rowDetallePlan= $datosDetallePlan->fetchAll(PDO::FETCH_ASSOC);
+    return $rowDetallePlan;
+
+}
+
 ////Funciones de Documentacion/////
 function obtenerDocumentos (){
      
@@ -875,6 +920,108 @@ if (isset($_POST['btnABorrarDocMasivos'])) {
     echo json_encode($response);
     exit();
 }
+
+
+function buscarAranceles()
+{
+
+    global $pdo;
+
+    $sql = "SELECT * FROM Documentacion WHERE Asunto LIKE '%aranceles%'";
+   
+    $datosAranceles= $pdo->prepare($sql);
+    $datosAranceles->execute();
+
+    $rowDatosAranceles= $datosAranceles->fetchAll(PDO::FETCH_ASSOC);
+    return $rowDatosAranceles;
+}
+
+function fechaFinCursada()
+{
+
+    global $pdo;
+    $anio = date("Y") - 1;
+
+    $sql = "SELECT * FROM fecha_fin_cursada WHERE YEAR(fecha_fin_cursada) > $anio";
+   
+    $datosfechaFinCursada= $pdo->prepare($sql);
+    $datosfechaFinCursada->execute();
+
+    $rowfechaFinCursada= $datosfechaFinCursada->fetchAll(PDO::FETCH_ASSOC);
+    return $rowfechaFinCursada;
+}
+
+function actualizarFechaFinalCursada($idFechaCursada, $nuevoValorFecha) {
+    session_start();
+    global $pdo;
+
+    // Inicializar la respuesta
+    $response = array();
+
+    try {
+        $sql = "SELECT fecha_fin_cursada FROM fecha_fin_cursada WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$idFechaCursada]);
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar si la nueva fecha es diferente a la existente
+        if ($resultado['fecha_fin_cursada'] == $nuevoValorFecha) {
+            // Si no hay cambios, informar al usuario y devolver la respuesta
+            $_SESSION['messageFinCursada'] = [
+                'type' => 'info',
+                'text' => 'No se actualizaron datos.'
+            ];
+            $response['success'] = true;
+            $response['messageFinCursada'] = 'No se actualizaron datos.';
+            return $response;
+        }
+
+        $sql = "UPDATE fecha_fin_cursada SET fecha_fin_cursada = ? WHERE id = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$nuevoValorFecha, $idFechaCursada]);
+
+        if ($stmt->rowCount() > 0) {
+            $_SESSION['messageFinCursada'] = [
+                'type' => 'success',
+                'text' => 'Fecha actualizada exitosamente'
+            ];
+            // Indicar éxito en la respuesta
+            $response['success'] = true;
+        } else {
+            $_SESSION['messageFinCursada'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar la fecha.'
+            ];
+            // Indicar error en la respuesta
+            $response['success'] = false;
+            $response['message'] = 'Ha ocurrido un error al actualizar la fecha.';
+        }
+    } catch (PDOException $e) {
+        // En caso de un error en la base de datos
+        $_SESSION['messageFinCursada'] = [
+            'type' => 'error',
+            'text' => 'Error en la base de datos al actualizar la fecha.'
+        ];
+
+        // Indicar error en la respuesta
+        $response['success'] = false;
+        $response['messageFinCursada'] = 'Error en la base de datos al actualizar la fecha.';
+    }
+
+    return $response;
+}
+
+if (isset($_POST['btnActualizarFecha'])) {
+    $idFechaCursada = $_POST['idFecha'];
+    $nuevoValorFecha = $_POST['nuevoValorFecha'];
+
+    $response = actualizarFechaFinalCursada($idFechaCursada, $nuevoValorFecha);
+
+    // Devolver la respuesta al cliente
+    echo json_encode($response);
+    exit();
+}
+
 
 function ()
 {

@@ -393,6 +393,50 @@ function generarHtmlResultados($resultados) {
 
 // Llamar a la función para procesar la búsqueda
 procesarBusqueda();*/
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    // Obtener los parámetros de la URL
+    $dni = isset($_GET['dniAlmno']) ? $_GET['dniAlmno'] : '';
+    $nombre = isset($_GET['btnBuscarAlumnosNombre']) ? $_GET['btnBuscarAlumnosNombre'] : '';
+    $apellido = isset($_GET['btnBuscarAlumnosApellido']) ? $_GET['btnBuscarAlumnosApellido'] : '';
 
+    // Llamar a la función buscarAlmno con los parámetros obtenidos
+    $results = buscarAlmno($pdo, $dni, $nombre, $apellido);
+
+    if (count($results) > 0) {
+        // Mostrar la tabla solo si hay resultados
+        echo '<table id="calificaciones-table">';
+        echo '<thead>';
+        // ... tu código para imprimir las cabeceras de la tabla ...
+        echo '</thead>';
+        echo '<tbody>';
+        // ... tu código para imprimir los resultados de la búsqueda ...
+        echo '</tbody></table>';
+    } else {
+        // Si no hay resultados, puedes imprimir un mensaje o simplemente no hacer nada
+        // echo "Sin resultados";
+    }
+}
+
+function buscarAlmno($pdo, $dni, $nombre, $apellido)
+{
+    $sql = "SELECT dc.id_Cursada, u.fk_DNI, p.Nombre, p.Apellido, dc.fk_Usuario, dc.fk_Legajo, dc.fk_Materia, m.Descripcion, dc.fk_Estado, dc.Primer_Parcial,
+        dc.Recuperatio_Parcial_1, dc.Primer_TP, dc.Recuperatio_TP_1, dc.Segundo_Parcial, dc.Recuperatio_Parcial_2, dc.Segundo_TP,
+        dc.Recuperatio_TP_2, dc.Promedio, dc.Anio, pn.cod_Plan, pn.Carrera, Final
+        FROM DetalleCursada dc
+        INNER JOIN Usuario u ON dc.fk_Usuario = u.Id_Usuario
+        INNER JOIN Persona p ON p.DNI = u.fk_DNI
+        INNER JOIN Materia m ON m.id_Materia = dc.fk_Materia
+        INNER JOIN Plan pn ON pn.cod_Plan = u.fk_Plan
+        WHERE p.DNI LIKE :dni AND p.Nombre LIKE :nombre AND p.Apellido LIKE :apellido";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':dni', "%$dni%", PDO::PARAM_STR);
+    $stmt->bindValue(':nombre', "%$nombre%", PDO::PARAM_STR);
+    $stmt->bindValue(':apellido', "%$apellido%", PDO::PARAM_STR);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>

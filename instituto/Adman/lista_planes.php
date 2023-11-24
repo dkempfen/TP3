@@ -93,7 +93,7 @@ if ($pdo) {
 
         <div class="row espaciado-entre-filas align-items-center">
 
-            <form id="busquedaForm" class="form-inline mb-5">
+        <form id="busquedaForm" class="form-inline mb-5" action="/instituto/Adman/lista_planes.php" method="GET">
                 <div class="form-group mb-2">
                     <label for="carrera" class="label-spacing">Carrera:</label>
                     <input type="text" class="form-control  " id="carrera">

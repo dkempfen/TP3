@@ -1332,3 +1332,15 @@ Usernalta-button:hover,
 #botonesArchivos button {
     margin-left: 10px;
 }
+
+
+.btn-sm {
+    padding: 6px 12px; /* Ajusta el padding para hacer el botón más pequeño */
+    font-size: 12px; /* Ajusta el tamaño del texto */
+    border-radius: 3px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Transición suave del color de fondo */
+}
+
+.btn-sm:hover {
+    background-color: #0066cc; /* Cambio de color de fondo al pasar el mouse */
+}

@@ -16,7 +16,8 @@ if ($pdo) {
     // Query para obtener todas las materias y los profesores asociados si los tienen
     $sql = "SELECT * 
     FROM Materia m
-    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado
+    LEFT JOIN Detalle_Plan dp ON dp.fk_Materia = m.id_Materia";
     
     $result = $pdo->query($sql);
 
@@ -155,6 +156,7 @@ if (isset($_SESSION['message'])) {
                                     <tr>
                                         <th>Acciones</th>
                                         <th>Carrera</th>
+                                        <th>Plan</th>
                                         <th>Nivel</th>
                                         <th>Promocional</th>
                                         <th>Profesor</th>
@@ -179,6 +181,7 @@ if (isset($_SESSION['message'])) {
                                         echo '</label>';
                                         echo '</td>';
                                         echo '<td>' . $row['Descripcion'] . '</td>';
+                                        echo '<td>' . $row['fk_Plan'] . '</td>';
                                         echo '<td>';
                                         if ($row['Anio_Carrera'] == 1) {
                                             echo 'Nivel 1';

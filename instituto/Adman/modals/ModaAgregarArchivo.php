@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/Pantallas/documentacion.php';
 
+
 $DatosUsuarios = DatosUsuarios();
 $DatosPersonas = DatosPersonas();
 
