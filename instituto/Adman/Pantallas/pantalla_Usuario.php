@@ -17,7 +17,7 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
                 <div src="" alt="imagen terciario"></div>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-4">
             <!-- Centramos la fila horizontalmente -->
             <div class="col-xl-4 col-md-6 mb-4">
                 <!-- Aumentamos el ancho de las tarjetas y dejamos 'mb-4' -->
