@@ -1022,6 +1022,72 @@ if (isset($_POST['btnActualizarFecha'])) {
     exit();
 }
 
+function obtenerDatosParaGrafico() {
+    global $pdo;
+
+    // Inicializar el array para almacenar los datos
+    $datos = array(
+        'sexos' => array(),
+        'cantidades' => array()
+    );
+
+    // Consulta SQL para obtener la cantidad de cada género
+    $sql = "SELECT sexo, COUNT(*) as cantidad FROM Persona GROUP BY sexo";
+    $resultado = $pdo->query($sql);
+
+    // Verificar si la consulta fue exitosa
+    if ($resultado->rowCount() > 0) {
+        while ($fila = $resultado->fetch(PDO::FETCH_ASSOC)) {
+            // Agregar datos a los arrays
+            $datos['sexos'][] = $fila['sexo'];
+            $datos['cantidades'][] = (int)$fila['cantidad'];
+        }
+    }
+
+    // Convierte el array a formato JSON
+    $datos_json = json_encode($datos);
+
+    return $datos_json;
+}
+
+function obtenerDatosParaGraficoEdades() {
+    // Realiza la conexión a la base de datos (ajusta los detalles de conexión según tu configuración)
+    global $pdo;
+
+    // Consulta SQL para obtener las edades
+    $sql = "SELECT TIMESTAMPDIFF(YEAR, Fechanacimiento, CURDATE()) AS Edad FROM Persona";
+    $stmt = $pdo->query($sql);
+
+    // Inicializa un array para almacenar las edades
+    $edades = array();
+
+    // Recorre los resultados y agrega las edades al array
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        // Asegúrate de que Edad sea un valor numérico antes de agregarlo al array
+        $edad = (int)$row['Edad'];
+        if (!is_numeric($edad)) {
+            // Puedes manejar o registrar el error de alguna manera si es necesario
+            continue;
+        }
+
+        $edades[] = $edad;
+    }
+
+    // Contar la frecuencia de cada edad
+    $conteoEdades = array_count_values($edades);
+
+    // Crear un array para almacenar las etiquetas (edades) y los datos (cantidad)
+    $etiquetas = array_keys($conteoEdades);
+    $datos = array_values($conteoEdades);
+
+    // Convertir los datos a formato JSON
+    $datos_json = json_encode(array('etiquetas' => $etiquetas, 'datos' => $datos));
+
+    // Cerrar la conexión
+    $pdo = null;
+
+    return $datos_json;
+}
 
 function ()
 {

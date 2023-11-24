@@ -103,6 +103,7 @@ if ($pdo) {
                                         <th>NOMBRE</th>
                                         <th>Apellido</th>
                                         <th>Fechanacimiento</th>
+                                        <th>Genero</th>
                                         <th>Telefono</th>
                                         <th>Email</th>
                                         <th>Domicilio</th>
@@ -130,6 +131,7 @@ if ($pdo) {
                                         echo '<td>' . $row['Nombre'] . '</td>';
                                         echo '<td>' . $row['Apellido'] . '</td>';
                                         echo '<td>' . $row['Fechanacimiento'] . '</td>';
+                                        echo '<td>' . $row['sexo'] . '</td>';
                                         echo '<td>' . $row['Telefono'] . '</td>';
                                         echo '<td>' . $row['Email'] . '</td>';
                                         echo '<td>' . $row['Domicilio'] . '</td>';

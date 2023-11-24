@@ -1,6 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
+$datos_json = obtenerDatosParaGrafico(); // Reemplaza con tu propia lógica
+$datos_json_edades = obtenerDatosParaGraficoEdades();
+
 ?>
 
 
@@ -88,10 +91,94 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                     </div>
                 </div>
             </div>
+
+
+
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6 mb-4">
+                <div class="col-md-12">
+                    <canvas id="miGraficoPastel" width="600" height="600"></canvas>
+                </div>
+            </div>
+            <!-- Agrega la clase 'mb-4' para agregar margen inferior -->
+            <div class="col-md-6 mb-4">
+                <div class="col-md-12">
+                    <canvas id="miGraficoBarras" width="600" height="600"></canvas>
+                </div>
+            </div>
         </div>
     </div>
+
+
+    </div>
+
+
+
 </main>
 
 <?php
 require_once '../includes/footer.php';
 ?>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Recupera los datos JSON generados por PHP
+var datos = <?php echo $datos_json; ?>;
+
+// Obtén el contexto del lienzo
+var contextoPastel = document.getElementById('miGraficoPastel').getContext('2d');
+
+// Crea el gráfico de pastel
+var miGraficoPastel = new Chart(contextoPastel, {
+    type: 'pie',
+    data: {
+        labels: datos.sexos,
+        datasets: [{
+            data: datos.cantidades,
+            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"]
+        }]
+    }
+});
+</script>
+<script>
+// Recupera los datos JSON generados por PHP
+var datosEdades = <?php echo $datos_json_edades; ?>;
+
+// Obtén el contexto del lienzo
+var contextoBarras = document.getElementById('miGraficoBarras').getContext('2d');
+
+// Crea el gráfico de barras
+var miGraficoBarras = new Chart(contextoBarras, {
+    type: 'bar',
+    data: {
+        labels: datosEdades.etiquetas,
+        datasets: [{
+            label: 'Cantidad de Usuarios por Edad',
+            data: datosEdades.datos,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Cantidad de Usuarios'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Edad'
+                }
+            }
+        }
+    }
+});
+</script>
