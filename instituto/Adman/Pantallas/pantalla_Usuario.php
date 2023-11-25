@@ -96,14 +96,20 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
 
 
         </div>
+
         <div class="row justify-content-center">
+
             <div class="col-md-6 mb-4">
+            <button class="export-button" onclick="exportarExcel('miGraficoPastel', 'GraficoPastel')">Exportar Pastel a Excel</button>
+
                 <div class="col-md-12">
                     <canvas id="miGraficoPastel" width="600" height="600"></canvas>
                 </div>
             </div>
             <!-- Agrega la clase 'mb-4' para agregar margen inferior -->
             <div class="col-md-6 mb-4">
+                <button class="export-button" onclick="exportarExcel('miGraficoBarras', 'GraficoBarras')">Exportar Barras a Excel</button>
+
                 <div class="col-md-12">
                     <canvas id="miGraficoBarras" width="600" height="600"></canvas>
                 </div>
@@ -111,18 +117,12 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
         </div>
     </div>
 
-
-    </div>
-
-
-
 </main>
 
 <?php
 require_once '../includes/footer.php';
 ?>
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 // Recupera los datos JSON generados por PHP
@@ -142,8 +142,7 @@ var miGraficoPastel = new Chart(contextoPastel, {
         }]
     }
 });
-</script>
-<script>
+
 // Recupera los datos JSON generados por PHP
 var datosEdades = <?php echo $datos_json_edades; ?>;
 
@@ -181,4 +180,47 @@ var miGraficoBarras = new Chart(contextoBarras, {
         }
     }
 });
+
+function exportarExcel(canvasId, sheetName) {
+    var canvas = document.getElementById(canvasId);
+    var dataURL = canvas.toDataURL('image/png');
+
+    // Guardar la imagen en el servidor y obtener la ruta
+    // Necesitas ajustar esta lógica según tu entorno y cómo manejas las imágenes
+    var rutaImagen = '/path/to/your/image.png';
+
+    // Crear un objeto de trabajo de libro de Excel
+    var workbook = XLSX.utils.book_new();
+
+    // Crear una hoja de trabajo para los datos del gráfico
+    var worksheetData = XLSX.utils.aoa_to_sheet([
+        ['Sexo', 'Cantidad'],
+        ['Masculino', 10],
+        ['Femenino', 15],
+        // ... Agrega más filas según tus datos
+    ]);
+
+    // Agregar la imagen a la hoja de trabajo
+    var img = new Image();
+    img.src = dataURL;
+    var ctx = document.createElement('canvas').getContext('2d');
+    ctx.canvas.width = img.width;
+    ctx.canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    var imageData = ctx.getImageData(0, 0, img.width, img.height);
+
+    // Agregar las hojas de trabajo al libro de Excel
+    XLSX.utils.book_append_sheet(workbook, worksheetData, 'Datos del Gráfico');
+    XLSX.utils.book_append_sheet(workbook, {
+        "!type": "png",
+        "!data": imageData
+    }, 'Imagen del Gráfico');
+
+    // Guardar el libro de Excel
+    try {
+        XLSX.writeFile(workbook, 'reporte_grafico_' + sheetName + '.xlsx');
+    } catch (error) {
+        console.error('Error al exportar a Excel:', error);
+    }
+}
 </script>

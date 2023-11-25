@@ -1344,3 +1344,13 @@ Usernalta-button:hover,
 .btn-sm:hover {
     background-color: #0066cc; /* Cambio de color de fondo al pasar el mouse */
 }
+
+.export-button {
+    padding: 10px 15px; /* Ajusta el relleno según tus preferencias */
+    font-size: 16px; /* Ajusta el tamaño de fuente según tus preferencias */
+    background-color: #4CAF50; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Elimina el borde */
+    border-radius: 5px; /* Ajusta el radio de borde según tus preferencias */
+    cursor: pointer;
+}
