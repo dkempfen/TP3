@@ -16,8 +16,7 @@ if ($pdo) {
     // Query para obtener todas las materias y los profesores asociados si los tienen
     $sql = "SELECT * 
     FROM Materia m
-    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado
-    LEFT JOIN Detalle_Plan dp ON dp.fk_Materia = m.id_Materia";
+    LEFT JOIN Estado es ON m.fk_Estado = es.Id_Estado";
     
     $result = $pdo->query($sql);
 
@@ -181,7 +180,6 @@ if (isset($_SESSION['message'])) {
                                         echo '</label>';
                                         echo '</td>';
                                         echo '<td>' . $row['Descripcion'] . '</td>';
-                                        echo '<td>' . $row['fk_Plan'] . '</td>';
                                         echo '<td>';
                                         if ($row['Anio_Carrera'] == 1) {
                                             echo 'Nivel 1';
@@ -280,7 +278,6 @@ require_once '../includes/footer.php';
 ?>
 <script>
 $(document).ready(function() {
-    var tableusuarios = $('#tablemateria').DataTable({});
 
     // Capturar eventos de cambio en los campos de búsqueda
     $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {
@@ -369,3 +366,35 @@ $(document).ready(function() {
 
 });
 </script> 
+
+<script>
+$(document).ready(function() {
+    
+    $('#tablemateria').on("change", ".onoffswitch-checkbox", function() {
+        var self = this;
+        var id_Materia = $(this).data("materia-id");
+        var fk_Estado = this.checked ? 1 : 2;
+
+        $.ajax({
+            url: "/instituto/Includes/sql.php", // Reemplaza con la ruta correcta a tu archivo PHP
+            type: "POST",
+            data: {
+                id_Materia: id_Materia,
+                fk_Estado: fk_Estado
+            },
+            success: function(response) {
+                var messageDiv = $('#message'); // Elemento donde se mostrará el mensaje
+                messageDiv.html(response); // Coloca el mensaje en el elemento
+                setTimeout(function() {
+                    messageDiv.html(''); // Borra el mensaje después de un tiempo
+                    // Actualiza los datos de la tabla según tus necesidades
+                }, 2000);
+            },
+            error: function(error) {
+                console.log("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+});
+</script>
+

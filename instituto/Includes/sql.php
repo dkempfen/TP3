@@ -300,6 +300,70 @@ if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
   header("Location: /instituto/Adman/lista_usuarios.php");
   exit();
 }
+
+
+
+function actualizarEstadoMaterias()
+{
+    session_start();
+    if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado'])) {
+        $usuario_id = $_POST['id_Materia'];
+        $estado = isset($_POST["fk_Estado"]) ? intval($_POST["fk_Estado"]) : 0;
+
+        $estados = ($estado == 1) ? "Habilitado" : "Inhabilitado" ;
+
+        global $pdo;
+        $sql = "SELECT Id_Estado FROM Estado WHERE Descripcion_Estado = ?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$estados]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$result) {
+          $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'El Estado seleccionado no existe.'
+          ];
+          return;
+        }
+  
+        $estados = $result['Id_Estado'];
+  
+        // La consulta SQL se actualiza para usar los marcadores de posición
+        global $pdo;
+        $sql = "UPDATE Materia SET fk_Estado = :fk_Estado WHERE id_Materia = :id_Materia";
+        $stmt = $pdo->prepare($sql);
+
+        // Vincula los valores a los marcadores de posición
+        $stmt->bindParam(':fk_Estado', $estado, PDO::PARAM_INT);
+        $stmt->bindParam(':id_Materia', $usuario_id, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Estado de usuario actualizado exitosamente'
+            ];
+        } else {
+            $_SESSION['
+            message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar el estado del usuario.'
+            ];
+        }
+    } else {
+        $_SESSION['message'] = [
+            'type' => 'error',
+            'text' => 'Faltan parámetros requeridos para actualizar el estado del usuario.'
+        ];
+    }
+}
+
+if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
+    actualizarEstadoMaterias();
+
+  header("Location: /instituto/Adman/lista_materia.php");
+  exit();
+}
+
+
   /*function actualizarEstadoUsuario($pdo)
   {
       if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario'])) {
