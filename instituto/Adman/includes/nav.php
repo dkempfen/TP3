@@ -10,7 +10,8 @@ $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-  <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="/instituto/Imagenes/profiles/<?php echo $nueva_foto; ?>"
+<div class="app-sidebar__user" style="margin: -4px;">
+    <img class="app-sidebar__user-avatar" src="/instituto/Imagenes/profiles/<?php echo $nueva_foto; ?>"
       alt="User Image">
     <div>
       <p class="app-sidebar__user-name"><?= $_SESSION['nombre']?></p>
