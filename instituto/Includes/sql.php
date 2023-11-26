@@ -396,6 +396,80 @@ if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
   actualizarEstadoUsuario($pdo);*/
 
 
+////////////CAMBIO CLAVE///////////////
+
+
+function cambioClave()
+{
+    session_start();
+
+    global $pdo;
+
+    // Obtener el ID de usuario de la sesión
+    if (!isset($_SESSION['id_usuario'])) {
+        exit('El usuario no ha iniciado sesión');
+    }
+
+    $usuario_id = $_SESSION['id_usuario'];
+    $oldPassword = $_POST["old_password"];
+    $newPassword = $_POST["new_password"];
+    $confirmNewPassword = $_POST["confirm_new_password"];
+
+    $sql = "SELECT Password FROM Usuario WHERE Id_Usuario = :usuario_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':usuario_id', $usuario_id);
+    $stmt->execute();
+    $row = $stmt->fetch();
+    $clave_actual_almacenada_db = trim($row['Password']);
+
+    //$clave_actual_almacenada_db = $oldPassword;
+
+    if (empty($oldPassword) || empty($newPassword) || empty($confirmNewPassword)) {
+        $_SESSION['password_message'] = [
+            'type' => 'error',
+            'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
+        ];
+    } elseif ($oldPassword !== $clave_actual_almacenada_db) {
+   
+
+        $_SESSION['password_message'] = ['type' => 'error', 'text' => 'La contraseña actual ingresada no coincide con la contraseña almacenada.'];
+    } else {
+        // La contraseña actual es correcta, proceder con el cambio de contraseña
+        if ($newPassword === $confirmNewPassword) {
+            // Hash de la nueva contraseña
+            $hashNuevaContrasena = $newPassword;
+
+            // Actualizar la contraseña en la base de datos
+            $updateSql = "UPDATE Usuario SET Password = :new_password WHERE Id_Usuario = :usuario_id";
+            $updateStmt = $pdo->prepare($updateSql);
+            $updateStmt->bindParam(':new_password', $hashNuevaContrasena);
+            $updateStmt->bindParam(':usuario_id', $usuario_id);
+            $updateStmt->execute();
+
+            if ($updateStmt->rowCount() > 0) {
+                // Contraseña actualizada con éxito
+                $_SESSION['password_message'] = ['type' => 'success', 'text' => '¡Contraseña cambiada exitosamente!'];
+            } else {
+                // Error al actualizar la contraseña en la base de datos
+                $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Error al actualizar la contraseña.'];
+            }
+        } else {
+            // Las contraseñas nuevas no coinciden
+            $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Las contraseñas no coinciden.'];
+        }
+    }
+
+    // Redirigir a la página de perfil después de procesar el formulario
+    header("Location: /instituto/Adman/Pantallas/profile.php");
+    exit();
+}
+
+// Ejemplo de uso
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"])) {
+    cambioClave();
+}
+
+
 
 //////////////////////////////Actulizar User///////////////////////
 function DatosUsuarios()
@@ -1153,7 +1227,7 @@ function obtenerDatosParaGraficoEdades() {
     return $datos_json;
 }
 
-function ()
+function nosedeestafuncion ()
 {
     global $pdo;
 
@@ -1173,302 +1247,3 @@ function ()
 
 
 
-/*function ActulizarUser()
-    {      
-
-  if(isset($_POST['btnmodificar']))
-{session_start();
-  global $pdo;
-  $idusuarioeditar = $_POST['idusuarioeditar'];
-  $nombreeditar = $_POST['nombreeditar'];
-  $maileditar = $_POST['maileditar'];
-  $claveeditar = $_POST['claveeditar'];
-  $listRoleditar = $_POST['listRoleditar'];
-  $listEstadoeditar = $_POST['listEstadoeditar'];
-
-
-  
-  $sql = "UPDATE usuario SET nombre = '$nombreeditar', mail = '$maileditar', clave = '$claveeditar', 
-  rol = '$listRoleditar', estado = '$listEstadoeditar' WHERE usuario_id = '$idusuarioeditar'";
-      $stmt = $pdo->prepare($sql);
-      $stmt->bindParam(":nombreeditar", $nombreeditar);
-      $stmt->bindParam(":maileditar", $maileditar);
-      $stmt->bindParam(":claveeditar", $claveeditar);
-      $stmt->bindParam(":listRoleditar", $listRoleditar);
-      $stmt->bindParam(":listEstadoeditar", $listEstadoeditar);
-      $stmt->bindParam(":idusuarioeditar", $idusuarioeditar);
-      $stmt->execute();
-      
-      if ($stmt->rowCount() === 0) {        
-        $_SESSION['message'] = [
-            'type' => 'info',
-            'text' => 'No se ha actualizado ningún dato.'
-        ];
-    } elseif ($stmt->rowCount() > 0) {
-        // Al menos un dato se actualizó correctamente
-        $_SESSION['message'] = [
-            'type' => 'success',
-            'text' => 'Usuario actualizado exitosamente.'
-        ];
-    } else {
-        // Ocurrió un error al actualizar el usuario
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Ha ocurrido un error al actualizar el usuario.'
-        ];
-    }
-
-    
-      
-}
-}
-
-if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
-  ActulizarUser();
-
-  header("Location: /instituto/Adman/lista_usuarios.php");
-  exit();
-}*/
-/*function ActualizarUser()
-{
-    if (isset($_POST['btnmodificar'])) {
-        session_start();
-        global $pdo;
-        $idusuarioeditar = $_POST['idusuarioeditar'];
-        $nombreeditar = $_POST['nombreeditar'];
-        $maileditar = $_POST['maileditar'];
-        $claveeditar = $_POST['claveeditar'];
-        $listRoleditar = $_POST['listRoleditar'];
-        $listEstadoeditar = $_POST['listEstadoeditar'];
-        $dni_a_editar = $_POST['dni_a_editar'];
-
-        try {
-            $pdo->beginTransaction();
-            
-            // Actualizar los datos en la tabla 'usuario'
-            $queryUsuario = "UPDATE usuario SET Password=:claveeditar, fk_Rol=:listRoleditar, fk_Estado_Usuario=:listEstadoeditar WHERE Id_Usuario=:idusuarioeditar";
-            $stmtUsuario = $pdo->prepare($queryUsuario);
-            $stmtUsuario->bindParam(':claveeditar', $claveeditar);
-            $stmtUsuario->bindParam(':listRoleditar', $listRoleditar);
-            $stmtUsuario->bindParam(':listEstadoeditar', $listEstadoeditar);
-            $stmtUsuario->bindParam(':idusuarioeditar', $idusuarioeditar);
-            $stmtUsuario->execute();
-
-            // Actualizar los datos en la tabla 'persona'
-            $queryPersona = "UPDATE persona SET Nombre=:nombreeditar, Email=:maileditar WHERE DNI=:dni_a_editar";
-            $stmtPersona = $pdo->prepare($queryPersona);
-            $stmtPersona->bindParam(':nombreeditar', $nombreeditar);
-            $stmtPersona->bindParam(':maileditar', $maileditar);
-            $stmtPersona->bindParam(':dni_a_editar', $dni_a_editar);
-            $stmtPersona->execute();
-
-
-            $pdo->commit();
-
-            if (($stmtPersona->rowCount() > 0) || ($stmtUsuario->rowCount() > 0)) {
-                $_SESSION['message'] = [
-                    'type' => 'success',
-                    'text' => 'Usuario actualizado exitosamente.'
-                ];
-            } else {
-                $_SESSION['message'] = [
-                    'type' => 'info',
-                    'text' => 'No se ha actualizado ningún dato.'
-                ];
-            }
-        } catch (PDOException $e) {
-            $pdo->rollBack();
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'Error al actualizar el usuario: ' . $e->getMessage()
-            ];
-        }
-    }
-}
-
-if (isset($_POST['nombreeditar']) && isset($_POST['idusuarioeditar']) && isset($_POST['dni_a_editar']) && isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
-    ActualizarUser();
-
-    header("Location: /instituto/Adman/lista_usuarios.php");
-    exit();
-}
-*/
-
-
-/*function ActualizarUsers()
-{  var_dump($_POST); 
-    if (isset($_POST['btnmodificar'])) {
-        session_start();
-        global $pdo;
-        $idusuarioeditar = $_POST['idusuarioeditar'];
-        $legajoeditar = $_POST['legajoeditar'];
-        $planeditar = $_POST['planeditar'];
-        $claveeditar = $_POST['claveeditar'];
-        $listRoleditar = $_POST['listRoleditar'];
-        $listEstadoeditar = $_POST['listEstadoeditar'];
-        $dnieditar = $_POST['dnieditar'];
-
-        try {
-            $pdo->beginTransaction();
-            
-            // Actualizar los datos en la tabla 'usuario'
-            $queryUsuario = "UPDATE usuario SET Password=:claveeditar, fk_Rol=:listRoleditar, fk_Estado_Usuario=:listEstadoeditar,
-            Legajo=:legajoeditar, fk_Plan=:planeditar, fk_DNI=:dnieditar WHERE Id_Usuario=:idusuarioeditar";
-            $stmtUsuario = $pdo->prepare($queryUsuario);
-            $stmtUsuario->bindParam(':claveeditar', $claveeditar);
-            $stmtUsuario->bindParam(':listRoleditar', $listRoleditar);
-            $stmtUsuario->bindParam(':listEstadoeditar', $listEstadoeditar);
-            $stmtUsuario->bindParam(':idusuarioeditar', $idusuarioeditar);
-            $stmtUsuario->bindParam(':legajoeditar', $legajoeditar);
-            $stmtUsuario->bindParam(':planeditar', $planeditar);
-            $stmtUsuario->bindParam(':dnieditar', $dnieditar);
-            $stmtUsuario->execute();
-
-            // Actualizar los datos en la tabla 'persona'
-           /* $queryPersona = "UPDATE persona SET Nombre=:nombreeditar, Email=:maileditar WHERE DNI=:dni_a_editar";
-            $stmtPersona = $pdo->prepare($queryPersona);
-            $stmtPersona->bindParam(':nombreeditar', $nombreeditar);
-            $stmtPersona->bindParam(':maileditar', $maileditar);
-            $stmtPersona->bindParam(':dni_a_editar', $dni_a_editar);
-            $stmtPersona->execute();*/
-
-
-            /*  $pdo->commit();
-
-            if (($stmtUsuario->rowCount() > 0)) {
-                $_SESSION['message'] = [
-                    'type' => 'success',
-                    'text' => 'Usuario actualizado exitosamente.'
-                ];
-            } else {
-                $_SESSION['message'] = [
-                    'type' => 'info',
-                    'text' => 'No se ha actualizado ningún dato.'
-                ];
-            }
-        } catch (PDOException $e) {
-            $pdo->rollBack();
-            $_SESSION['message'] = [
-                'type' => 'error',
-                'text' => 'Error al actualizar el usuario: ' . $e->getMessage()
-            ];
-        }
-    }
-}*/
-
- /* if (isset($_POST['idusuarioeditar']) && isset($_POST['legajoeditar']) && isset($_POST['dnieditar']) &&
-    isset($_POST['maileditar']) && isset($_POST['claveeditar']) && isset($_POST['listRoleditar']) && isset($_POST['listEstadoeditar'])) {
-        ActualizarUsers();
-
-    header("Location: /instituto/Adman/lista_usuarios.php");
-    exit();
-}*/
-/*-------------canbiar ckave-----------------------*/
- 
-
-/*function cambioClave()
-    {   
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  
-  session_start();
-  global $pdo;
-  $oldPassword = $_POST["old_password"];
-  $newPassword = $_POST["new_password"];
-  $confirmNewPassword = $_POST["confirm_new_password"];
-  $usuario_id = 1; // Cambia esto según tu lógica
-
-  $sql = "SELECT Password FROM Usuario WHERE Id_Usuario = :usuario_id";
-  $stmt = $pdo->prepare($sql);
-  $stmt->bindParam(':usuario_id', $usuario_id);
-  $stmt->execute();
-  $row = $stmt->fetch();
-  $clave_actual_almacenada_db = $row['Password'];
-  if (empty($oldPassword) || empty($newPassword) || empty($confirmNewPassword)) {
-    $_SESSION['password_message'] = [
-        'type' => 'error',
-        'text' => 'Debe completar todos los datos. Por favor, llene todos los campos requeridos.'
-    ];
-  } elseif ($oldPassword !== $clave_actual_almacenada_db) {
-      $_SESSION['password_message'] = ['type' => 'error', 'text' => 'La contraseña actual ingresada no coincide con la contraseña almacenada.'];
-  } elseif ($newPassword !== $confirmNewPassword) {
-      $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Las contraseñas no coinciden. No se pudo cambiar la contraseña.'];
-  } else {
-        try {
-            $updateSql = "UPDATE Usuario SET Password = :new_password WHERE Id_Usuario = :usuario_id";
-            $updateStmt = $pdo->prepare($updateSql);
-            $updateStmt->bindParam(':new_password', $newPassword);
-            $updateStmt->bindParam(':usuario_id', $usuario_id);
-            $updateStmt->execute();
-            $_SESSION['password_message'] = ['type' => 'success', 'text' => '¡Contraseña cambiada exitosamente!'];
-        } catch (PDOException $e) {
-            $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Error al actualizar la contraseña: ' . $e->getMessage()];
-        }
-    }    
-
-
-  header("Location: /instituto/Adman/Pantallas/profile.php");
-  exit();
-}
-if (isset($_SESSION['password_message'])) {
-  $messages = $_SESSION['password_message'];
-  unset($_SESSION['password_message']);
-  showConfirmationMessage($messages);
-}
-
-}
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  if (isset($_POST["token"])) {
-
-  cambioClave();
-}}*/
-
-
-
-?>
-
-<?php
-// Conexión a la base de datos (debes configurar tus propios detalles de conexión)
-
-// Verifica si se recibió el código del plan como parámetro POST
-if (isset($_POST['codPlan'])) {
-    $codPlan = $_POST['codPlan'];
-
-    // Consulta SQL para obtener los detalles del plan
-    $sql = "SELECT dp.Id_Detalle_Plan, m.Anio_Carrera, m.Promocional, m.id_Materia, m.Descripcion, pr.Nombre, pr.Apellido
-            FROM Detalle_Plan dp
-            LEFT JOIN Materia m ON dp.fk_Materia = m.id_Materia
-            LEFT JOIN Materia_Profesor mp ON dp.fk_Materia = mp.id_Materia
-            LEFT JOIN Usuario u ON u.Id_Usuario = mp.id_Profesor
-            LEFT JOIN Persona pr ON pr.DNI = u.fk_DNI
-            WHERE dp.fk_Plan = :codPlan";
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':codPlan', $codPlan, PDO::PARAM_INT);
-    $stmt->execute();
-
-    // Genera el HTML de la tabla con los detalles del plan
-    $html = '';
-
-    if ($stmt->rowCount() > 0) {
-        foreach ($stmt as $row) {
-            $html .= '<tr>';
-            $html .= '<td>' . $row['Anio_Carrera'] . '</td>';
-            $html .= '<td>' . $codPlan . '</td>';
-            $html .= '<td>' . $row['Promocional'] . '</td>';
-            $html .= '<td>' . $row['id_Materia'] . '</td>';
-            $html .= '<td>' . $row['Descripcion'] . '</td>';
-            $html .= '<td>' . $row['Nombre'] . ' ' . $row['Apellido'] . '</td>';
-            $html .= '</tr>';
-        }
-    } else {
-        $html = 'No se encontraron detalles para este plan.';
-    }
-
-    // Devuelve el HTML de los detalles del plan como respuesta
-    echo $html;
-}// else {
-//    echo 'Código de plan no proporcionado.';
-//}//
-
-
-?>

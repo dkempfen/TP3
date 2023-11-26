@@ -63,8 +63,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                                   </div>
                                   <div class="x_content">
                                       <form id="cambiarClaveForm" name="cambiarClaveForm" data-parsley-validate
-                                          class="form-horizontal form-label-left"
-                                          action="/instituto/Includes/sql.php" method="post">
+                                          class="form-horizontal form-label-left" action="/instituto/Includes/sql.php"
+                                          method="post">
                                           <input type="hidden" name="idusuarioDatos" id="idusuarioDatos"
                                               value="<?php  echo $_SESSION['Id_Usuario']?>" required>
 
@@ -136,9 +136,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
                                                   <input id="old_password" name="old_password"
-                                                      class="password form-control col-md-7 col-xs-12" type=""
-                                                      placeholder="**********"  value=""
-                                                    >                                                                         
+                                                      class="password form-control col-md-7 col-xs-12" type="password">
                                               </div>
                                           </div>
                                           <div class="form-group">
@@ -186,57 +184,40 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 }
 require_once '../includes/footer.php';
   ?>
-  <script>
-$(function() {
-    $("input[name='file']").on("change", function() {
-        var formData = new FormData($("#formulario")[0]);
-        var ruta = "/instituto/Includes/cambiofoto.php";
 
-        $.ajax({
-            url: ruta,
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(datos) {
-                $("#respuesta").html(datos);
-                // Redireccionar automáticamente después de 2 segundos (opcional)
-                setTimeout(function() {
-                    window.location.reload();
-                }, 2000);
-            }
-        });
-    });
-})
-  </script>
-    <script>
-$(document).ready(function() {
-    // Asociar un evento al botón de cambio de contraseña
-    $("#change_password_button").on("click", function() {
-        var oldPassword = $("#old_password").val();
-        var newPassword = $("#new_password").val();
+<script>
+function actualizarDatos() {
+    var oldPassword = document.getElementById('old_password').value;
+    var newPassword = document.getElementById('new_password').value;
+    var confirmNewPassword = document.getElementById('confirm_new_password').value;
 
-        // Verificar si las contraseñas no están vacías
-        if (oldPassword === "" || newPassword === "") {
-            console.log("Por favor, complete ambos campos.");
-            return;
+    // Realizar la verificación en el lado del cliente antes de enviar la solicitud al servidor
+    if (oldPassword === '' || newPassword === '' || confirmNewPassword === '') {
+        alert('Debe completar todos los campos.');
+        return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        alert('La nueva contraseña y la confirmación no coinciden.');
+        return;
+    }
+
+    // Envía los datos al servidor para la verificación y actualización
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/instituto/Includes/sql.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Manejar la respuesta del servidor
+            alert(xhr.responseText);
         }
+    };
 
-        // Realizar la solicitud AJAX para cambiar la contraseña
-        $.ajax({
-            type: "POST",
-            url: "/instituto/Includes/sql.php",
-            data: { old_password: oldPassword, new_password: newPassword },
-            success: function(response) {
-                console.log(response);
-                // Si la respuesta es exitosa, mostrar un mensaje y recargar la página
-                alert(response);
-                window.location.reload();
-            },
-            error: function(xhr, status, error) {
-                console.log("Error en la solicitud AJAX:", error);
-            }
-        });
-    });
-});
-    </script>
+    // Envía los datos al servidor
+    var data = 'old_password=' + encodeURIComponent(oldPassword) +
+        '&new_password=' + encodeURIComponent(newPassword) +
+        '&confirm_new_password=' + encodeURIComponent(confirmNewPassword);
+    xhr.send(data);
+}
+  </script>
+
