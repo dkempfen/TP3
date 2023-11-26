@@ -469,6 +469,50 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"])) {
     cambioClave();
 }
 
+function mailPersonal()
+{
+    session_start();
+
+    global $pdo;
+
+    // Obtener el ID de usuario de la sesión
+    if (!isset($_SESSION['dni'])) {
+        exit('El dni no ha iniciado sesión');
+    }
+
+    $DNI = $_SESSION['dni'];
+    $emailPerfil = $_POST["emailPerfil"];
+   
+        // La contraseña actual es correcta, proceder con el cambio de contraseña
+       
+            // Hash de la nueva contraseña
+
+            // Actualizar la contraseña en la base de datos
+            $updateSql = "UPDATE Persona SET Email = :emailPerfil WHERE DNI = :DNI";
+            $updateStmt = $pdo->prepare($updateSql);
+            $updateStmt->bindParam(':emailPerfil', $emailPerfil);
+            $updateStmt->bindParam(':DNI', $DNI);
+            $updateStmt->execute();
+
+            if ($updateStmt->rowCount() > 0) {
+                // Contraseña actualizada con éxito
+                $_SESSION['password_message'] = ['type' => 'success', 'text' => '¡Email cambiado exitosamente!'];
+            } else {
+                // Error al actualizar la contraseña en la base de datos
+                $_SESSION['password_message'] = ['type' => 'error', 'text' => 'Error al actualizar el email.'];
+            }
+        
+    
+
+    // Redirigir a la página de perfil después de procesar el formulario
+    header("Location: /instituto/Adman/Pantallas/profile.php");
+    exit();
+}
+
+// Ejemplo de uso
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["tokenMail"])) {
+    mailPersonal();
+}
 
 
 //////////////////////////////Actulizar User///////////////////////

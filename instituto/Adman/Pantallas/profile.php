@@ -116,9 +116,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                                                   for="last-name">Correo electronico
                                               </label>
                                               <div class="col-md-6 col-sm-6 col-xs-12">
-                                                  <input type="text" id="last-name" name="email"
+                                                  <input type="text" id="emailPerfil" name="emailPerfil"
                                                       class="password form-control col-md-7 col-xs-12"
                                                       value="<?= $_SESSION['mail']; ?>">
+                                              </div>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 btonp">
+                                                  <button type="submit" name="tokenMail"
+                                                      class="btn btn-success btn-perfilactualizar">Actualizar
+                                                      Mail</button>
                                               </div>
                                           </div>
 
@@ -161,7 +169,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                                               <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 btonp">
                                                   <button type="submit" name="token"
                                                       class="btn btn-success btn-perfilactualizar">Actualizar
-                                                      Datos</button>
+                                                      clave</button>
                                               </div>
                                           </div>
                                       </form>
@@ -190,6 +198,10 @@ function actualizarDatos() {
     var oldPassword = document.getElementById('old_password').value;
     var newPassword = document.getElementById('new_password').value;
     var confirmNewPassword = document.getElementById('confirm_new_password').value;
+    var emailPerfil = document.getElementById('emailPerfil').value;
+
+
+    emailPerfil
 
     // Realizar la verificación en el lado del cliente antes de enviar la solicitud al servidor
     if (oldPassword === '' || newPassword === '' || confirmNewPassword === '') {
@@ -216,7 +228,8 @@ function actualizarDatos() {
     // Envía los datos al servidor
     var data = 'old_password=' + encodeURIComponent(oldPassword) +
         '&new_password=' + encodeURIComponent(newPassword) +
-        '&confirm_new_password=' + encodeURIComponent(confirmNewPassword);
+        '&confirm_new_password=' + encodeURIComponent(confirmNewPassword) +
+        '&emailPerfil=' + encodeURIComponent(emailPerfil);
     xhr.send(data);
 }
   </script>
