@@ -157,44 +157,16 @@ if ($pdo) {
                     echo '<p><strong>Estado:</strong> ' . ($fila['Estado_Id_Estado'] == 1 ? 'Habilitado' : 'Inhabilitado') . '</p>';
                     echo '<p><strong>Fecha Inicio:</strong> ' . $fila['Fecha_Inicio'] . '</p>';
                     echo '<p><strong>Fecha Final:</strong> ' . $fila['Fecha_Final'] . '</p>';
-                    
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["archivoPlan"])) {
-                        // Obtener el código del plan y el archivo subido
-                        $cod_Plan = $_POST["cod_Plan"];
-                        $archivoPlan = $_FILES["archivoPlan"];
-                    
-                        // Verificar si se subió el archivo sin errores
-                        if ($archivoPlan["error"] == UPLOAD_ERR_OK) {
-                            // Definir la ruta de almacenamiento
-                            $rutaAlmacenamiento = '/instituto/documentos/plan/';
-                    
-                            // Obtener información del archivo
-                            $nombreArchivo = basename($archivoPlan["name"]);
-                            $rutaArchivo = $rutaAlmacenamiento . $nombreArchivo;
-                    
-                            // Mover el archivo a la ubicación deseada
-                            move_uploaded_file($archivoPlan["tmp_name"], $rutaArchivo);
-                    
-                            // Llamar a la función para insertar el documento en la base de datos
-                            $filasAfectadas = insertarDocumento($cod_Plan, $nombreArchivo, $rutaArchivo);
-                    
-                            if ($filasAfectadas > 0) {
-                                echo "El documento se ha insertado correctamente en la base de datos.";
-                            } else {
-                                echo "Hubo un problema al insertar el documento en la base de datos.";
-                            }
-                        } else {
-                            echo "Error al subir el archivo.";
-                        }
-                    }
-                    
-                    echo '<form action="/instituto/Includes/sqluser.php" method="post" enctype="multipart/form-data">';
+                
+                    echo '<div>';
+                    echo '<form action="/instituto/Includes/archivosPlan.php" class="formArchivoPlan" method="post" enctype="multipart/form-data">';
                     echo '<div class="form-group">';
                     echo '<input type="file" class="form-control-file" name="archivoPlan" id="archivoPlan">';
                     echo '</div>';
                     echo '<input type="hidden" name="cod_Plan" value="' . $fila['cod_Plan'] . '">';
                     echo '</form>';
                     
+                    echo '</div>';
                     if ($fila['Descripcion_Documentacion'] !== null) {
                         // Obtener el nombre del archivo si está presente en la base de datos
                         $nombreArchivo = isset($fila['Descripcion_Documentacion']) ? $fila['Descripcion_Documentacion'] : '';
@@ -208,6 +180,7 @@ if ($pdo) {
                         // Mostrar el formulario para subir un archivo
                         
                     }
+               
                     echo '</div>';
                     echo '<div class="card-footer">';
                     echo '<div class="d-flex justify-content-end">';
@@ -441,4 +414,28 @@ function mostrarCrearNuevoPlan() {
 
 
 }
+
+
+$(function() {
+    $(".formArchivoPlan input[name='archivoPlan']").on("change", function() {
+        var formData = new FormData($(this).closest(".formArchivoPlan")[0]);
+        var ruta = "/instituto/Includes/archivosPlan.php";
+
+        $.ajax({
+            url: ruta,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(datos) {
+                $("#respuesta").html(datos);
+                // Redireccionar automáticamente después de 2 segundos (opcional)
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+    });
+})
 </script>
+

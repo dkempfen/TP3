@@ -42,11 +42,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
                               <span class="">
                                   <div class="btn btn-info btn-lg btn-cambiar">
-                                      <form method="post" id="formulario" enctype="multipart/form-data" action="/instituto/Includes/cambiofoto.php">
+                                      <form method="post" id="formulario" enctype="multipart/form-data"
+                                          action="/instituto/Includes/cambiofoto.php">
                                           <label for="file">Cambiar imagen</label>
                                           <input type="file" name="file" id="file" accept="image/*" class="file-input">
-
-
                                       </form>
                                   </div>
                               </span>
@@ -215,7 +214,6 @@ $(function() {
     });
 })
 
-<script>
 function actualizarDatos() {
     var oldPassword = document.getElementById('old_password').value;
     var newPassword = document.getElementById('new_password').value;
@@ -255,9 +253,9 @@ function actualizarDatos() {
     xhr.send(data);
 }
   </script>
-<script>
+  <script>
 document.getElementById('formulario').addEventListener('submit', function() {
     // Recargar la página después de enviar el formulario
     location.reload();
 });
-</script>
+  </script>
