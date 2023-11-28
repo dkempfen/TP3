@@ -132,7 +132,7 @@ function cambiarFotoPerfil()
 
     $sql = "SELECT cp.nueva_foto 
             FROM cambio_foto_perfil cp
-            LEFT JOIN Usuario u ON cp.usuario_id = u.Id_Usuario";
+            INNER JOIN Usuario u ON cp.usuario_id = u.Id_Usuario";
     $fotocambio = $pdo->prepare($sql);
     $fotocambio->execute();
 
