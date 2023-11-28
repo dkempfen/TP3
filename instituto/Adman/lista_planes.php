@@ -45,7 +45,6 @@ if ($pdo) {
 
 
 
-
 ?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -93,7 +92,7 @@ if ($pdo) {
 
         <div class="row espaciado-entre-filas align-items-center">
 
-        <form id="busquedaForm" class="form-inline mb-5" action="/instituto/Adman/lista_planes.php" method="GET">
+            <form id="busquedaForm" class="form-inline mb-5" action="/instituto/Adman/lista_planes.php" method="GET">
                 <div class="form-group mb-2">
                     <label for="carrera" class="label-spacing">Carrera:</label>
                     <input type="text" class="form-control  " id="carrera">
@@ -159,13 +158,56 @@ if ($pdo) {
                     echo '<p><strong>Fecha Inicio:</strong> ' . $fila['Fecha_Inicio'] . '</p>';
                     echo '<p><strong>Fecha Final:</strong> ' . $fila['Fecha_Final'] . '</p>';
                     
-                    // Verificar si hay una descripción de archivo
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["archivoPlan"])) {
+                        // Obtener el código del plan y el archivo subido
+                        $cod_Plan = $_POST["cod_Plan"];
+                        $archivoPlan = $_FILES["archivoPlan"];
+                    
+                        // Verificar si se subió el archivo sin errores
+                        if ($archivoPlan["error"] == UPLOAD_ERR_OK) {
+                            // Definir la ruta de almacenamiento
+                            $rutaAlmacenamiento = '/instituto/documentos/plan/';
+                    
+                            // Obtener información del archivo
+                            $nombreArchivo = basename($archivoPlan["name"]);
+                            $rutaArchivo = $rutaAlmacenamiento . $nombreArchivo;
+                    
+                            // Mover el archivo a la ubicación deseada
+                            move_uploaded_file($archivoPlan["tmp_name"], $rutaArchivo);
+                    
+                            // Llamar a la función para insertar el documento en la base de datos
+                            $filasAfectadas = insertarDocumento($cod_Plan, $nombreArchivo, $rutaArchivo);
+                    
+                            if ($filasAfectadas > 0) {
+                                echo "El documento se ha insertado correctamente en la base de datos.";
+                            } else {
+                                echo "Hubo un problema al insertar el documento en la base de datos.";
+                            }
+                        } else {
+                            echo "Error al subir el archivo.";
+                        }
+                    }
+                    
+                    echo '<form action="/instituto/Includes/sqluser.php" method="post" enctype="multipart/form-data">';
+                    echo '<div class="form-group">';
+                    echo '<input type="file" class="form-control-file" name="archivoPlan" id="archivoPlan">';
+                    echo '</div>';
+                    echo '<input type="hidden" name="cod_Plan" value="' . $fila['cod_Plan'] . '">';
+                    echo '</form>';
+                    
                     if ($fila['Descripcion_Documentacion'] !== null) {
-                        echo '<p><strong>Archivo del Plan:</strong> ' . $fila['Descripcion_Documentacion'] . '</p>';
+                        // Obtener el nombre del archivo si está presente en la base de datos
+                        $nombreArchivo = isset($fila['Descripcion_Documentacion']) ? $fila['Descripcion_Documentacion'] : '';
+                    
+                        // Construir la ruta completa al archivo
+                        $rutaCompletaArchivo = "/instituto/documentos/plan/$nombreArchivo";
+                    
+                        echo '<p><strong>Archivo del Plan:</strong> <a href="' . $rutaCompletaArchivo . '" download>' . $nombreArchivo . '</a></p>';
                     } else {
                         echo '<p><strong>Archivo del Plan:</strong> No se ha adjuntado archivo</p>';
+                        // Mostrar el formulario para subir un archivo
+                        
                     }
-                
                     echo '</div>';
                     echo '<div class="card-footer">';
                     echo '<div class="d-flex justify-content-end">';
@@ -176,8 +218,9 @@ if ($pdo) {
                     data-codigo-plan="' . $fila['cod_Plan'] . '" data-nombre-tarjeta="' . $fila['Carrera'] . '"
                     data-estado-tarjeta="' . $fila['Estado_Id_Estado'] .'" data-fecha-inicio="' . $fila['Fecha_Inicio'] . '"
                     data-fecha-final="' . $fila['Fecha_Final'] . '">Editar</button>';
-                    
-                    echo '<button class="btn btn-info btn-sm" onclick="mostrarInfoAdicional(' . $fila['cod_Plan'] . ')">Más Información</button>';
+
+                    echo '<button class="btn btn-primary btn-sm mr-2" type="button" onclick="mostrarInfoAdicional(this)"
+                    data-codigo-planMateria="' . $fila['cod_Plan'] . '">mostrarInfoAdicional</button>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';

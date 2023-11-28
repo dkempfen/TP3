@@ -5,7 +5,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
   ?>
   <?php
 
-  $nueva_foto = cambiarFotoPerfil('cambio_foto_perfil');
+  $nueva_foto = cambiarFotoPerfil();
   if ($pdo) {
     // Query para obtener los datos de la tabla 'usuarios'
     $sql = "SELECT * from Usuario";
@@ -42,7 +42,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
                               <span class="">
                                   <div class="btn btn-info btn-lg btn-cambiar">
-                                      <form method="post" id="formulario" enctype="multipart/form-data">
+                                      <form method="post" id="formulario" enctype="multipart/form-data" action="/instituto/Includes/cambiofoto.php">
                                           <label for="file">Cambiar imagen</label>
                                           <input type="file" name="file" id="file" accept="image/*" class="file-input">
 
@@ -192,6 +192,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 }
 require_once '../includes/footer.php';
   ?>
+  <script>
+$(function() {
+    $("input[name='file']").on("change", function() {
+        var formData = new FormData($("#formulario")[0]);
+        var ruta = "/instituto/Includes/cambiofoto.php";
+
+        $.ajax({
+            url: ruta,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(datos) {
+                $("#respuesta").html(datos);
+                // Redireccionar automáticamente después de 2 segundos (opcional)
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+    });
+})
 
 <script>
 function actualizarDatos() {
@@ -233,4 +255,9 @@ function actualizarDatos() {
     xhr.send(data);
 }
   </script>
-
+<script>
+document.getElementById('formulario').addEventListener('submit', function() {
+    // Recargar la página después de enviar el formulario
+    location.reload();
+});
+</script>

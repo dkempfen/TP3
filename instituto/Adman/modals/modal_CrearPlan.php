@@ -11,13 +11,6 @@ $DatosPlan = DatosPlan();
 ?>
 
 
-<?php 
-
-
-foreach ($DatosPlan as $DatosPlan) {
-    // Code to process $DatosPersona goes here
- ?>
-
 
 
 <div class="modal fade" id="modalCrearPlan" tabindex="-1" role="dialog"
@@ -36,9 +29,8 @@ foreach ($DatosPlan as $DatosPlan) {
 
 
 
-                    <input type="hidden" name="idPlancrear" id="idPlancrear"
-                        value="<?php  echo $DatosPlan['cod_Plan']?>">
 
+                        <input type="hidden" name="idPlancrear" id="idPlancrear" value="">
 
                     <div class="form-group">
                         <label for="control-label">Codigo Plan:</label>
@@ -82,7 +74,7 @@ foreach ($DatosPlan as $DatosPlan) {
         </div>
     </div>
 </div>
-<?php } ?>
+
 
 
 

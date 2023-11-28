@@ -164,10 +164,11 @@ if (isset($_POST['btnmodificarPlan'])) {
     }
 }
 
-function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan, $rutaArchivo, $nombreArchivo) {
+function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan) {
     session_start();
     global $pdo;
 
+    // SQL para actualizar la información del plan
     $sql = "UPDATE Plan SET Carrera = ?, Estado_Id_Estado = ?, Fecha_Inicio = ?, Fecha_Final = ? WHERE cod_Plan = ?";
     $stmt = $pdo->prepare($sql);
 
@@ -175,14 +176,6 @@ function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFina
     $stmt->execute([$nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFinal, $cod_Plan]);
 
     if ($stmt->rowCount() > 0) {
-        // Insertar o actualizar la información del archivo adjunto en la base de datos
-        $estadoDocumentacion = 1; // Cambiar a 1 para indicar el estado deseado
-
-        $sql = "INSERT INTO Documentacion (Descripcion, Estado_Documentacion, Ubicacion, fk_Plan) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE Descripcion = ?, Estado_Documentacion = ?, Ubicacion = ?";
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->execute([$nombreArchivo, $estadoDocumentacion, $rutaArchivo, $cod_Plan, $nombreArchivo, $estadoDocumentacion, $rutaArchivo]);
-
         $_SESSION['messageEditarPlan'] = [
             'type' => 'success',
             'text' => 'Datos del plan actualizados exitosamente'
@@ -194,6 +187,7 @@ function guardarCambios($nombreTarjeta, $estadoTarjeta, $fechaInicio, $fechaFina
         ];
     }
 }
+
 ///////////////////////////////////////////////////
 
 function InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fechaFinalCrear, $estadoPlanCrear) {
@@ -295,8 +289,36 @@ if (isset($_POST['btnmCrearNota'])) {
     exit();
 }
 
+////////////////actualizar archivo plan///////////
 
+function insertarDocumento($cod_Plan, $nombreArchivo, $rutaArchivo) {
+    global $pdo;
 
+    // Estado predeterminado (puedes cambiarlo según tus necesidades)
+    $estadoDocumentacion = 1;
+
+    try {
+        // SQL para insertar o actualizar información del documento adjunto
+        $sql = "INSERT INTO Documentacion (Descripcion_Documentacion, Estado_Documentacion, Ubicacion, fk_Plan) 
+                VALUES (?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE Descripcion_Documentacion = VALUES(Descripcion_Documentacion), 
+                                            Estado_Documentacion = VALUES(Estado_Documentacion), 
+                                            Ubicacion = VALUES(Ubicacion)";
+        $stmt = $pdo->prepare($sql);
+
+        // Ejecutar la consulta
+        $stmt->execute([$nombreArchivo, $estadoDocumentacion, $rutaArchivo, $cod_Plan]);
+
+        return $stmt->rowCount(); // Devuelve el número de filas afectadas
+    } catch (PDOException $e) {
+        // Manejar errores de la base de datos según tus necesidades
+        echo "Error en la base de datos: " . $e->getMessage();
+        return 0; // Indica que no se pudo completar la operación
+    }
+}
+
+  
+///////////////ActualizarNuevaNota
 function ActualizarNuevaNota($idMateriaEditar, $parcial1Editar, $recuperatorio1Editar, $parcial2Editar, $recuperatorio2Editar, $finalnotaEditar) {
     session_start();
     global $pdo;

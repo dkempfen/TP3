@@ -25,6 +25,7 @@ if (!empty($_POST) && $_SERVER['REQUEST_URI'] === '/instituto/Login/index.php') 
         INNER JOIN Estado e on e.Id_Estado= u.fk_Estado_Usuario
          /*left JOIN Carrera_Alumno ca on ca.id_Alumno=A.alumno_id*/
         left JOIN Plan pn on pn.cod_Plan=u.fk_Plan
+        left JOIN cambio_foto_perfil cp on cp.usuario_id=u.Id_Usuario
          WHERE User='$login' AND Password='$pass'";
         $query = $pdo->prepare($sql);
         $query->execute([$login, $pass]);
@@ -53,6 +54,7 @@ if (!empty($_POST) && $_SERVER['REQUEST_URI'] === '/instituto/Login/index.php') 
                 $_SESSION['dni'] = $result['fk_DNI'];
                 $_SESSION['plan'] = $result['fk_Plan'];
                 $_SESSION['libromatriz'] = $result['Libromatriz'];
+                $_SESSION['nueva_foto'] = $result['nueva_foto'];
                // Resto de las asignaciones para el rol 3
 
                 // Mostrar el mensaje de carga y redirigir después de un breve retraso

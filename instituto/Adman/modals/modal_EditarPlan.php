@@ -50,17 +50,7 @@ $DatosPlan = DatosPlan();
                         <input type="date" class="form-control" id="fechaFinal">
                     </div>
 
-                    <div class="form-group">
-                        <label for="adjunto" style="font-size: 16px;">Adjuntar archivo del Plan:</label>
-                        <div id="archivoActual_<?php echo $DatosPlan['cod_Plan']; ?>">
-                            <?php
-                            if (!empty($DatosPlan['Descripcion'])) {
-                                echo '<span style="color: #000; font-size: 18px;">Archivo actual: ' . $DatosPlan['Descripcion'] . '</span>';
-                            }
-                            ?>
-                        </div>
-                        <input type="file" class="form-control-file" name="archivoPlan" id="archivoPlan">
-                    </div>
+                   
                 </form>
 
 

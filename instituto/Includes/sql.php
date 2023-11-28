@@ -126,20 +126,22 @@ function nuevo_archivo($table)
 
 
 /*--------------------------------------------------------------*/
-function cambiarFotoPerfil($table)
+function cambiarFotoPerfil()
 {
-  global $pdo;
+    global $pdo;
 
-  $sql = "SELECT nueva_foto FROM " . $table;
-  $fotocambio = $pdo->prepare($sql);
-  $fotocambio->execute();
+    $sql = "SELECT cp.nueva_foto 
+            FROM cambio_foto_perfil cp
+            LEFT JOIN Usuario u ON cp.usuario_id = u.Id_Usuario";
+    $fotocambio = $pdo->prepare($sql);
+    $fotocambio->execute();
 
-  $rows = $fotocambio->fetch(PDO::FETCH_ASSOC);
-  if ($rows) {
-    return $rows['nueva_foto'];
-  }
+    $rows = $fotocambio->fetch(PDO::FETCH_ASSOC);
+    if ($rows) {
+        return $rows['nueva_foto'];
+    }
 
-  return ""; 
+    return "";
 }
 
 
