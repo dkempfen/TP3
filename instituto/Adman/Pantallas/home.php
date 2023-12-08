@@ -93,9 +93,14 @@ if (isset($_SESSION['messageFinCursada'])) {
                         foreach ($rowDatosAranceles as $rowDatosAranceles) {
                             echo '<tr>';
                             echo '<td>';
-                            // Agrega un enlace para descargar el archivo
-                            echo '<a href="/' . $rowDatosAranceles['Descripcion_Documentacion'] . '" download>' . $rowDatosAranceles['Descripcion_Documentacion'] . '</a>';
-                            echo '</td>';
+                                        if ($rowDatosAranceles['Descripcion_Documentacion'] !== null) {
+                                            $nombreArchivo = $rowDatosAranceles['Descripcion_Documentacion'];
+                                            $rutaCompletaArchivo = "/instituto/documentos/plan/" . $rowDatosAranceles['Ubicacion'] . '/' . $nombreArchivo;
+                                            echo '<a href="' . $rutaCompletaArchivo . '" download>' . $nombreArchivo . '</a>';
+                                        } else {
+                                            echo 'No se ha adjuntado archivo';
+                                        }
+                                        echo '</td>';
                             echo '<td>' . $rowDatosAranceles['fecha_documentacion'] . '</td>';
                             echo '</tr>';
                         }

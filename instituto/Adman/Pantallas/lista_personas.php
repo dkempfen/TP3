@@ -2,8 +2,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/includes/header.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/modals.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/crearUsuario.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/models/edidtar_user.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/crearUsuario.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/modals/edidtar_user.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
 
@@ -28,7 +28,7 @@ if ($pdo) {
 
     
     
-    ?>
+?>
 
 <main class="app-content">
     <div class="app-title">
@@ -131,7 +131,17 @@ if ($pdo) {
                                         echo '<td>' . $row['Nombre'] . '</td>';
                                         echo '<td>' . $row['Apellido'] . '</td>';
                                         echo '<td>' . $row['Fechanacimiento'] . '</td>';
-                                        echo '<td>' . $row['sexo'] . '</td>';
+                                        echo '<td>';
+                                        if ($row['sexo'] == 'M') {
+                                            echo 'Mujer';
+                                        } elseif ($row['sexo'] == 'H') {
+                                            echo 'Hombre';
+                                        } elseif ($row['sexo'] == 'ND') {
+                                            echo 'No Definido';
+                                        } else {
+                                            echo 'Valor Desconocido'; // Puedes ajustar este mensaje según tus necesidades
+                                        }
+                                        echo '</td>';
                                         echo '<td>' . $row['Telefono'] . '</td>';
                                         echo '<td>' . $row['Email'] . '</td>';
                                         echo '<td>' . $row['Domicilio'] . '</td>';

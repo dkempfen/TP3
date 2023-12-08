@@ -1,7 +1,7 @@
 <?php
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_planes.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/subPantallas/lista_planes.php';
 
 
 $DatosPlan = DatosPlan();

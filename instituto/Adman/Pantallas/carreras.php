@@ -22,7 +22,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                 <ul class="custom-menu-list">
                     <!-- Planes de Estudio -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_planes.php">Planes de Estudio</a>
+                        <a class="custom-menu-link" href="/instituto/Adman/subPantallas/lista_planes.php">Planes de Estudio</a>
                        
                     </li>
                 </ul>
@@ -32,7 +32,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                 <ul class="custom-menu-list">
                     <!-- Materias -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/lista_materia.php">Materias</a>
+                        <a class="custom-menu-link" href="/instituto/Adman/subPantallas/lista_materia.php">Materias</a>
                         
                     </li>
                 </ul>
@@ -44,7 +44,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
         <div class="container-carrera">
             <div class="row">
                 <div class="col-md-6" id="columna1">
-                    <a href="<?php echo '/instituto/Adman/carrera_analista.php'; ?>"  class="card">
+                    <a href="<?php echo '/instituto/Adman/subPantallas/carrera_analista.php'; ?>"  class="card">
                         <img src="/instituto/Imagenes/analista.jpeg" alt="Analista de Sistemas" />
                         <div class="centrado">
                             <h3>Analista de Sistemas</h3> <!-- Título centrado -->
@@ -53,7 +53,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                     </a>
                 </div>
                 <div class="col-md-6" id="columna2">
-                    <a href="<?php echo '/instituto/Adman/carrera_redes.php'; ?>"  class="card">
+                    <a href="<?php echo '/instituto/Adman/subPantallas/carrera_redes.php'; ?>"  class="card">
                         <img src="/instituto/Imagenes/redes.jpeg" alt="Redes Informáticas" />
                         <div class="centrado">
                             <h3>Redes Informáticas</h3> <!-- Título centrado -->

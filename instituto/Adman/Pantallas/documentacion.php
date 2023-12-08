@@ -23,13 +23,15 @@ if (isset($_SESSION['messageDocuementacion'])) {
         </div>
         <div class="row">
             <div class="col-md-6">
-                <button class="btn btn-success" type="button" onclick="openModaArchivo()" style="white-space: nowrap;"><i class="fa fa-plus"></i>Archivo
+                <button class="btn btn-success" type="button" onclick="openModaArchivo()"
+                    style="white-space: nowrap;"><i class="fa fa-plus"></i>Archivo
                 </button>
             </div>
             <div class="col-md-6">
 
-                <button class="btn btn-danger" type="button" name="btnABorrarDocMasivos" onclick="borrarMasivo()" style="white-space: nowrap;">
-                <i class="fa fa-trash"></i>Masivo
+                <button class="btn btn-danger" type="button" name="btnABorrarDocMasivos" onclick="borrarMasivo()"
+                    style="white-space: nowrap;">
+                    <i class="fa fa-trash"></i>Masivo
             </div>
         </div>
 
@@ -60,7 +62,26 @@ if (isset($_SESSION['messageDocuementacion'])) {
                                         echo '<td>';
                                         echo '<input type="checkbox" name="documentoSeleccionado[]" value="' . $rowDocumentacion['id_Documentacion'] . '">';
                                         echo '</td>';
-                                        echo '<td>' . $rowDocumentacion['Descripcion_Documentacion'] . '</td>';
+                                        echo '<td>';                                        
+                                        echo '<div>';
+                                        echo '<form action="/instituto/Includes/archivosPlan.php" class="formArchivoPlan" method="post" enctype="multipart/form-data">';
+                                        echo '<input type="hidden" name="id_Documentacion" value="' . $rowDocumentacion['id_Documentacion'] . '">';
+                                        echo '</form>';                                            
+                                        echo '</div>';
+                                            if ($rowDocumentacion['Descripcion_Documentacion'] !== null) {
+                                                // Obtener el nombre del archivo si está presente en la base de datos
+                                                $nombreArchivo = isset($rowDocumentacion['Descripcion_Documentacion']) ? $rowDocumentacion['Descripcion_Documentacion'] : '';
+                                            
+                                                // Construir la ruta completa al archivo
+                                                $rutaCompletaArchivo = "/instituto/documentos/$nombreArchivo";
+                                            
+                                                echo '<p><a href="' . $rutaCompletaArchivo . '" download>' . $nombreArchivo . '</a></p>';
+                                            } else {
+                                                echo '<p><strong>Archivo No se ha adjuntado archivo</p>';
+                                                // Mostrar el formulario para subir un archivo
+                                                
+                                            }                                    
+                                        echo '</td>';
                                         echo '<td id="asunto_' . $rowDocumentacion['id_Documentacion'] . '" contenteditable="false">' . $rowDocumentacion['Asunto'] . '</td>';
                                         echo '<td>' . $rowDocumentacion['fecha_documentacion'] . '</td>';
                                         echo '<td>';
@@ -339,4 +360,28 @@ function borrarMasivoConfirmado(documentosSeleccionados) {
         }
     });
 }
+
+
+
+$(function() {
+    $(".formArchivoPlan input[name='id_Documentacion']").on("change", function() {
+        var formData = new FormData($(this).closest(".formArchivoPlan")[0]);
+        var ruta = "/instituto/Includes/sql.php";
+
+        $.ajax({
+            url: ruta,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(datos) {
+                $("#respuesta").html(datos);
+                // Redireccionar automáticamente después de 2 segundos (opcional)
+                setTimeout(function() {
+                    window.location.reload();
+                }, 2000);
+            }
+        });
+    });
+})
 </script>

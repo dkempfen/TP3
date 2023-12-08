@@ -56,6 +56,17 @@ $DatosPersonas = DatosPersonas();
                                 <input type="date" class="form-control" name="fechanacimiento" id="fechanacimiento"
                                     required>
                             </div>
+
+                            <div class="form-group">
+                                <label for="generoAlta">Género:</label>
+                                <select class="form-control" name="generoAlta" id="generoAlta">
+                                    <option value="">--Seleccione--</option>
+                                    <option value="M">Mujer</option>
+                                    <option value="H">Hombre</option>
+                                    <option value="ND">No definido</option>
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="control-label">Telefono:</label>
                                 <input type="number" class="form-control" name="telefono" id="telefono" required>
@@ -75,8 +86,8 @@ $DatosPersonas = DatosPersonas();
                                 <label for="inscripto">Inscripto:</label>
                                 <div class="custom-control custom-switch custom-control-lg">
                                     <input type="hidden" name="inscripto" value="0">
-                                    <input type="checkbox" class="custom-control-input" id="inscripto"
-                                        name="inscripto" value="1"
+                                    <input type="checkbox" class="custom-control-input" id="inscripto" name="inscripto"
+                                        value="1"
                                         <?php echo isset($_POST['inscripto']) && $_POST['inscripto'] == '1' ? 'checked' : ''; ?>>
                                     <label class="custom-control-label custom-control-label-lg" for="inscripto">
                                         <span id="inscripto-label">
@@ -85,7 +96,7 @@ $DatosPersonas = DatosPersonas();
                                     </label>
                                 </div>
                             </div>
-                        
+
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -149,6 +160,7 @@ $(document).ready(function() {
         var inscripto = $("#inscripto").val();
         0; // Asigna 1 si está marcado, 0 si no lo está
         var idusuario = $("#idusuario").val();
+        var generoAlta = $("#generoAlta").val();
 
         console.log('Estado del checkbox "inscripto":', inscripto);
 
@@ -167,6 +179,7 @@ $(document).ready(function() {
                 mail: email,
                 domicilio: domicilio,
                 inscripto: inscripto,
+                generoAlta: generoAlta,
                 btnaltaPersona: 0
             },
             success: function(response) {

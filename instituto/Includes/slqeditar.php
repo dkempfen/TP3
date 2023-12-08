@@ -27,7 +27,7 @@ function showConfirmationMessagesMateria($message) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_materia.php';
+            window.location.href = '/instituto/Adman/subPantallas/lista_materia.php';
         });
     </script>";
 }  
@@ -50,16 +50,17 @@ function showConfirmationMessagesFechaFinal($messageFecha) {
 
 
 
-function actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio, $inscripto) {
+function actualizarUser($dni, $nombre, $apellido,$generoEditar,$fechanacimiento, $telefono, $email, $domicilio, $inscripto) {
     session_start();
     global $pdo;
     
 
-    $sql = "UPDATE Persona SET Nombre = ?, Apellido = ?, Fechanacimiento = ?, Telefono = ?, Email = ?, Domicilio = ?, Inscripto=? WHERE DNI = ?";
+    $sql = "UPDATE Persona SET Nombre = ?, Apellido = ?,sexo=?, Fechanacimiento = ?, Telefono = ?, Email = ?, Domicilio = ?, Inscripto=? 
+    WHERE DNI = ?";
     $stmt = $pdo->prepare($sql);
 
     // Verifica si los valores son nulos antes de ejecutar la consulta
-    $stmt->execute([$nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto,$dni]);
+    $stmt->execute([$nombre, $apellido,$generoEditar, $fechanacimiento, $telefono, $email, $domicilio,$inscripto,$dni]);
 
     if ($stmt->rowCount() > 0) {
         $_SESSION['message'] = [
@@ -82,6 +83,7 @@ if (isset($_POST['btnmodificar'])) {
     $dni = $_POST['nuevoDNI'];
     $nombre = $_POST['nombreeditar'];
     $apellido = $_POST['apellidoeditar'];
+    $generoEditar = $_POST['generoEditar'];
     $fechanacimiento = $_POST['fechanacimientoeditar'];
     $telefono = $_POST['telefonoeditar'];
     $email = $_POST['emailoeditar'];
@@ -90,7 +92,7 @@ if (isset($_POST['btnmodificar'])) {
 
 
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
-    actualizarUser($dni, $nombre, $apellido, $fechanacimiento, $telefono, $email, $domicilio,$inscripto);
+    actualizarUser($dni, $nombre, $apellido,$generoEditar, $fechanacimiento, $telefono, $email, $domicilio,$inscripto);
 
     header("Location: /instituto/Adman/Pantallas/lista_personas.php");
     exit();
@@ -142,7 +144,7 @@ if (isset($_POST['btnmodificar'])) {
     }
 }*/
 
-function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto) {
+function AltaPersona($dni, $nombre, $apellido,$generoAlta, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto) {
     session_start();
     global $pdo;
 
@@ -165,9 +167,9 @@ function AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mai
 
         
 
-        $sql = "INSERT INTO Persona (DNI, Nombre, Apellido, Fechanacimiento, Telefono, Email, Domicilio, Inscripto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Persona (DNI, Nombre, Apellido,sexo, Fechanacimiento, Telefono, Email, Domicilio, Inscripto) VALUES (?,?,?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto]);
+        $stmt->execute([$dni, $nombre, $apellido,$generoAlta, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto]);
 
         if ($stmt->rowCount() > 0) {
             $_SESSION['message'] = [
@@ -191,13 +193,14 @@ if (isset($_POST['btnaltaPersona'])) {
     $dni = $_POST['dni'];
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
+    $generoAlta = $_POST['generoAlta'];
     $fechanacimiento = $_POST['fechanacimiento'];
     $telefono = $_POST['telefono'];
     $mail = $_POST['mail'];
     $domicilio = $_POST['domicilio'];
     $inscripto = ($_POST['inscripto']); // Valor por defecto 0 si no está marcado
 
-    AltaPersona($dni, $nombre, $apellido, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
+    AltaPersona($dni, $nombre, $apellido,$generoAlta, $fechanacimiento, $telefono, $mail, $domicilio, $inscripto);
 
     header("Location: /instituto/Adman/Pantallas/lista_personas.php");
     exit();
@@ -334,32 +337,57 @@ if (isset($_POST['btnmodificarMateria'])) {
 
     // Redirige a la página de éxito o error según la sesión 'message'
     if ($_SESSION['message']['type'] === 'success') {
-        header("Location: /instituto/Adman/lista_materia.php");
+        header("Location: /instituto/Adman/subPantallas/lista_materia.php");
     } else {
-        header("Location: /instituto/Adman/lista_materia.php");
+        header("Location: /instituto/Adman/subPantallas/lista_materia.php");
     }
     exit();
 }
 
-/////////////////////Inser insertarNuevoProfesor/////////////////
+/////////////////////Insery Modificar insertarNuevoProfesor/////////////////
 
-function insertarNuevoProfesor($materiaId,$profesorId) {
+function insertarOActualizarProfesor($materiaId, $profesorId) {
     global $pdo;
     session_start();
 
-    $sql = "INSERT INTO Materia_Profesor (id_Materia, id_Profesor) VALUES (?, ?)";
-    $stmt = $pdo->prepare($sql);
+    // Consulta SQL para verificar si ya existe un registro para la materia
+    $sqlVerificar = "SELECT COUNT(*) FROM Materia_Profesor WHERE id_Materia = ?";
+    $stmtVerificar = $pdo->prepare($sqlVerificar);
+    $stmtVerificar->execute([$materiaId]);
+    $existeRegistro = $stmtVerificar->fetchColumn();
 
-    if ($stmt->execute([$materiaId, $profesorId])) {
-        $_SESSION['message'] = [
-            'type' => 'success',
-            'text' => 'Profesor insertado exitosamente en la materia.'
-        ];
+    if ($existeRegistro) {
+        // Si ya existe un registro, actualiza el profesor
+        $sqlActualizar = "UPDATE Materia_Profesor SET id_Profesor = ? WHERE id_Materia = ?";
+        $stmtActualizar = $pdo->prepare($sqlActualizar);
+
+        if ($stmtActualizar->execute([$profesorId, $materiaId])) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Profesor actualizado exitosamente en la materia.'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al actualizar al profesor en la materia.'
+            ];
+        }
     } else {
-        $_SESSION['message'] = [
-            'type' => 'error',
-            'text' => 'Ha ocurrido un error al insertar al profesor en la materia.'
-        ];
+        // Si no existe un registro, inserta el profesor
+        $sqlInsertar = "INSERT INTO Materia_Profesor (id_Materia, id_Profesor) VALUES (?, ?)";
+        $stmtInsertar = $pdo->prepare($sqlInsertar);
+
+        if ($stmtInsertar->execute([$materiaId, $profesorId])) {
+            $_SESSION['message'] = [
+                'type' => 'success',
+                'text' => 'Profesor insertado exitosamente en la materia.'
+            ];
+        } else {
+            $_SESSION['message'] = [
+                'type' => 'error',
+                'text' => 'Ha ocurrido un error al insertar al profesor en la materia.'
+            ];
+        }
     }
 }
 
@@ -368,11 +396,10 @@ if (isset($_POST['btnProfesorMateria'])) {
     $materiaId = $_POST['materiaId'];
     $profesorId = $_POST['profesorId'];
 
+    // Llama a la función para insertar o actualizar al profesor en la materia
+    insertarOActualizarProfesor($materiaId, $profesorId);
 
-    // Llama a la función para insertar al profesor en la materia
-    insertarNuevoProfesor($materiaId,$profesorId);
-
-    header("Location: /instituto/Adman/lista_materia.php");
+    header("Location: /instituto/Adman/subPantallas/lista_materia.php");
     exit();
 }
 
@@ -410,7 +437,7 @@ function InsertarMateria($nombreMateria, $listEstado, $nivelCarrera, $promociona
         ];
     }
 
-    header("Location: /instituto/Adman/lista_materia.php");
+    header("Location: /instituto/Adman/subPantallas/lista_materia.php");
     exit();
 }
 
@@ -427,7 +454,7 @@ if (isset($_POST['btnCrearMateria'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     InsertarMateria($nombreMateria, $listEstado, $nivelCarrera, $promocional);
 
-    header("Location: /instituto/Adman/lista_materia.php");
+    header("Location: /instituto/Adman/subPantallas/lista_materia.php");
     exit();
 }
 

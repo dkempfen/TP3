@@ -26,12 +26,12 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
                         <i class="fas fa-user-tie fa-3x"></i>
                         <div class="ml-4">
                             <h5 class="card-title">Administrativos</h5>
-                            <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=3';?>"
+                            <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=3';?>"
                                 class="stretched-link"></a>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=3';?>" class="text-white">Ver
+                        <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=3';?>" class="text-white">Ver
                             detalle</a>
                         <span><?php echo $totalAdmins ?></span>
                     </div>
@@ -44,12 +44,12 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
                         <i class="fas fa-user-graduate fa-3x"></i>
                         <div class="ml-4">
                             <h5 class="card-title">Alumnos</h5>
-                            <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=1';?>"
+                            <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=1';?>"
                                 class="stretched-link"></a>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=1';?>" class="text-white">Ver
+                        <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=1';?>" class="text-white">Ver
                             detalle</a>
                         <span><?php echo $totalAlumnos?></span>
                     </div>
@@ -62,12 +62,12 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
                         <i class="fas fa-chalkboard-teacher fa-3x"></i>
                         <div class="ml-4">
                             <h5 class="card-title">Profesores</h5>
-                            <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=2';?>"
+                            <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=2';?>"
                                 class="stretched-link"></a>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="<?php echo '/instituto/Adman/lista_usuarios.php?rol=2';?>" class="text-white">Ver
+                        <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php?rol=2';?>" class="text-white">Ver
                             detalle</a>
                         <span><?php echo $totalProfesores ?></span>
                     </div>
@@ -82,11 +82,11 @@ $datos_json_edades = obtenerDatosParaGraficoEdades();
                         </span>
                         <div class="ml-4">
                             <h5 class="card-title">Todos los Usuarios</h5>
-                            <a href="<?php echo '/instituto/Adman/lista_usuarios.php';?>" class="stretched-link"></a>
+                            <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php';?>" class="stretched-link"></a>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <a href="<?php echo '/instituto/Adman/lista_usuarios.php';?>" class="text-white">Ver detalle</a>
+                        <a href="<?php echo '/instituto/Adman/subPantallas/lista_usuarios.php';?>" class="text-white">Ver detalle</a>
                         <span><?php echo $totalUsuarios ?></span>
                     </div>
                 </div>
@@ -195,8 +195,8 @@ function exportarExcel(canvasId, sheetName) {
     // Crear una hoja de trabajo para los datos del gráfico
     var worksheetData = XLSX.utils.aoa_to_sheet([
         ['Sexo', 'Cantidad'],
-        ['Masculino', 10],
-        ['Femenino', 15],
+        ['Hombre', 10],
+        ['Mujer', 15],
         // ... Agrega más filas según tus datos
     ]);
 

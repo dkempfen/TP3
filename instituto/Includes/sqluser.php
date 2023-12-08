@@ -38,7 +38,7 @@ function showConfirmationMessagePlan($messagePlan) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_planes.php';
+            window.location.href = '/instituto/Adman/subPantallas/lista_planes.php';
 
         });
     </script>";
@@ -53,7 +53,7 @@ function showConfirmationMessageEditarPlan($messageEditarPlan) {
             showConfirmButton: false,
             timer: 1500
         }).then(function() {                                  
-            window.location.href = '/instituto/Adman/lista_planes.php';
+            window.location.href = '/instituto/Adman/subPantallas/lista_planes.php';
 
         });
     </script>";
@@ -102,9 +102,9 @@ function editarUsuarios($legajoUser, $claveeditaruser, $libromatrizEditar, $plan
     // Redirige a la página de lista de usuarios manteniendo el parámetro 'rol' en la URL
     if (isset($_GET['rol'])) {
         $rol = $_GET['rol'];
-        header("Location: /instituto/Adman/lista_usuarios.php?rol=$rol");
+        header("Location: /instituto/Adman/subPantallas/lista_usuarios.php?rol=$rol");
     } else {
-        header("Location: /instituto/Adman/lista_usuarios.php");
+        header("Location: /instituto/Adman/subPantallas/lista_usuarios.php");
     }
     exit();
 }
@@ -157,7 +157,7 @@ if (isset($_POST['btnmodificarPlan'])) {
             echo "Error al subir el archivo.";
         }
 
-        header("Location: /instituto/Adman/lista_planes.php");
+        header("Location: /instituto/Adman/subPantallas/lista_planes.php");
         exit();
     } else {
         echo "Los campos requeridos no pueden estar vacíos.";
@@ -213,7 +213,7 @@ function InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fe
         ];
     }
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location: /instituto/Adman/subPantallas/lista_planes.php");
     exit();
 }
 
@@ -230,7 +230,7 @@ if (isset($_POST['btnmCrearPlan'])) {
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
     InsertarPlan($nombreTarjetaCrear, $CarreraCrear, $fechaInicioCrear, $fechaFinalCrear, $estadoPlanCrear);
 
-    header("Location: /instituto/Adman/lista_planes.php");
+    header("Location: /instituto/Adman/subPantallas/lista_planes.php");
     exit();
 }
 

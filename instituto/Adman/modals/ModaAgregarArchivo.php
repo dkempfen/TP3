@@ -25,8 +25,9 @@ $DatosPersonas = DatosPersonas();
                 <div class="tab-content">
 
                     <div class="tab-pane active" id="datos" role="tabpanel">
-                        <form id="formDocuementacion" name="formDocuementacion"
-                            action="/instituto/Includes/sql.php" method="POST">
+                        <form id="formDocuementacion" name="formDocuementacion" action="/instituto/Includes/sql.php"
+                            method="POST" enctype="multipart/form-data">
+
 
                             <input type="hidden" name="idDocumentacionArchivo" id="idDocumentacionArchivo"
                                 value="<?php  echo $obtenerDocumentos['id_Documentacion']?>">
@@ -35,7 +36,7 @@ $DatosPersonas = DatosPersonas();
                                 <label for="control-label">Archivo:</label>
                                 <div class="custom-file">
                                     <input type="file" class="custom-file-input" id="ArchivoDocumentacion"
-                                        name="ArchivoDocumentacion"  maxlength="45" required>
+                                        name="ArchivoDocumentacion" maxlength="45" required>
                                     <label class="custom-file-label" for="ArchivoDocumentacion"
                                         id="ArchivoLabel">Seleccionar Archivo</label>
                                 </div>
@@ -46,19 +47,20 @@ $DatosPersonas = DatosPersonas();
                                 <input type="text" class="form-control" name="AsuntoArchivoocumentacion"
                                     id="AsuntoArchivoocumentacion" required>
                             </div>
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                <button id="btnActionAltaDocumentacion" class="btn btn-primary btn-open-modal"
+                                    type="submit" name="btnaltaDocumentacion">
+                                    <span id="btnActionFormDocumentacion">Guardar</span>
+                                </button>
+                            </div>
+
+
+
+                        </form>
                     </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button id="btnActionAltaDocumentacion" class="btn btn-primary btn-open-modal" type="submit"
-                            name="btnaltaDocumentacion">
-                            <span id="btnActionFormDocumentacion">Guardar</span>
-                        </button>
-                    </div>
-
-
-
-                    </form>
 
                 </div>
 
@@ -109,19 +111,17 @@ $(document).ready(function() {
 
         console.log('Estado del checkbox "inscripto":', inscripto);
 
+        var formData = new FormData();
+        formData.append('ArchivoDocumentacion', archivo);
+        formData.append('AsuntoArchivo', AsuntoArchivo);
 
         // Realizar la petición AJAX para insertar o actualizar datos
         $.ajax({
             url: "/instituto/Includes/sql.php",
             type: "POST",
-            data: {
-                idDocumentacionArchivo: idDocumentacionArchivo,
-                ArchivoDocumentacion: ArchivoDocumentacion,
-                AsuntoArchivo: AsuntoArchivo,
-
-
-                btnaltaDocumentacion: 0
-            },
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function(response) {
                 // Verificar la respuesta del servidor
                 if (response.success) {
@@ -154,9 +154,7 @@ $(document).ready(function() {
 
 
 });
-</script>
 
-<script>
 $(document).ready(function() {
     // Escuchar el evento de cambio del input de archivo
     $('#ArchivoDocumentacion').on('change', function() {
@@ -167,14 +165,14 @@ $(document).ready(function() {
     });
 });
 
-document.getElementById('ArchivoDocumentacion').addEventListener('change', function() {
+document.getElementById('ArchivoDocumentacion').addEventListener('change', function () {
         var maxLength = 45;
-        var fileName = this.value.split('\\').pop(); // Obtener el nombre del archivo seleccionado
+        var fileName = this.value.split('\\').pop();
         var fileLength = fileName.length;
 
         if (fileLength > maxLength) {
             alert('¡Te has excedido! El nombre del archivo debe tener como máximo 45 caracteres.');
-            this.value = ''; // Limpiar el campo de archivo
+            this.value = '';
             document.getElementById('ArchivoLabel').innerHTML = 'Seleccionar Archivo';
         } else {
             document.getElementById('ArchivoLabel').innerHTML = fileName;

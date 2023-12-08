@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_materia.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/subPantallas/lista_materia.php';
 
 
 

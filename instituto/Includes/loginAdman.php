@@ -67,7 +67,7 @@ if (!empty($_POST) && $_SERVER['REQUEST_URI'] === '/instituto/Login/index.php') 
                <script>
                    setTimeout(function() {
                        document.getElementById("loading-message").innerHTML = "Ingresando...";
-                       window.location.href = "/sistema/instituto/Adman/Pantallas/home.php";
+                       window.location.href = "/instituto/Adman/Pantallas/home.php";
                    }, 2000); // 2000 milisegundos (2 segundos) de retraso
                </script>';
            exit(); // Asegura que el script se detenga después de la redirección

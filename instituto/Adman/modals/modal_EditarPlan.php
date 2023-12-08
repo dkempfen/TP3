@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/lista_planes.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Adman/subPantallas/lista_planes.php';
 
 if (isset($fila) && is_array($fila)) {
     $estadoTarjeta = ($fila['Estado_Id_Estado'] == 1) ? 'Habilitado' : 'Inhabilitado';

@@ -4,7 +4,9 @@
 </head>
 
 <?php
-
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 //////////Mensajes /////////////////
 require_once('load.php');
 function showConfirmationMessage($message) {
@@ -299,7 +301,7 @@ isset($_POST['legajo']) && isset($_POST['matriz'])) {
 if (isset($_POST['Id_Usuario']) && isset($_POST['fk_Estado_Usuario']) ) {
   actualizarEstadoUsuario();
 
-  header("Location: /instituto/Adman/lista_usuarios.php");
+  header("Location: /instituto/Adman/subPantallas/lista_usuarios.php");
   exit();
 }
 
@@ -361,7 +363,7 @@ function actualizarEstadoMaterias()
 if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
     actualizarEstadoMaterias();
 
-  header("Location: /instituto/Adman/lista_materia.php");
+  header("Location: /instituto/Adman/subPantallas/lista_materia.php");
   exit();
 }
 
@@ -505,9 +507,13 @@ function mailPersonal()
             }
         
     
+    session_write_close();
 
     // Redirigir a la página de perfil después de procesar el formulario
     header("Location: /instituto/Adman/Pantallas/profile.php");
+    echo '<script>window.location.reload(true);</script>';
+    
+
     exit();
 }
 
@@ -872,32 +878,60 @@ function obtenerDocumentos (){
 
 }
 
-function InsertarDocumentos ($ArchivoDocumentacion, $AsuntoArchivoocumentacion) {
+function InsertarDocumentos($AsuntoArchivoocumentacion) {
     session_start();
     global $pdo;
-    
 
-    $sql = "INSERT INTO Documentacion (Descripcion_Documentacion, Estado_Documentacion, Asunto, fecha_documentacion) VALUES (?, 1, ?,NOW())";
-    $stmt = $pdo->prepare($sql);
+    $rutaBase = $_SERVER['DOCUMENT_ROOT'] . '/instituto/';
+    $rutaAlmacenamiento = $rutaBase . 'documentos/';
 
-    // Verifica si los valores son nulos antes de ejecutar la consulta
-    $stmt->execute([$ArchivoDocumentacion, $AsuntoArchivoocumentacion]);
+    // Verificar si se subió un archivo
+    if (isset($_FILES["ArchivoDocumentacion"])) {
+        $archivoDoc = $_FILES["ArchivoDocumentacion"];
+        $nombreArchivo = $archivoDoc["name"];
+        $tmpArchivo = $archivoDoc["tmp_name"];
 
-    if ($stmt->rowCount() > 0) {
-        $_SESSION['messageDocuementacion'] = [
-            'type' => 'success',
-            'text' => 'Documentacion insertados exitosamente'
-        ];
+        $rutaArchivo = $rutaAlmacenamiento . $nombreArchivo;
+
+        // Intenta mover el archivo primero
+        if (move_uploaded_file($tmpArchivo, $rutaArchivo)) {
+            // Archivo movido con éxito, ahora proceder a la inserción en la base de datos
+            $sql = "INSERT INTO Documentacion (Descripcion_Documentacion, Estado_Documentacion, Asunto, fecha_documentacion, Ubicacion)
+                    VALUES (?, 1, ?, NOW(), ?)";
+            $stmt = $pdo->prepare($sql);
+
+            // Verifica si los valores son nulos antes de ejecutar la consulta
+            $stmt->execute([$nombreArchivo, $AsuntoArchivoocumentacion, $rutaArchivo]);
+
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['messageDocuementacion'] = [
+                    'type' => 'success',
+                    'text' => 'Documentación insertada exitosamente'
+                ];
+            } else {
+                $_SESSION['messageDocuementacion'] = [
+                    'type' => 'error',
+                    'text' => 'Error al insertar la documentación en la base de datos.'
+                ];
+            }
+        } else {
+            $_SESSION['messageDocuementacion'] = [
+                'type' => 'error',
+                'text' => 'Error al mover el archivo al directorio de almacenamiento.'
+            ];
+        }
     } else {
         $_SESSION['messageDocuementacion'] = [
             'type' => 'error',
-            'text' => 'Ha ocurrido un error al insertar el documento.'
+            'text' => 'No se ha seleccionado ningún archivo.'
         ];
     }
 
     header("Location: /instituto/Adman/Pantallas/documentacion.php");
     exit();
 }
+
+
 
 // Verificar si se ha enviado una solicitud de edición (update)
 if (isset($_POST['btnaltaDocumentacion'])) {
@@ -906,7 +940,7 @@ if (isset($_POST['btnaltaDocumentacion'])) {
  
 
     // Llamar a la función EditarPersona solo si los campos requeridos no están vacíos
-    InsertarDocumentos($ArchivoDocumentacion, $AsuntoArchivoocumentacion);
+    InsertarDocumentos($AsuntoArchivoocumentacion);
 
     header("Location: /instituto/Adman/Pantallas/documentacion.php");
     exit();
@@ -1290,4 +1324,3 @@ function nosedeestafuncion ()
     $rowMateria = $datosMateria->fetchAll(PDO::FETCH_ASSOC);
     return $rowMateria;
 }
-
