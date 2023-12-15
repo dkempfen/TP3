@@ -74,6 +74,24 @@ function count_id($table)
   return 0; 
 }
 
+function CursadaRedes () {
+    global $pdo;
+
+    $sql = "SELECT * FROM Materia M INNER JOIN Detalle_Plan DP 
+    ON DP.fk_Materia = M.id_Materia 
+    INNER JOIN Plan P
+    ON P.cod_Plan = DP.fk_Plan 
+    WHERE anio_Carrera=1
+    AND fk_Plan='6790/19'";
+
+$datosCursadaRedes = $pdo->prepare($sql);
+$datosCursadaRedes->execute();
+
+$rowsCursadaRedes = $datosCursadaRedes->fetchAll(PDO::FETCH_ASSOC);
+return $rowsCursadaRedes;
+
+
+}
 /*-----------Define las constantes de los roles-----------------------------*/
 
 // Define las constantes de los roles seleccionados
@@ -402,7 +420,7 @@ if (isset($_POST['id_Materia']) && isset($_POST['fk_Estado']) ) {
 
 ////////////CAMBIO CLAVE///////////////
 
-
+/*
 function cambioClave()
 {
     session_start();
@@ -471,7 +489,7 @@ function cambioClave()
 // Ejemplo de uso
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["token"])) {
     cambioClave();
-}
+}*/
 
 function mailPersonal()
 {
@@ -592,8 +610,7 @@ function DatosPlan()
 
     $sql = "select Descripcion_Documentacion, Descripcion_Estado,E.Id_Estado, P.Estado_Id_Estado,P.cod_Plan,P.Carrera from Estado E
     INNER JOIN Plan P ON P.Estado_Id_Estado=E.Id_Estado
-    INNER JOIN Documentacion AS d
-    ON P.cod_Plan = d.fk_Plan";
+    INNER JOIN Documentacion AS d";
 
     $datosPlam = $pdo->prepare($sql);
     $datosPlam->execute();

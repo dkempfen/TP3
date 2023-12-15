@@ -7,7 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 <main class="app-content">
     <div class="container">
 
-        <section class="single-hero" style="background-image: url('https://lujanbuenviaje.edu.ar/sistema/instituto/Imagenes/portada-analista-sistemas.jpg');
+        <section class="single-hero" style="background-image: url('https://lujanbuenviaje.edu.ar/sistema/instituto/Imagenes/profiles/portada-analista-sistemas.jpg');
                 background-size: cover;
                 background-position: center calc(100% - 80%); /* Movemos la imagen hacia arriba en un 20% de la altura */
                 height: 320px;">
@@ -78,7 +78,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
                 <section class="container program-info">
                     <div class="pdf-container">
                         <iframe
-                            src="https://docs.google.com/viewer?url=lujanbuenviaje.edu.ar/sistema/instituto/documentacion/analista_sistemas.pdf&embedded=true"
+                            src="https://docs.google.com/viewer?url=lujanbuenviaje.edu.ar/sistema/instituto/documentos/analista_sistemas.pdf&embedded=true"
                             style="width: 100%; height: 100%; border: none;"></iframe>
                     </div>
                 </section>

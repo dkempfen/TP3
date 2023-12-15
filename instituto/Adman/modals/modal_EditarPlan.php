@@ -25,7 +25,7 @@ $DatosPlan = DatosPlan();
             <div class="modal-body">
                 <form id="ModalsEditarPlan" name="ModalsEditarPlan" action="/instituto/Includes/sqluser.php"
                     method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="cod_Plan" id="cod_Plan" value="<?php  echo $DatosPlan['cod_Plan'] ?>">
+                    <!--<input type="hidden" name="cod_Plan" id="cod_Plan" value="<?php  echo $DatosPlan['cod_Plan'] ?>-->
 
                     <!-- Agregar aquí los campos de edición -->
                     <div class="form-group">

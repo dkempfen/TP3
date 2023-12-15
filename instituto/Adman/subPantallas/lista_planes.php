@@ -69,7 +69,8 @@ if ($pdo) {
                 <ul class="custom-menu-list">
                     <!-- Planes de Estudio -->
                     <li class="custom-menu-item">
-                        <a class="custom-menu-link" href="/instituto/Adman/subPantallas/lista_planes.php">Planes de Estudio</a>
+                        <a class="custom-menu-link" href="/instituto/Adman/subPantallas/lista_planes.php">Planes de
+                            Estudio</a>
 
                     </li>
                 </ul>
@@ -92,7 +93,8 @@ if ($pdo) {
 
         <div class="row espaciado-entre-filas align-items-center">
 
-            <form id="busquedaForm" class="form-inline mb-5" action="/instituto/Adman/subPantallas/lista_planes.php" method="GET">
+            <form id="busquedaForm" class="form-inline mb-5" action="/instituto/Adman/subPantallas/lista_planes.php"
+                method="GET">
                 <div class="form-group mb-2">
                     <label for="carrera" class="label-spacing">Carrera:</label>
                     <input type="text" class="form-control  " id="carrera">
@@ -191,8 +193,9 @@ if ($pdo) {
                     data-codigo-plan="' . $fila['cod_Plan'] . '" data-nombre-tarjeta="' . $fila['Carrera'] . '"
                     data-estado-tarjeta="' . $fila['Estado_Id_Estado'] .'" data-fecha-inicio="' . $fila['Fecha_Inicio'] . '"
                     data-fecha-final="' . $fila['Fecha_Final'] . '">Editar</button>';
+                 
 
-                    echo '<button class="btn btn-secondary btn-sm mr-2" type="button" onclick="mostrarInfoAdicional(this)" data-codigo-planMateria="' . $fila['cod_Plan'] . '">+ Información</button>';
+                    echo '<button class="btn btn-secondary btn-sm mr-2" type="button" onclick="mostrarInfoAdicional(this)"  data-codigo-planMateria="' . $fila['cod_Plan'] . '">+ Información</button>';
                     echo '</div>';
                     echo '</div>';
                     echo '</div>';
@@ -442,17 +445,16 @@ $(function() {
 function mostrarInfoAdicional(boton) {
     var cod_Plan = boton.getAttribute('data-codigo-planMateria');
 
-    console.log({ cod_Plan: cod_Plan });
+        var cod_Plan = $("#cod_Plan").val();
+        
     $.ajax({
         url: '/instituto/Adman/modals/modal_carrera.php',
         type: 'POST',
         data: {
-            cod_Plan: cod_Plan
-        },
-        dataType: 'json',
-        success: function(response) {
-            console.log(response);
-        },
+                cod_Plan: cod_Plan,
+                
+            },
+            
         error: function(error) {
             console.error('Error en la solicitud AJAX:', error);
         }

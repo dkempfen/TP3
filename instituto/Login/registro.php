@@ -3,7 +3,6 @@ $pageTitle = "Registro Instituto"; // Define el título de la página
 include '../Includes/header.php';
 include '../Includes/load.php';
 
-$errors = []; // Puedes inicializarla como un array vacío o de acuerdo a tu lógica de manejo de errores
 
 
 ?>
@@ -76,8 +75,8 @@ $errors = []; // Puedes inicializarla como un array vacío o de acuerdo a tu ló
                             <select name="resgistro_usuario-tipo_documento" id="resgistro_usuario-tipo_documento"
                                 class="">
                                 <option value="null">DNI</option>
-                                <!-- <option value="3">CUIL/CUIT</option> -->
-                                <!-- <option value="0">DNI</option> -->
+                                 <option value="3">CUIL/CUIT</option> 
+                                 <option value="0">DNI</option> 
                             </select>
 
 
@@ -114,11 +113,11 @@ $errors = []; // Puedes inicializarla como un array vacío o de acuerdo a tu ló
                             </select>
 
                         </div>
-                        <div class="form-group">
-                            <label for="captcha" class="col-md-3 control-label"></label>
+                        <!-- <div class="form-group">
+                           <label for="captcha" class="col-md-3 control-label"></label>
                             <div class="g-recaptcha col-md-9" data-sitekey="6LciPeAnAAAAAP40vAmm2bCvpYmfc5bIgEBzsbh4">
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-btn">
 

@@ -1,47 +1,50 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+</head>
+
 <?php
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+//////////Mensajes /////////////////
+function showConfirmationMessageCO($message) {
+  echo "<script>
+      Swal.fire({
+          icon: '" . $message['type'] . "',
+          title: '" . $message['text'] . "',
+          showConfirmButton: false,
+          timer: 1500
+      });
+  </script>";
+}
+
+
+// Incluir el archivo que carga las configuraciones y funciones necesarias
 require_once $_SERVER['DOCUMENT_ROOT'] . '/instituto/Includes/load.php';
 
-// Obtener datos del formulario
-$user_id = $_POST['user_id'] ?? null;
-$token = $_POST['token'] ?? null;
-$password = $_POST['password'] ?? null;
-$con_password = $_POST['con_password'] ?? null;
+global $pdo;
 
-// Verificar si las contraseñas coinciden
-if ($password == $con_password) {
-    // Verifica que el token y el usuario son válidos
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
+    $token = filter_input(INPUT_POST, 'token', FILTER_SANITIZE_STRING);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
+
+    echo "User ID (POST): $user_id, Token (POST): $token";
+    
     if (verificaTokenPass($user_id, $token)) {
-        // Realiza el cambio de contraseña
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $result = cambiaPassword($hashed_password, $user_id, $token);
-        echo $result;
-    } else {
-        echo 'No se pudo verificar los datos';
-    }
-} else {
-    echo 'Las contraseñas no coinciden.';
-}
-
-function cambiaPassword($password, $user_id, $token)
-{
-    global $pdo;
-
-    try {
-        $stmt = $pdo->prepare("UPDATE Usuario SET Password = :password, token_password='', password_request=0 WHERE Id_Usuario = :user_id AND token_password = :token");
-        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-            // La contraseña se cambió con éxito
-            return 'Contraseña modificada con éxito.';
+        // Token válido, cambiar la contraseña en la base de datos
+        $hashed_password = hashPassword($password);
+        if (cambiaPassword($hashed_password, $user_id, $token)) {
+            // Contraseña cambiada con éxito, redirigir a la página de inicio de sesión
+            header("Location: index.php");
+            exit();
         } else {
-            // No se pudo cambiar la contraseña
-            return 'Error al modificar la contraseña.';
+            echo "Error al cambiar la contraseña.";
         }
-    } catch (PDOException $e) {
-        // Manejo de errores de PDO
-        return 'Error en la base de datos: ' . $e->getMessage();
+    } else {
+        echo "El token no es válido.";
     }
 }
+
 ?>

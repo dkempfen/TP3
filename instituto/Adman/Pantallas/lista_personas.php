@@ -219,8 +219,7 @@ function exportToExcel() {
 
 <script>
 $(document).ready(function() {
-    var tableusuarios = $('#tableUsuarios').DataTable({
-    });
+    
 
   // Capturar eventos de cambio en los campos de búsqueda
   $('#dniBusqueda, #nombreUserBusqueda, #apellidoUserBusqueda').on('input', function() {

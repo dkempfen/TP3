@@ -1354,3 +1354,44 @@ Usernalta-button:hover,
     border-radius: 5px; /* Ajusta el radio de borde según tus preferencias */
     cursor: pointer;
 }
+
+
+.cursadaRedes-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cursadaRedes-sidebar {
+    height: 80vh; /* 100% de la altura de la ventana */
+    overflow-y: auto; /* Agregar barra de desplazamiento vertical si es necesario */
+    background-color: #343a40; /* Color de fondo de la barra lateral */
+    color: #ffffff; /* Color del texto en la barra lateral */
+    padding: 20px;
+}
+
+.cursadaRedes-sidebar h2 {
+    color: #17a2b8; /* Color del título en la barra lateral */
+    margin-bottom: 20px;
+}
+
+.cursadaRedes-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cursadaRedes-sidebar li {
+    margin-bottom: 10px;
+}
+
+.cursadaRedes-sidebar li a {
+    text-decoration: none;
+    color: #ffffff; /* Color del texto en la barra lateral */
+    transition: color 0.3s;
+}
+
+.cursadaRedes-sidebar li a:hover {
+    color: #ffc107; /* Cambio de color al pasar el ratón sobre los elementos */
+}
+
